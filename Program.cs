@@ -1,3 +1,4 @@
+using FrontendBlazor_Aplicaciones_y_Servicios_Web.Components;
 using FrontendBlazor_Aplicaciones_y_Servicios_Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +11,10 @@ builder.Services.AddHttpClient("API", client =>
 
 // Registrar el servicio
 builder.Services.AddScoped<AspectoNormativoService>();
+builder.Services.AddScoped<CarInnovacionService>();
+builder.Services.AddScoped<EnfoqueService>();
+builder.Services.AddScoped<PracticaEstrategiaService>();
+builder.Services.AddScoped<UniversidadService>();
 
 // Configuración Blazor
 builder.Services.AddRazorComponents()
@@ -25,7 +30,8 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-app.UseRouting();
+
+app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();

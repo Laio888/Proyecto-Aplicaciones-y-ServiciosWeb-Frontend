@@ -1,0 +1,161 @@
+@page "/enfoques"
+@rendermode InteractiveServer
+@using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
+@using FrontendBlazor_Aplicaciones_y_Servicios_Web.Services
+@inject EnfoqueService enfoqueService
+
+<h3>Enfoques</h3>
+
+@if (items == null)
+{
+    <p>Cargando...</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in items)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Nombre</td>
+                    <td>@item.Descripcion</td>
+                    <td>
+                        <button class="btn btn-warning btn-sm me-2" @onclick="() => Editar(item)">Editar</button>
+                        <button class="btn btn-danger btn-sm" @onclick="() => Eliminar(item.Id)">Eliminar</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <h4>@(editando ? "Editar enfoque" : "Crear nuevo enfoque")</h4>
+
+    @if (!string.IsNullOrWhiteSpace(mensaje))
+    {
+        <div class="alert alert-info">@mensaje</div>
+    }
+
+    <div class="form-group">
+        <input class="form-control mb-2" placeholder="Nombre" @bind="nuevo.Nombre" />
+        <input class="form-control mb-2" placeholder="Descripción" @bind="nuevo.Descripcion" />
+
+        @if (editando)
+        {
+            <button class="btn btn-success me-2" @onclick="GuardarEdicion">Actualizar</button>
+            <button class="btn btn-secondary" @onclick="CancelarEdicion">Cancelar</button>
+        }
+        else
+        {
+            <button class="btn btn-primary" @onclick="Crear">Guardar</button>
+        }
+    </div>
+}
+
+@code {
+    private List<Enfoque>? items;
+    private Enfoque nuevo = new();
+    private bool editando = false;
+    private int idEditando = 0;
+    private string mensaje = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarDatos();
+    }
+
+    private async Task CargarDatos()
+    {
+        try
+        {
+            items = await enfoqueService.GetAll();
+        }
+        catch (Exception ex)
+        {
+            mensaje = $"Error al cargar datos: {ex.Message}";
+            items = new List<Enfoque>();
+        }
+    }
+
+    private async Task Crear()
+    {
+        mensaje = string.Empty;
+
+        try
+        {
+            await enfoqueService.Create(nuevo);
+            await CargarDatos();
+            nuevo = new Enfoque();
+            mensaje = "Registro creado correctamente.";
+        }
+        catch (Exception ex)
+        {
+            mensaje = $"No se pudo crear el registro: {ex.Message}";
+        }
+    }
+
+    private void Editar(Enfoque item)
+    {
+        nuevo = new Enfoque
+        {
+            Id = item.Id,
+            Nombre = item.Nombre,
+            Descripcion = item.Descripcion
+        };
+
+        idEditando = item.Id;
+        editando = true;
+        mensaje = $"Editando registro {item.Id}";
+    }
+
+    private async Task GuardarEdicion()
+    {
+        mensaje = string.Empty;
+
+        try
+        {
+            await enfoqueService.Update(idEditando, nuevo);
+            await CargarDatos();
+            nuevo = new Enfoque();
+            editando = false;
+            idEditando = 0;
+            mensaje = "Registro actualizado correctamente.";
+        }
+        catch (Exception ex)
+        {
+            mensaje = $"No se pudo actualizar el registro: {ex.Message}";
+        }
+    }
+
+    private async Task Eliminar(int id)
+    {
+        mensaje = string.Empty;
+
+        try
+        {
+            await enfoqueService.Delete(id);
+            await CargarDatos();
+            mensaje = "Registro eliminado correctamente.";
+        }
+        catch (Exception ex)
+        {
+            mensaje = $"No se pudo eliminar el registro: {ex.Message}";
+        }
+    }
+
+    private void CancelarEdicion()
+    {
+        nuevo = new Enfoque();
+        editando = false;
+        idEditando = 0;
+        mensaje = "Edición cancelada.";
+    }
+}

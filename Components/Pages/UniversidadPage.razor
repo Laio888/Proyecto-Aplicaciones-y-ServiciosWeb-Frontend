@@ -1,0 +1,165 @@
+@page "/universidades"
+@rendermode InteractiveServer
+@using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
+@using FrontendBlazor_Aplicaciones_y_Servicios_Web.Services
+@inject UniversidadService universidadService
+
+<h3>Universidades</h3>
+
+@if (items == null)
+{
+    <p>Cargando...</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Tipo</th>
+                <th>Ciudad</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in items)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Nombre</td>
+                    <td>@item.Tipo</td>
+                    <td>@item.Ciudad</td>
+                    <td>
+                        <button class="btn btn-warning btn-sm me-2" @onclick="() => Editar(item)">Editar</button>
+                        <button class="btn btn-danger btn-sm" @onclick="() => Eliminar(item.Id)">Eliminar</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <h4>@(editando ? "Editar universidad" : "Crear nueva universidad")</h4>
+
+    @if (!string.IsNullOrWhiteSpace(mensaje))
+    {
+        <div class="alert alert-info">@mensaje</div>
+    }
+
+    <div class="form-group">
+        <input class="form-control mb-2" placeholder="Nombre" @bind="nuevo.Nombre" />
+        <input class="form-control mb-2" placeholder="Tipo" @bind="nuevo.Tipo" />
+        <input class="form-control mb-2" placeholder="Ciudad" @bind="nuevo.Ciudad" />
+
+        @if (editando)
+        {
+            <button class="btn btn-success me-2" @onclick="GuardarEdicion">Actualizar</button>
+            <button class="btn btn-secondary" @onclick="CancelarEdicion">Cancelar</button>
+        }
+        else
+        {
+            <button class="btn btn-primary" @onclick="Crear">Guardar</button>
+        }
+    </div>
+}
+
+@code {
+    private List<Universidad>? items;
+    private Universidad nuevo = new();
+    private bool editando = false;
+    private int idEditando = 0;
+    private string mensaje = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarDatos();
+    }
+
+    private async Task CargarDatos()
+    {
+        try
+        {
+            items = await universidadService.GetAll();
+        }
+        catch (Exception ex)
+        {
+            mensaje = $"Error al cargar datos: {ex.Message}";
+            items = new List<Universidad>();
+        }
+    }
+
+    private async Task Crear()
+    {
+        mensaje = string.Empty;
+
+        try
+        {
+            await universidadService.Create(nuevo);
+            await CargarDatos();
+            nuevo = new Universidad();
+            mensaje = "Universidad creada correctamente.";
+        }
+        catch (Exception ex)
+        {
+            mensaje = $"No se pudo crear: {ex.Message}";
+        }
+    }
+
+    private void Editar(Universidad item)
+    {
+        nuevo = new Universidad
+        {
+            Id = item.Id,
+            Nombre = item.Nombre,
+            Tipo = item.Tipo,
+            Ciudad = item.Ciudad
+        };
+
+        idEditando = item.Id;
+        editando = true;
+        mensaje = $"Editando universidad {item.Id}";
+    }
+
+    private async Task GuardarEdicion()
+    {
+        mensaje = string.Empty;
+
+        try
+        {
+            await universidadService.Update(idEditando, nuevo);
+            await CargarDatos();
+            nuevo = new Universidad();
+            editando = false;
+            idEditando = 0;
+            mensaje = "Universidad actualizada correctamente.";
+        }
+        catch (Exception ex)
+        {
+            mensaje = $"Error al actualizar: {ex.Message}";
+        }
+    }
+
+    private async Task Eliminar(int id)
+    {
+        mensaje = string.Empty;
+
+        try
+        {
+            await universidadService.Delete(id);
+            await CargarDatos();
+            mensaje = "Universidad eliminada correctamente.";
+        }
+        catch (Exception ex)
+        {
+            mensaje = $"Error al eliminar: {ex.Message}";
+        }
+    }
+
+    private void CancelarEdicion()
+    {
+        nuevo = new Universidad();
+        editando = false;
+        idEditando = 0;
+        mensaje = "Edición cancelada.";
+    }
+}

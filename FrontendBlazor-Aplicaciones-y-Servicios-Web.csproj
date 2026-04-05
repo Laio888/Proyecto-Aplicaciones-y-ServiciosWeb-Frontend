@@ -4,8 +4,8 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>FrontendBlazor-Aplicaciones-y-Servicios-Web</RootNamespace>
-    <AssemblyName>$(AssemblyName.Replace(' ', '_'))</AssemblyName>
+    <RootNamespace>FrontendBlazor_Aplicaciones_y_Servicios_Web</RootNamespace>
+    <AssemblyName>FrontendBlazor_Aplicaciones_y_Servicios_Web</AssemblyName>
   </PropertyGroup>
 
 </Project>

@@ -5,33 +5,42 @@ namespace FrontendBlazor_Aplicaciones_y_Servicios_Web.Services
 {
     public class AspectoNormativoService
     {
-        private readonly HttpClient _http;
+        private readonly IHttpClientFactory _httpClientFactory;
 
-        public AspectoNormativoService(HttpClient http)
+        public AspectoNormativoService(IHttpClientFactory httpClientFactory)
         {
-            _http = http;
+            _httpClientFactory = httpClientFactory;
         }
 
         public async Task<List<AspectoNormativo>> GetAll()
         {
-            return await _http.GetFromJsonAsync<List<AspectoNormativo>>("AspectoNormativo");
+            var client = _httpClientFactory.CreateClient("API");
+
+            return await client.GetFromJsonAsync<List<AspectoNormativo>>("AspectoNormativo")
+                   ?? new List<AspectoNormativo>();
         }
 
         public async Task<bool> Create(AspectoNormativo aspecto)
         {
-            var response = await _http.PostAsJsonAsync("AspectoNormativo", aspecto);
+            var client = _httpClientFactory.CreateClient("API");
+
+            var response = await client.PostAsJsonAsync("AspectoNormativo", aspecto);
             return response.IsSuccessStatusCode;
         }
 
         public async Task<bool> Update(int id, AspectoNormativo aspecto)
         {
-            var response = await _http.PutAsJsonAsync($"AspectoNormativo/{id}", aspecto);
+            var client = _httpClientFactory.CreateClient("API");
+
+            var response = await client.PutAsJsonAsync($"AspectoNormativo/{id}", aspecto);
             return response.IsSuccessStatusCode;
         }
 
         public async Task<bool> Delete(int id)
         {
-            var response = await _http.DeleteAsync($"AspectoNormativo/{id}");
+            var client = _httpClientFactory.CreateClient("API");
+
+            var response = await client.DeleteAsync($"AspectoNormativo/{id}");
             return response.IsSuccessStatusCode;
         }
     }
