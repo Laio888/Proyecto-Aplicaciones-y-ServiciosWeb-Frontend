@@ -1,0 +1,88 @@
+@page "/aspectos"
+@using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
+@inject FrontendBlazor_Aplicaciones_y_Servicios_Web.Services.AspectoNormativoService aspectoService
+
+<h3>Aspectos Normativos</h3>
+
+@if (aspectos == null)
+{
+    <p>Cargando...</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tipo</th>
+                <th>Descripción</th>
+                <th>Fuente</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var a in aspectos)
+            {
+                <tr>
+                    <td>@a.Id</td>
+                    <td>@a.Tipo</td>
+                    <td>@a.Descripcion</td>
+                    <td>@a.Fuente</td>
+                    <td>
+                        <button class="btn btn-warning btn-sm" @onclick="() => Editar(a)">Editar</button>
+                        <button class="btn btn-danger btn-sm" @onclick="() => Eliminar(a.Id)">Eliminar</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <h4>Crear nuevo aspecto</h4>
+    <div class="form-group">
+        <input class="form-control mb-2" placeholder="Tipo" @bind="nuevo.Tipo" />
+        <input class="form-control mb-2" placeholder="Descripción" @bind="nuevo.Descripcion" />
+        <input class="form-control mb-2" placeholder="Fuente" @bind="nuevo.Fuente" />
+        <button class="btn btn-primary" @onclick="Crear">Guardar</button>
+    </div>
+}
+
+@code {
+    private List<AspectoNormativo>? aspectos;
+    private AspectoNormativo nuevo = new AspectoNormativo();
+
+    protected override async Task OnInitializedAsync()
+    {
+        aspectos = await aspectoService.GetAll();
+    }
+
+    private async Task Crear()
+    {
+        var ok = await aspectoService.Create(nuevo);
+        if (ok)
+        {
+            aspectos = await aspectoService.GetAll();
+            nuevo = new AspectoNormativo();
+            StateHasChanged();
+        }
+    }
+
+    private async Task Editar(AspectoNormativo aspecto)
+    {
+        var ok = await aspectoService.Update(aspecto.Id, aspecto);
+        if (ok)
+        {
+            aspectos = await aspectoService.GetAll();
+            StateHasChanged();
+        }
+    }
+
+    private async Task Eliminar(int id)
+    {
+        var ok = await aspectoService.Delete(id);
+        if (ok)
+        {
+            aspectos = await aspectoService.GetAll();
+            StateHasChanged();
+        }
+    }
+}
