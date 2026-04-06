@@ -1,0 +1,28 @@
+@page "/carinnovaciones/create"
+@rendermode InteractiveServer
+
+@using Microsoft.AspNetCore.Components.Forms
+@using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
+
+@inject CarInnovacionService carService
+@inject NavigationManager nav
+
+<h3>Crear Característica</h3>
+
+<EditForm Model="modelo" OnValidSubmit="Guardar">
+    <InputText @bind-Value="modelo.Nombre" placeholder="Nombre" />
+    <InputText @bind-Value="modelo.Descripcion" placeholder="Descripción" />
+    <InputText @bind-Value="modelo.Tipo" placeholder="Tipo" />
+
+    <button type="submit">Guardar</button>
+</EditForm>
+
+@code {
+    private CarInnovacion modelo = new();
+
+    private async Task Guardar()
+    {
+        await carService.Create(modelo);
+        nav.NavigateTo("/carinnovaciones");
+    }
+}

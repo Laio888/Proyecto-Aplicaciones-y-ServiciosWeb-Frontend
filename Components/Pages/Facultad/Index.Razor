@@ -1,0 +1,69 @@
+@page "/facultades"
+@rendermode InteractiveServer
+
+@using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
+@inject FacultadService facultadService
+@inject UniversidadService universidadService
+
+<h3>Facultades</h3>
+
+<a href="/facultades/create">Crear nueva</a>
+
+@if (facultades == null || universidades == null)
+{
+    <p>Cargando...</p>
+}
+else if (!facultades.Any())
+{
+    <p>No hay registros.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>Tipo</th>
+                <th>Fecha</th>
+                <th>Universidad</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var f in facultades)
+            {
+                var uni = universidades.FirstOrDefault(u => u.Id == f.Universidad);
+
+                <tr>
+                    <td>@f.Id</td>
+                    <td>@f.Nombre</td>
+                    <td>@f.Tipo</td>
+                    <td>@f.FechaFun.ToShortDateString()</td>
+                    <td>@(uni?.Nombre ?? "No encontrada")</td>
+                    <td>
+                        <button @onclick="() => Eliminar(f.Id)">Eliminar</button>
+                        <a href="/facultades/edit/@f.Id">Editar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Facultad> facultades = new();
+    private List<Universidad> universidades = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        facultades = await facultadService.GetAll();
+        universidades = await universidadService.GetAll();
+    }
+
+    private async Task Eliminar(int id)
+    {
+        await facultadService.Delete(id);
+        facultades.RemoveAll(f => f.Id == id);
+    }
+}

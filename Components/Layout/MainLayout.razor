@@ -1,0 +1,35 @@
+﻿@inherits LayoutComponentBase
+
+<div class="page d-flex">
+
+    <!-- Sidebar -->
+    <div class="sidebar bg-dark text-white shadow-sm">
+        <NavMenu />
+    </div>
+
+    <!-- Contenido principal -->
+    <main class="flex-grow-1">
+
+        <!-- Top bar -->
+        <div class="top-row px-4 d-flex justify-content-between align-items-center border-bottom shadow-sm">
+            <h5 class="m-0 fw-semibold">Panel</h5>
+
+            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank" class="text-decoration-none">
+                Docs
+            </a>
+        </div>
+
+        <!-- Contenido -->
+        <article class="content px-4 py-3">
+            @Body
+        </article>
+
+    </main>
+</div>
+
+<!-- Error UI -->
+<div id="blazor-error-ui" class="alert alert-danger m-3" data-nosnippet>
+    Algo explotó… como suele pasar.
+    <a href="." class="reload ms-2">Recargar</a>
+    <span class="dismiss ms-2">🗙</span>
+</div>

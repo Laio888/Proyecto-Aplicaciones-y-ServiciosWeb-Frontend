@@ -1,0 +1,27 @@
+@page "/enfoques/create"
+@rendermode InteractiveServer
+
+@using Microsoft.AspNetCore.Components.Forms
+@using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
+
+@inject EnfoqueService enfoqueService
+@inject NavigationManager nav
+
+<h3>Crear Enfoque</h3>
+
+<EditForm Model="enfoque" OnValidSubmit="Guardar">
+    <InputText @bind-Value="enfoque.Nombre" placeholder="Nombre" />
+    <InputText @bind-Value="enfoque.Descripcion" placeholder="Descripción" />
+
+    <button type="submit">Guardar</button>
+</EditForm>
+
+@code {
+    private Enfoque enfoque = new();
+
+    private async Task Guardar()
+    {
+        await enfoqueService.Create(enfoque);
+        nav.NavigateTo("/enfoques");
+    }
+}

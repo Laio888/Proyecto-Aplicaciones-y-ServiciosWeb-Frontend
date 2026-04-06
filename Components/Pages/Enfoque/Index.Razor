@@ -1,0 +1,64 @@
+@page "/enfoques"
+@rendermode InteractiveServer
+
+@using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
+@inject EnfoqueService enfoqueService
+
+<h3>Enfoques</h3>
+
+<a href="/enfoques/create">Crear nuevo</a>
+
+@if (enfoques == null)
+{
+    <p>Cargando...</p>
+}
+else if (!enfoques.Any())
+{
+    <p>No hay registros.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var e in enfoques)
+            {
+                <tr>
+                    <td>@e.Id</td>
+                    <td>@e.Nombre</td>
+                    <td>@e.Descripcion</td>
+                    <td>
+                        <button @onclick="() => Eliminar(e.Id)">Eliminar</button>
+                        <a href="/enfoques/edit/@e.Id">Editar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Enfoque> enfoques = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        enfoques = await enfoqueService.GetAll();
+    }
+
+    private async Task Eliminar(int id)
+    {
+        await enfoqueService.Delete(id);
+
+        // igual que tu patrón
+        enfoques.RemoveAll(e => e.Id == id);
+
+        StateHasChanged();
+    }
+}

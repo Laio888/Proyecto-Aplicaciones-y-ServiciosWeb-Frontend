@@ -1,0 +1,28 @@
+@page "/practicasestrategias/create"
+@rendermode InteractiveServer
+
+@using Microsoft.AspNetCore.Components.Forms
+@using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
+
+@inject PracticaEstrategiaService practicaService
+@inject NavigationManager nav
+
+<h3>Crear Práctica/Estrategia</h3>
+
+<EditForm Model="modelo" OnValidSubmit="Guardar">
+    <InputText @bind-Value="modelo.Tipo" placeholder="Tipo" />
+    <InputText @bind-Value="modelo.Nombre" placeholder="Nombre" />
+    <InputText @bind-Value="modelo.Descripcion" placeholder="Descripción" />
+
+    <button type="submit">Guardar</button>
+</EditForm>
+
+@code {
+    private PracticaEstrategia modelo = new();
+
+    private async Task Guardar()
+    {
+        await practicaService.Create(modelo);
+        nav.NavigateTo("/practicasestrategias");
+    }
+}
