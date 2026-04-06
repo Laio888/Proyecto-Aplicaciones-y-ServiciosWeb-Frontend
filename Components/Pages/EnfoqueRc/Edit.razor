@@ -1,0 +1,117 @@
+@page "/enfoque-rc/edit/{enfoqueId:int}/{registroId:int}"
+@rendermode InteractiveServer
+@using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
+@inject EnfoqueRcService enfoqueRcService
+@inject EnfoqueService enfoqueService
+@inject RegistroCalificadoService registroCalificadoService
+@inject NavigationManager Navigation
+
+<h3>Editar relación Enfoque - Registro Calificado</h3>
+
+@if (!string.IsNullOrWhiteSpace(mensaje))
+{
+    <div class="alert alert-info">@mensaje</div>
+}
+
+@if (modelo == null || enfoques == null || registros == null)
+{
+    <p>Cargando...</p>
+}
+else
+{
+    <div class="form-group">
+        <label>Enfoque</label>
+        <select class="form-control mb-2" @bind="modelo.Enfoque">
+            <option value="0">Seleccione un enfoque</option>
+            @foreach (var e in enfoques)
+            {
+                <option value="@e.Id">@e.Nombre</option>
+            }
+        </select>
+
+        <label>Registro Calificado</label>
+        <select class="form-control mb-3" @bind="modelo.RegistroCalificado">
+            <option value="0">Seleccione un registro</option>
+            @foreach (var r in registros)
+            {
+                <option value="@r.Codigo">@r.Codigo - Programa @r.Programa</option>
+            }
+        </select>
+
+        <button class="btn btn-success me-2" @onclick="Guardar">Actualizar</button>
+        <button class="btn btn-secondary" @onclick="Volver">Cancelar</button>
+    </div>
+}
+
+@code {
+    [Parameter] public int enfoqueId { get; set; }
+    [Parameter] public int registroId { get; set; }
+
+    private EnfoqueRc? modelo;
+    private List<Enfoque>? enfoques;
+    private List<RegistroCalificado>? registros;
+    private string mensaje = string.Empty;
+
+    private int enfoqueOriginal;
+    private int registroOriginal;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            enfoqueOriginal = enfoqueId;
+            registroOriginal = registroId;
+
+            enfoques = await enfoqueService.GetAll();
+            registros = await registroCalificadoService.GetAll();
+
+            modelo = await enfoqueRcService.GetById(enfoqueId, registroId);
+        }
+        catch (Exception ex)
+        {
+            mensaje = $"Error: {ex.Message}";
+        }
+    }
+
+    private async Task Guardar()
+    {
+        mensaje = string.Empty;
+
+        if (modelo == null)
+        {
+            mensaje = "No hay datos.";
+            return;
+        }
+
+        if (modelo.Enfoque <= 0 || modelo.RegistroCalificado <= 0)
+        {
+            mensaje = "Debe seleccionar valores válidos.";
+            return;
+        }
+
+        try
+        {
+            await enfoqueRcService.Delete(enfoqueOriginal, registroOriginal);
+
+            var ok = await enfoqueRcService.Create(modelo);
+
+            if (ok)
+            {
+                Navigation.NavigateTo("/enfoque-rc");
+            }
+            else
+            {
+                mensaje = "No se pudo actualizar.";
+            }
+        }
+        catch (Exception ex)
+        {
+            mensaje = $"Error: {ex.Message}";
+        }
+    }
+
+    private void Volver()
+    {
+        Navigation.NavigateTo("/enfoque-rc");
+    }
+}

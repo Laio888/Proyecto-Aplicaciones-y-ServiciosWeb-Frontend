@@ -1,0 +1,105 @@
+@page "/registro-calificado/create"
+@rendermode InteractiveServer
+@inject RegistroCalificadoService registroService
+@inject NavigationManager Navigation
+
+<h3>Crear Registro Calificado</h3>
+
+@if (!string.IsNullOrWhiteSpace(mensaje))
+{
+    <div class="alert alert-danger">@mensaje</div>
+}
+
+<div class="form-group">
+
+    <input type="number" class="form-control mb-2" placeholder="Código"
+           @bind="nuevo.Codigo" />
+
+    <input class="form-control mb-2" placeholder="Cantidad Créditos"
+           @bind="nuevo.CantCreditos" />
+
+    <input class="form-control mb-2" placeholder="Horas Acompañamiento"
+           @bind="nuevo.HoraAcom" />
+
+    <input class="form-control mb-2" placeholder="Horas Independientes"
+           @bind="nuevo.HoraInd" />
+
+    <input class="form-control mb-2" placeholder="Metodología"
+           @bind="nuevo.Metodologia" />
+
+    <label>Fecha Inicio</label>
+    <input type="date" class="form-control mb-2"
+           @bind="nuevo.FechaInicio" />
+
+    <label>Fecha Fin</label>
+    <input type="date" class="form-control mb-2"
+           @bind="nuevo.FechaFin" />
+
+    <input class="form-control mb-2" placeholder="Duración en años"
+           @bind="nuevo.DuracionAnios" />
+
+    <input class="form-control mb-2" placeholder="Duración en semestres"
+           @bind="nuevo.DuracionSemestres" />
+
+    <input class="form-control mb-2" placeholder="Tipo Titulación"
+           @bind="nuevo.TipoTitulacion" />
+
+    <input type="number" class="form-control mb-3" placeholder="Programa"
+           @bind="nuevo.Programa" />
+
+    <button class="btn btn-primary me-2" @onclick="Guardar">Guardar</button>
+    <button class="btn btn-secondary" @onclick="Volver">Cancelar</button>
+
+</div>
+
+@code {
+    private RegistroCalificado nuevo = new();
+    private string mensaje = string.Empty;
+
+    private async Task Guardar()
+    {
+        mensaje = string.Empty;
+
+        try
+        {
+            // 🔥 Validación básica
+            if (nuevo.Codigo == 0)
+            {
+                mensaje = "El código es obligatorio.";
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(nuevo.Metodologia))
+            {
+                mensaje = "La metodología es obligatoria.";
+                return;
+            }
+
+            if (nuevo.FechaFin < nuevo.FechaInicio)
+            {
+                mensaje = "La fecha fin no puede ser menor que la fecha inicio.";
+                return;
+            }
+
+            var ok = await registroService.Create(nuevo);
+
+            if (ok)
+            {
+                Navigation.NavigateTo("/registro-calificado");
+            }
+            else
+            {
+                mensaje = "No se pudo crear el registro.";
+            }
+        }
+        catch (Exception ex)
+        {
+            mensaje = $"Error: {ex.Message}";
+        }
+    }
+
+    private void Volver()
+    {
+        Navigation.NavigateTo("/registro-calificado");
+    }
+}

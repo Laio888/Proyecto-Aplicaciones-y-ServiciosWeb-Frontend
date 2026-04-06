@@ -1,0 +1,70 @@
+@page "/aa-rc"
+@rendermode InteractiveServer
+@inject AaRcService aaRcService
+@inject RegistroCalificadoService registroCalificadoService
+
+<h3>Relación Actividad Académica - Registro Calificado</h3>
+
+@if (!string.IsNullOrWhiteSpace(mensaje))
+{
+    <div class="alert alert-info">@mensaje</div>
+}
+
+@if (items == null || registros == null)
+{
+    <p>Cargando...</p>
+}
+else if (!items.Any())
+{
+    <div class="alert alert-secondary">No hay relaciones registradas.</div>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Id Actividad Académica</th>
+                <th>Registro Calificado</th>
+                <th>Componente</th>
+                <th>Semestre</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in items)
+            {
+                <tr>
+                    <td>@item.ActivAcademicasIdcurso</td>
+                    <td>@item.RegistroCalificadoCodigo</td>
+                    <td>@item.Componente</td>
+                    <td>@item.Semestre</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<AaRc>? items;
+    private List<RegistroCalificado>? registros;
+    private string mensaje = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarDatos();
+    }
+
+    private async Task CargarDatos()
+    {
+        try
+        {
+            items = await aaRcService.GetAll();
+            registros = await registroCalificadoService.GetAll();
+        }
+        catch (Exception ex)
+        {
+            mensaje = $"Error al cargar datos: {ex.Message}";
+            items = new List<AaRc>();
+            registros = new List<RegistroCalificado>();
+        }
+    }
+}

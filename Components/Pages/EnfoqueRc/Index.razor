@@ -1,0 +1,119 @@
+@page "/enfoque-rc"
+@rendermode InteractiveServer
+@inject EnfoqueRcService enfoqueRcService
+@inject EnfoqueService enfoqueService
+@inject RegistroCalificadoService registroCalificadoService
+@inject NavigationManager Navigation
+
+<h3>Relación Enfoque - Registro Calificado</h3>
+
+<div class="mb-3">
+    <button class="btn btn-primary" @onclick="IrCrear">Nueva relación</button>
+</div>
+
+@if (!string.IsNullOrWhiteSpace(mensaje))
+{
+    <div class="alert alert-info">@mensaje</div>
+}
+
+@if (items == null || enfoques == null || registros == null)
+{
+    <p>Cargando...</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Enfoque</th>
+                <th>Registro Calificado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in items)
+            {
+                var nombreEnfoque = enfoques.FirstOrDefault(x => x.Id == item.Enfoque)?.Nombre ?? item.Enfoque.ToString();
+
+                <tr>
+                    <td>@nombreEnfoque</td>
+                    <td>@item.RegistroCalificado</td>
+                    <td>
+                        <button class="btn btn-warning btn-sm me-2"
+                                @onclick="() => IrEditar(item.Enfoque, item.RegistroCalificado)">
+                            Editar
+                        </button>
+
+                        <button class="btn btn-danger btn-sm"
+                                @onclick="() => Eliminar(item.Enfoque, item.RegistroCalificado)">
+                            Eliminar
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<EnfoqueRc>? items;
+    private List<Enfoque>? enfoques;
+    private List<RegistroCalificado>? registros;
+    private string mensaje = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarDatos();
+    }
+
+    private async Task CargarDatos()
+    {
+        try
+        {
+            items = await enfoqueRcService.GetAll();
+            enfoques = await enfoqueService.GetAll();
+            registros = await registroCalificadoService.GetAll();
+        }
+        catch (Exception ex)
+        {
+            mensaje = $"Error al cargar datos: {ex.Message}";
+            items = new List<EnfoqueRc>();
+            enfoques = new List<Enfoque>();
+            registros = new List<RegistroCalificado>();
+        }
+    }
+
+    private void IrCrear()
+    {
+        Navigation.NavigateTo("/enfoque-rc/create");
+    }
+
+    private void IrEditar(int enfoque, int registroCalificado)
+    {
+        Navigation.NavigateTo($"/enfoque-rc/edit/{enfoque}/{registroCalificado}");
+    }
+
+    private async Task Eliminar(int enfoque, int registroCalificado)
+    {
+        mensaje = string.Empty;
+
+        try
+        {
+            var ok = await enfoqueRcService.Delete(enfoque, registroCalificado);
+
+            if (ok)
+            {
+                await CargarDatos();
+                mensaje = "Relación eliminada correctamente.";
+            }
+            else
+            {
+                mensaje = "No se pudo eliminar la relación.";
+            }
+        }
+        catch (Exception ex)
+        {
+            mensaje = $"Error al eliminar: {ex.Message}";
+        }
+    }
+}

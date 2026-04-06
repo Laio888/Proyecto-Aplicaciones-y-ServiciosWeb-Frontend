@@ -1,6 +1,8 @@
 using System.Net;
 using System.Runtime.CompilerServices;
 using FrontendBlazor_Aplicaciones_y_Servicios_Web.Components;
+using FrontendBlazor_Aplicaciones_y_Servicios_Web.Services;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +24,15 @@ builder.Services.AddScoped<CarInnovacionService>();
 builder.Services.AddScoped<PracticaEstrategiaService>();
 builder.Services.AddScoped<FacultadService>();
 builder.Services.AddScoped<ProgramaService>();
+
+//EnfoqueRc
+builder.Services.AddScoped<EnfoqueRcService>();
+builder.Services.AddScoped<RegistroCalificadoService>();
+builder.Services.AddScoped<EnfoqueService>();
+//Registro calificado
+builder.Services.AddScoped<RegistroCalificadoService>();
+//AaRc
+builder.Services.AddScoped<AaRcService>();
 
 // 🔹 4. Crear app
 var app = builder.Build();

@@ -1,0 +1,105 @@
+@page "/enfoque-rc/create"
+@rendermode InteractiveServer
+@inject EnfoqueRcService enfoqueRcService
+@inject EnfoqueService enfoqueService
+@inject RegistroCalificadoService registroCalificadoService
+@inject NavigationManager Navigation
+
+<h3>Crear relación Enfoque - Registro Calificado</h3>
+
+@if (!string.IsNullOrWhiteSpace(mensaje))
+{
+    <div class="alert alert-info">@mensaje</div>
+}
+
+@if (enfoques == null || registros == null)
+{
+    <p>Cargando...</p>
+}
+else
+{
+    <div class="form-group">
+        <label>Enfoque</label>
+        <select class="form-control mb-2" @bind="nuevo.Enfoque">
+            <option value="0">Seleccione un enfoque</option>
+            @foreach (var e in enfoques)
+            {
+                <option value="@e.Id">@e.Nombre</option>
+            }
+        </select>
+
+        <label>Registro Calificado</label>
+        <select class="form-control mb-3" @bind="nuevo.RegistroCalificado">
+            <option value="0">Seleccione un registro</option>
+            @foreach (var r in registros)
+            {
+                <option value="@r.Codigo">@r.Codigo - Programa @r.Programa</option>
+            }
+        </select>
+
+        <button class="btn btn-primary me-2" @onclick="Guardar">Guardar</button>
+        <button class="btn btn-secondary" @onclick="Volver">Cancelar</button>
+    </div>
+}
+
+@code {
+    private EnfoqueRc nuevo = new();
+    private List<Enfoque>? enfoques;
+    private List<RegistroCalificado>? registros;
+    private string mensaje = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            enfoques = await enfoqueService.GetAll();
+            registros = await registroCalificadoService.GetAll();
+        }
+        catch (Exception ex)
+        {
+            mensaje = $"Error al cargar datos: {ex.Message}";
+            enfoques = new List<Enfoque>();
+            registros = new List<RegistroCalificado>();
+        }
+    }
+
+    private async Task Guardar()
+    {
+        mensaje = string.Empty;
+
+        if (nuevo.Enfoque <= 0)
+        {
+            mensaje = "Debe seleccionar un enfoque.";
+            return;
+        }
+
+        if (nuevo.RegistroCalificado <= 0)
+        {
+            mensaje = "Debe seleccionar un registro calificado.";
+            return;
+        }
+
+        try
+        {
+            var ok = await enfoqueRcService.Create(nuevo);
+
+            if (ok)
+            {
+                Navigation.NavigateTo("/enfoque-rc");
+            }
+            else
+            {
+                mensaje = "No se pudo crear la relación.";
+            }
+        }
+        catch (Exception ex)
+        {
+            mensaje = $"Error al guardar: {ex.Message}";
+        }
+    }
+
+    private void Volver()
+    {
+        Navigation.NavigateTo("/enfoque-rc");
+    }
+}

@@ -1,0 +1,150 @@
+@page "/registro-calificado/edit/{codigo:int}"
+@rendermode InteractiveServer
+@inject RegistroCalificadoService registroService
+@inject NavigationManager Navigation
+
+<h3 class="mb-4">Editar Registro Calificado</h3>
+
+@if (!string.IsNullOrWhiteSpace(mensaje))
+{
+    <div class="alert alert-info">@mensaje</div>
+}
+
+@if (modelo == null)
+{
+    <div class="alert alert-secondary">Cargando...</div>
+}
+else
+{
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="mb-3">
+                <label class="form-label">Código</label>
+                <input type="number" class="form-control" @bind="modelo.Codigo" disabled />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Cantidad de Créditos</label>
+                <input class="form-control" @bind="modelo.CantCreditos" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Horas de Acompañamiento</label>
+                <input class="form-control" @bind="modelo.HoraAcom" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Horas Independientes</label>
+                <input class="form-control" @bind="modelo.HoraInd" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Metodología</label>
+                <input class="form-control" @bind="modelo.Metodologia" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Fecha de Inicio</label>
+                <input type="date" class="form-control" @bind="modelo.FechaInicio" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Fecha de Fin</label>
+                <input type="date" class="form-control" @bind="modelo.FechaFin" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Duración en Años</label>
+                <input class="form-control" @bind="modelo.DuracionAnios" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Duración en Semestres</label>
+                <input class="form-control" @bind="modelo.DuracionSemestres" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Tipo de Titulación</label>
+                <input class="form-control" @bind="modelo.TipoTitulacion" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Programa</label>
+                <input type="number" class="form-control" @bind="modelo.Programa" />
+            </div>
+
+            <button class="btn btn-success me-2" @onclick="Guardar">Actualizar</button>
+            <button class="btn btn-secondary" @onclick="Volver">Cancelar</button>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public int codigo { get; set; }
+
+    private RegistroCalificado? modelo;
+    private string mensaje = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            modelo = await registroService.GetById(codigo);
+
+            if (modelo == null)
+            {
+                mensaje = "No se encontró el registro solicitado.";
+            }
+        }
+        catch (Exception ex)
+        {
+            mensaje = $"Error al cargar el registro: {ex.Message}";
+        }
+    }
+
+    private async Task Guardar()
+    {
+        mensaje = string.Empty;
+
+        try
+        {
+            if (modelo == null)
+            {
+                mensaje = "No hay datos para actualizar.";
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(modelo.Metodologia))
+            {
+                mensaje = "La metodología es obligatoria.";
+                return;
+            }
+
+            if (modelo.FechaFin < modelo.FechaInicio)
+            {
+                mensaje = "La fecha fin no puede ser menor que la fecha inicio.";
+                return;
+            }
+
+            var ok = await registroService.Update(modelo.Codigo, modelo);
+
+            if (ok)
+            {
+                Navigation.NavigateTo("/registro-calificado");
+            }
+            else
+            {
+                mensaje = "No se pudo actualizar el registro.";
+            }
+        }
+        catch (Exception ex)
+        {
+            mensaje = $"Error al actualizar: {ex.Message}";
+        }
+    }
+
+    private void Volver()
+    {
+        Navigation.NavigateTo("/registro-calificado");
+    }
+}
