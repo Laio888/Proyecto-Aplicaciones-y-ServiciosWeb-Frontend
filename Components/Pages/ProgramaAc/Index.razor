@@ -1,0 +1,65 @@
+@page "/programaac"
+@rendermode InteractiveServer
+
+@using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
+@inject ProgramaAcService programaAcService
+@inject ProgramaService programaService
+@inject AreaConocimientoService areaConocimientoService
+
+<h3>Programa - Áreas de Conocimiento</h3>
+
+<a href="/programaac/create">Crear nuevo</a>
+
+@if (registros == null || programas == null || areas == null)
+{
+    <p>Cargando...</p>
+}
+else if (!registros.Any())
+{
+    <p>No hay registros.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Programa</th>
+                <th>Área de Conocimiento</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var r in registros)
+            {
+                var prog = programas.FirstOrDefault(p => p.Id == r.Programa);
+                var area = areas.FirstOrDefault(a => a.Id == r.AreaConocimiento);
+                <tr>
+                    <td>@(prog?.Nombre ?? "No encontrado")</td>
+                    <td>@(area?.Disciplina ?? "No encontrada")</td>
+                    <td>
+                        <button @onclick="() => Eliminar(r.Programa, r.AreaConocimiento)">Eliminar</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<ProgramaAc> registros = new();
+    private List<Programa> programas = new();
+    private List<AreaConocimiento> areas = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        registros = await programaAcService.GetAll();
+        programas = await programaService.GetAll();
+        areas = await areaConocimientoService.GetAll();
+    }
+
+    private async Task Eliminar(int programaId, int areaConocimientoId)
+    {
+        await programaAcService.Delete(programaId, areaConocimientoId);
+        registros.RemoveAll(r => r.Programa == programaId && r.AreaConocimiento == areaConocimientoId);
+    }
+}

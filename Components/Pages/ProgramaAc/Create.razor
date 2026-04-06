@@ -1,0 +1,52 @@
+@page "/programaac/create"
+@rendermode InteractiveServer
+
+@using Microsoft.AspNetCore.Components.Forms
+@using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
+
+@inject ProgramaAcService programaAcService
+@inject ProgramaService programaService
+@inject AreaConocimientoService areaConocimientoService
+@inject NavigationManager nav
+
+<h3>Asociar Programa con Área de Conocimiento</h3>
+
+<EditForm Model="registro" OnValidSubmit="Guardar">
+
+    <InputSelect @bind-Value="registro.Programa">
+        <option value="">Seleccione Programa</option>
+        @foreach (var p in programas)
+        {
+            <option value="@p.Id">@p.Nombre</option>
+        }
+    </InputSelect>
+
+    <InputSelect @bind-Value="registro.AreaConocimiento">
+        <option value="">Seleccione Área de Conocimiento</option>
+        @foreach (var a in areas)
+        {
+            <option value="@a.Id">@a.Disciplina</option>
+        }
+    </InputSelect>
+
+    <button type="submit">Guardar</button>
+
+</EditForm>
+
+@code {
+    private ProgramaAc registro = new();
+    private List<Programa> programas = new();
+    private List<AreaConocimiento> areas = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        programas = await programaService.GetAll();
+        areas = await areaConocimientoService.GetAll();
+    }
+
+    private async Task Guardar()
+    {
+        await programaAcService.Create(registro);
+        nav.NavigateTo("/programaac");
+    }
+}

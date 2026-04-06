@@ -1,0 +1,52 @@
+@page "/programaci/create"
+@rendermode InteractiveServer
+
+@using Microsoft.AspNetCore.Components.Forms
+@using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
+
+@inject ProgramaCiService programaCiService
+@inject ProgramaService programaService
+@inject CarInnovacionService carInnovacionService
+@inject NavigationManager nav
+
+<h3>Asociar Programa con Característica de Innovación</h3>
+
+<EditForm Model="registro" OnValidSubmit="Guardar">
+
+    <InputSelect @bind-Value="registro.Programa">
+        <option value="">Seleccione Programa</option>
+        @foreach (var p in programas)
+        {
+            <option value="@p.Id">@p.Nombre</option>
+        }
+    </InputSelect>
+
+    <InputSelect @bind-Value="registro.CarInnovacion">
+        <option value="">Seleccione Característica de Innovación</option>
+        @foreach (var c in caracteristicas)
+        {
+            <option value="@c.Id">@c.Nombre</option>
+        }
+    </InputSelect>
+
+    <button type="submit">Guardar</button>
+
+</EditForm>
+
+@code {
+    private ProgramaCi registro = new();
+    private List<Programa> programas = new();
+    private List<CarInnovacion> caracteristicas = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        programas = await programaService.GetAll();
+        caracteristicas = await carInnovacionService.GetAll();
+    }
+
+    private async Task Guardar()
+    {
+        await programaCiService.Create(registro);
+        nav.NavigateTo("/programaci");
+    }
+}

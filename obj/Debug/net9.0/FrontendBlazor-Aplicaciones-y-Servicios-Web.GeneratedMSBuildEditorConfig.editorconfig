@@ -24,6 +24,18 @@ build_property.EnableCodeStyleSeverity =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBcHAucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/santi/Desktop/Proyecto ASW/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/AreaConocimiento/Create.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBcmVhQ29ub2NpbWllbnRvXENyZWF0ZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/santi/Desktop/Proyecto ASW/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/AreaConocimiento/Edit.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBcmVhQ29ub2NpbWllbnRvXEVkaXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/santi/Desktop/Proyecto ASW/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/AreaConocimiento/Index.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBcmVhQ29ub2NpbWllbnRvXEluZGV4LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/santi/Desktop/Proyecto ASW/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/AspectoNormativo/Create.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBc3BlY3RvTm9ybWF0aXZvXENyZWF0ZS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
@@ -106,6 +118,34 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/santi/Desktop/Proyecto ASW/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/PracticaEstrategia/Index.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQcmFjdGljYUVzdHJhdGVnaWFcSW5kZXgucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/santi/Desktop/Proyecto ASW/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/Premio/Create.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQcmVtaW9cQ3JlYXRlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/santi/Desktop/Proyecto ASW/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/Premio/Edit.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQcmVtaW9cRWRpdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/santi/Desktop/Proyecto ASW/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/Premio/Index.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQcmVtaW9cSW5kZXgucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/santi/Desktop/Proyecto ASW/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/ProgramaAc/Create.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQcm9ncmFtYUFjXENyZWF0ZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/santi/Desktop/Proyecto ASW/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/ProgramaAc/Index.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQcm9ncmFtYUFjXEluZGV4LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/santi/Desktop/Proyecto ASW/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/ProgramaCi/Create.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQcm9ncmFtYUNpXENyZWF0ZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/santi/Desktop/Proyecto ASW/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/ProgramaCi/Index.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQcm9ncmFtYUNpXEluZGV4LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/santi/Desktop/Proyecto ASW/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/Programa/Create.razor]

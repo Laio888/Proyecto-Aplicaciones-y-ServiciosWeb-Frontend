@@ -1,0 +1,47 @@
+@page "/premios/create"
+@rendermode InteractiveServer
+
+@using Microsoft.AspNetCore.Components.Forms
+@using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
+
+@inject PremioService premioService
+@inject ProgramaService programaService
+@inject NavigationManager nav
+
+<h3>Crear Premio</h3>
+
+<EditForm Model="premio" OnValidSubmit="Guardar">
+
+    <InputText @bind-Value="premio.Nombre" placeholder="Nombre" />
+    <InputText @bind-Value="premio.Descripcion" placeholder="Descripción" />
+    <InputText @bind-Value="premio.Fecha" placeholder="Fecha (yyyy-MM-dd)" />
+    <InputText @bind-Value="premio.EntidadOtorgante" placeholder="Entidad Otorgante" />
+    <InputText @bind-Value="premio.Pais" placeholder="País" />
+
+    <InputSelect @bind-Value="premio.Programa">
+        <option value="">Seleccione Programa</option>
+        @foreach (var p in programas)
+        {
+            <option value="@p.Id">@p.Nombre</option>
+        }
+    </InputSelect>
+
+    <button type="submit">Guardar</button>
+
+</EditForm>
+
+@code {
+    private Premio premio = new();
+    private List<Programa> programas = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        programas = await programaService.GetAll();
+    }
+
+    private async Task Guardar()
+    {
+        await premioService.Create(premio);
+        nav.NavigateTo("/premios");
+    }
+}
