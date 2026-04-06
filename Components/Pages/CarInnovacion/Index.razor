@@ -1,0 +1,63 @@
+@page "/carinnovaciones"
+@rendermode InteractiveServer
+
+@using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
+@inject CarInnovacionService carService
+
+<h3>Características de Innovación</h3>
+
+<a href="/carinnovaciones/create">Crear nueva</a>
+
+@if (lista == null)
+{
+    <p>Cargando...</p>
+}
+else if (!lista.Any())
+{
+    <p>No hay registros.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Tipo</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var c in lista)
+            {
+                <tr>
+                    <td>@c.Id</td>
+                    <td>@c.Nombre</td>
+                    <td>@c.Descripcion</td>
+                    <td>@c.Tipo</td>
+                    <td>
+                        <button @onclick="() => Eliminar(c.Id)">Eliminar</button>
+                        <a href="/carinnovaciones/edit/@c.Id">Editar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<CarInnovacion> lista = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        lista = await carService.GetAll();
+    }
+
+    private async Task Eliminar(int id)
+    {
+        await carService.Delete(id);
+        lista.RemoveAll(x => x.Id == id);
+        StateHasChanged();
+    }
+}

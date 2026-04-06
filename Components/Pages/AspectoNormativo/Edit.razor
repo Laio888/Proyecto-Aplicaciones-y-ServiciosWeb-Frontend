@@ -1,0 +1,42 @@
+@page "/aspectosnormativos/edit/{id:int}"
+@rendermode InteractiveServer
+
+@using Microsoft.AspNetCore.Components.Forms
+@using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
+
+@inject AspectoNormativoService aspectoService
+@inject NavigationManager nav
+
+<h3>Editar Aspecto Normativo</h3>
+
+@if (aspecto == null)
+{
+    <p>Cargando...</p>
+}
+else
+{
+    <EditForm Model="aspecto" OnValidSubmit="Guardar">
+        <InputText @bind-Value="aspecto.Tipo" placeholder="Tipo" />
+        <InputText @bind-Value="aspecto.Descripcion" placeholder="Descripción" />
+        <InputText @bind-Value="aspecto.Fuente" placeholder="Fuente" />
+
+        <button type="submit">Guardar</button>
+    </EditForm>
+}
+
+@code {
+    [Parameter] public int id { get; set; }
+
+    private AspectoNormativo? aspecto;
+
+    protected override async Task OnInitializedAsync()
+    {
+        aspecto = await aspectoService.GetById(id);
+    }
+
+    private async Task Guardar()
+    {
+        await aspectoService.Update(id, aspecto!);
+        nav.NavigateTo("/aspectosnormativos");
+    }
+}

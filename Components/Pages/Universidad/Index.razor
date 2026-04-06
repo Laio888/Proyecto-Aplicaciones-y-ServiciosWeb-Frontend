@@ -1,0 +1,66 @@
+@page "/universidades"
+@rendermode InteractiveServer
+
+@using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
+@inject UniversidadService universidadService
+
+<h3>Universidades</h3>
+
+<a href="/universidades/create">Crear nueva</a>
+
+@if (universidades == null)
+{
+    <p>Cargando...</p>
+}
+else if (!universidades.Any())
+{
+    <p>No hay registros.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>Tipo</th>
+                <th>Ciudad</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var u in universidades)
+            {
+                <tr>
+                    <td>@u.Id</td>
+                    <td>@u.Nombre</td>
+                    <td>@u.Tipo</td>
+                    <td>@u.Ciudad</td>
+                    <td>
+                        <button @onclick="() => Eliminar(u.Id)">Eliminar</button>
+                        <a href="/universidades/edit/@u.Id">Editar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Universidad> universidades = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        universidades = await universidadService.GetAll();
+    }
+
+    private async Task Eliminar(int id)
+    {
+        await universidadService.Delete(id);
+
+        // 🔥 actualizar UI sin recargar API (mejor)
+        universidades.RemoveAll(u => u.Id == id);
+
+        StateHasChanged();
+    }
+}

@@ -1,0 +1,54 @@
+@page "/facultades/edit/{id:int}"
+@rendermode InteractiveServer
+
+@using Microsoft.AspNetCore.Components.Forms
+@using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
+
+@inject FacultadService facultadService
+@inject UniversidadService universidadService
+@inject NavigationManager nav
+
+<h3>Editar Facultad</h3>
+
+@if (facultad == null)
+{
+    <p>Cargando...</p>
+}
+else
+{
+    <EditForm Model="facultad" OnValidSubmit="Guardar">
+
+        <InputText @bind-Value="facultad.Nombre" />
+        <InputText @bind-Value="facultad.Tipo" />
+        <InputDate @bind-Value="facultad.FechaFun" />
+
+        <InputSelect @bind-Value="facultad.Universidad">
+            @foreach (var u in universidades)
+            {
+                <option value="@u.Id">@u.Nombre</option>
+            }
+        </InputSelect>
+
+        <button type="submit">Guardar</button>
+
+    </EditForm>
+}
+
+@code {
+    [Parameter] public int id { get; set; }
+
+    private Facultad? facultad;
+    private List<Universidad> universidades = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        universidades = await universidadService.GetAll();
+        facultad = await facultadService.GetById(id);
+    }
+
+    private async Task Guardar()
+    {
+        await facultadService.Update(id, facultad!);
+        nav.NavigateTo("/facultades");
+    }
+}

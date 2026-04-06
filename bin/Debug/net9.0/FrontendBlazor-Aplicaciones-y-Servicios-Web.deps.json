@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v9.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v9.0": {
+      "FrontendBlazor-Aplicaciones-y-Servicios-Web/1.0.0": {
+        "runtime": {
+          "FrontendBlazor-Aplicaciones-y-Servicios-Web.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "FrontendBlazor-Aplicaciones-y-Servicios-Web/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

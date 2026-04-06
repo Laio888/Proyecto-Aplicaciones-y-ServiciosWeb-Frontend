@@ -1,0 +1,63 @@
+@page "/practicasestrategias"
+@rendermode InteractiveServer
+
+@using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
+@inject PracticaEstrategiaService practicaService
+
+<h3>Prácticas y Estrategias</h3>
+
+<a href="/practicasestrategias/create">Crear nueva</a>
+
+@if (lista == null)
+{
+    <p>Cargando...</p>
+}
+else if (!lista.Any())
+{
+    <p>No hay registros.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Tipo</th>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var p in lista)
+            {
+                <tr>
+                    <td>@p.Id</td>
+                    <td>@p.Tipo</td>
+                    <td>@p.Nombre</td>
+                    <td>@p.Descripcion</td>
+                    <td>
+                        <button @onclick="() => Eliminar(p.Id)">Eliminar</button>
+                        <a href="/practicasestrategias/edit/@p.Id">Editar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<PracticaEstrategia> lista = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        lista = await practicaService.GetAll();
+    }
+
+    private async Task Eliminar(int id)
+    {
+        await practicaService.Delete(id);
+        lista.RemoveAll(x => x.Id == id);
+        StateHasChanged();
+    }
+}

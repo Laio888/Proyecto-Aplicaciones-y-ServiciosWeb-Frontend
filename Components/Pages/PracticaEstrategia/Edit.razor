@@ -1,0 +1,42 @@
+@page "/practicasestrategias/edit/{id:int}"
+@rendermode InteractiveServer
+
+@using Microsoft.AspNetCore.Components.Forms
+@using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
+
+@inject PracticaEstrategiaService practicaService
+@inject NavigationManager nav
+
+<h3>Editar Práctica/Estrategia</h3>
+
+@if (modelo == null)
+{
+    <p>Cargando...</p>
+}
+else
+{
+    <EditForm Model="modelo" OnValidSubmit="Guardar">
+        <InputText @bind-Value="modelo.Tipo" placeholder="Tipo" />
+        <InputText @bind-Value="modelo.Nombre" placeholder="Nombre" />
+        <InputText @bind-Value="modelo.Descripcion" placeholder="Descripción" />
+
+        <button type="submit">Guardar</button>
+    </EditForm>
+}
+
+@code {
+    [Parameter] public int id { get; set; }
+
+    private PracticaEstrategia? modelo;
+
+    protected override async Task OnInitializedAsync()
+    {
+        modelo = await practicaService.GetById(id);
+    }
+
+    private async Task Guardar()
+    {
+        await practicaService.Update(id, modelo!);
+        nav.NavigateTo("/practicasestrategias");
+    }
+}

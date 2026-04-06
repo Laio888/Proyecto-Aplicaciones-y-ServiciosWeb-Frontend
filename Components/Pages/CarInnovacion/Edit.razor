@@ -1,0 +1,42 @@
+@page "/carinnovaciones/edit/{id:int}"
+@rendermode InteractiveServer
+
+@using Microsoft.AspNetCore.Components.Forms
+@using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
+
+@inject CarInnovacionService carService
+@inject NavigationManager nav
+
+<h3>Editar Característica</h3>
+
+@if (modelo == null)
+{
+    <p>Cargando...</p>
+}
+else
+{
+    <EditForm Model="modelo" OnValidSubmit="Guardar">
+        <InputText @bind-Value="modelo.Nombre" placeholder="Nombre" />
+        <InputText @bind-Value="modelo.Descripcion" placeholder="Descripción" />
+        <InputText @bind-Value="modelo.Tipo" placeholder="Tipo" />
+
+        <button type="submit">Guardar</button>
+    </EditForm>
+}
+
+@code {
+    [Parameter] public int id { get; set; }
+
+    private CarInnovacion? modelo;
+
+    protected override async Task OnInitializedAsync()
+    {
+        modelo = await carService.GetById(id);
+    }
+
+    private async Task Guardar()
+    {
+        await carService.Update(id, modelo!);
+        nav.NavigateTo("/carinnovaciones");
+    }
+}

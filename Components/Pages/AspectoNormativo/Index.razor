@@ -1,0 +1,63 @@
+@page "/aspectosnormativos"
+@rendermode InteractiveServer
+
+@using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
+@inject AspectoNormativoService aspectoService
+
+<h3>Aspectos Normativos</h3>
+
+<a href="/aspectosnormativos/create">Crear nuevo</a>
+
+@if (aspectos == null)
+{
+    <p>Cargando...</p>
+}
+else if (!aspectos.Any())
+{
+    <p>No hay registros.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Tipo</th>
+                <th>Descripción</th>
+                <th>Fuente</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var a in aspectos)
+            {
+                <tr>
+                    <td>@a.Id</td>
+                    <td>@a.Tipo</td>
+                    <td>@a.Descripcion</td>
+                    <td>@a.Fuente</td>
+                    <td>
+                        <button @onclick="() => Eliminar(a.Id)">Eliminar</button>
+                        <a href="/aspectosnormativos/edit/@a.Id">Editar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<AspectoNormativo> aspectos = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        aspectos = await aspectoService.GetAll();
+    }
+
+    private async Task Eliminar(int id)
+    {
+        await aspectoService.Delete(id);
+        aspectos.RemoveAll(a => a.Id == id);
+        StateHasChanged();
+    }
+}

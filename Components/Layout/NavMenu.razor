@@ -1,10 +1,59 @@
-﻿<nav>
-    <ul>
-        <li><NavLink href="/" Match="NavLinkMatch.All">Pagina principal</NavLink></li>
-        <li><NavLink href="aspectos" Match="NavLinkMatch.All">Aspectos Normativos</NavLink></li>
-        <li><NavLink href="innovacion">Características de Innovación</NavLink></li>
-        <li><NavLink href="enfoques">Enfoques</NavLink></li>
-        <li><NavLink href="estrategias">Prácticas y Estrategias</NavLink></li>
-        <li><NavLink href="universidades">Universidades</NavLink></li>
-    </ul>
-</nav>
+﻿<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand fw-bold" href="">
+            Innovacion Curricular
+        </a>
+    </div>
+</div>
+
+<input type="checkbox" title="Navigation menu" class="navbar-toggler" />
+
+<div class="nav-scrollable"
+     onclick="document.querySelector('.navbar-toggler').click()">
+
+    <nav class="nav flex-column pt-3">
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="universidades">
+                <span class="bi bi-building"></span> Universidades
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="enfoques">
+                <span class="bi bi-diagram-3"></span> Enfoques
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="aspectosnormativos">
+                <span class="bi bi-file-earmark-text"></span> Aspectos Normativos
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="carinnovaciones">
+                <span class="bi bi-lightbulb"></span> Car. Innovación
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="practicasestrategias">
+                <span class="bi bi-gear"></span> Prácticas/Estrategias
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="facultades">
+                <span class="bi bi-building"></span> Facultades
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="programas">
+                <span class="bi bi-journal"></span> Programas
+            </NavLink>
+        </div>
+
+    </nav>
+</div>

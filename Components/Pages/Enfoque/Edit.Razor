@@ -1,0 +1,41 @@
+@page "/enfoques/edit/{id:int}"
+@rendermode InteractiveServer
+
+@using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
+@using Microsoft.AspNetCore.Components.Forms
+
+@inject EnfoqueService enfoqueService
+@inject NavigationManager nav
+
+<h3>Editar Enfoque</h3>
+
+@if (enfoque == null)
+{
+    <p>Cargando...</p>
+}
+else
+{
+    <EditForm Model="enfoque" OnValidSubmit="Guardar">
+        <InputText @bind-Value="enfoque.Nombre" placeholder="Nombre" />
+        <InputText @bind-Value="enfoque.Descripcion" placeholder="Descripción" />
+
+        <button type="submit">Guardar</button>
+    </EditForm>
+}
+
+@code {
+    [Parameter] public int id { get; set; }
+
+    private Enfoque? enfoque;
+
+    protected override async Task OnInitializedAsync()
+    {
+        enfoque = await enfoqueService.GetById(id);
+    }
+
+    private async Task Guardar()
+    {
+        await enfoqueService.Update(id, enfoque!);
+        nav.NavigateTo("/enfoques");
+    }
+}

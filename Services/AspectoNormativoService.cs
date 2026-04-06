@@ -1,47 +1,37 @@
-using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos;
 using System.Net.Http.Json;
+using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos;
 
-namespace FrontendBlazor_Aplicaciones_y_Servicios_Web.Services
+public class AspectoNormativoService
 {
-    public class AspectoNormativoService
+    private readonly HttpClient _http;
+
+    public AspectoNormativoService(IHttpClientFactory factory)
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        _http = factory.CreateClient("API");
+    }
 
-        public AspectoNormativoService(IHttpClientFactory httpClientFactory)
-        {
-            _httpClientFactory = httpClientFactory;
-        }
+    public async Task<List<AspectoNormativo>> GetAll()
+    {
+        return await _http.GetFromJsonAsync<List<AspectoNormativo>>("AspectoNormativo");
+    }
 
-        public async Task<List<AspectoNormativo>> GetAll()
-        {
-            var client = _httpClientFactory.CreateClient("API");
+    public async Task<AspectoNormativo> GetById(int id)
+    {
+        return await _http.GetFromJsonAsync<AspectoNormativo>($"AspectoNormativo/{id}");
+    }
 
-            return await client.GetFromJsonAsync<List<AspectoNormativo>>("AspectoNormativo")
-                   ?? new List<AspectoNormativo>();
-        }
+    public async Task Create(AspectoNormativo AspectoNormativo)
+    {
+        await _http.PostAsJsonAsync("AspectoNormativo", AspectoNormativo);
+    }
 
-        public async Task<bool> Create(AspectoNormativo aspecto)
-        {
-            var client = _httpClientFactory.CreateClient("API");
+    public async Task Update(int id, AspectoNormativo AspectoNormativo)
+    {
+        await _http.PutAsJsonAsync($"AspectoNormativo/{id}", AspectoNormativo);
+    }
 
-            var response = await client.PostAsJsonAsync("AspectoNormativo", aspecto);
-            return response.IsSuccessStatusCode;
-        }
-
-        public async Task<bool> Update(int id, AspectoNormativo aspecto)
-        {
-            var client = _httpClientFactory.CreateClient("API");
-
-            var response = await client.PutAsJsonAsync($"AspectoNormativo/{id}", aspecto);
-            return response.IsSuccessStatusCode;
-        }
-
-        public async Task<bool> Delete(int id)
-        {
-            var client = _httpClientFactory.CreateClient("API");
-
-            var response = await client.DeleteAsync($"AspectoNormativo/{id}");
-            return response.IsSuccessStatusCode;
-        }
+    public async Task Delete(int id)
+    {
+        await _http.DeleteAsync($"AspectoNormativo/{id}");
     }
 }

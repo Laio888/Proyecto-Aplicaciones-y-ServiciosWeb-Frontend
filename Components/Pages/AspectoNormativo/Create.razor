@@ -1,0 +1,28 @@
+@page "/aspectosnormativos/create"
+@rendermode InteractiveServer
+
+@using Microsoft.AspNetCore.Components.Forms
+@using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
+
+@inject AspectoNormativoService aspectoService
+@inject NavigationManager nav
+
+<h3>Crear Aspecto Normativo</h3>
+
+<EditForm Model="aspecto" OnValidSubmit="Guardar">
+    <InputText @bind-Value="aspecto.Tipo" placeholder="Tipo" />
+    <InputText @bind-Value="aspecto.Descripcion" placeholder="Descripción" />
+    <InputText @bind-Value="aspecto.Fuente" placeholder="Fuente" />
+
+    <button type="submit">Guardar</button>
+</EditForm>
+
+@code {
+    private AspectoNormativo aspecto = new();
+
+    private async Task Guardar()
+    {
+        await aspectoService.Create(aspecto);
+        nav.NavigateTo("/aspectosnormativos");
+    }
+}
