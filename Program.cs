@@ -27,6 +27,7 @@ builder.Services.AddScoped<PremioService>();
 builder.Services.AddScoped<ProgramaAcService>();
 builder.Services.AddScoped<ProgramaCiService>();
 builder.Services.AddScoped<AreaConocimientoService>();
+builder.Services.AddScoped<ProgramaPeService>();
 
 // 🔹 4. Crear app
 var app = builder.Build();

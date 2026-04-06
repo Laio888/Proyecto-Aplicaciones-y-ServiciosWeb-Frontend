@@ -1,62 +1,30 @@
-@page "/areaconocimiento"
+@page "/areaconocimiento/create"
 @rendermode InteractiveServer
 
+@using Microsoft.AspNetCore.Components.Forms
 @using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
+
 @inject AreaConocimientoService areaConocimientoService
+@inject NavigationManager nav
 
-<h3>Áreas de Conocimiento</h3>
+<h3>Crear Área de Conocimiento</h3>
 
-<a href="/areaconocimiento/create">Crear nuevo</a>
+<EditForm Model="area" OnValidSubmit="Guardar">
 
-@if (areas == null)
-{
-    <p>Cargando...</p>
-}
-else if (!areas.Any())
-{
-    <p>No hay registros.</p>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Gran Área</th>
-                <th>Área</th>
-                <th>Disciplina</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var a in areas)
-            {
-                <tr>
-                    <td>@a.Id</td>
-                    <td>@a.GranArea</td>
-                    <td>@a.Area</td>
-                    <td>@a.Disciplina</td>
-                    <td>
-                        <a href="/areaconocimiento/edit/@a.Id">Editar</a>
-                        <button @onclick="() => Eliminar(a.Id)">Eliminar</button>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
+    <InputText @bind-Value="area.GranArea" placeholder="Gran Área" />
+    <InputText @bind-Value="area.Area" placeholder="Área" />
+    <InputText @bind-Value="area.Disciplina" placeholder="Disciplina" />
+
+    <button type="submit">Guardar</button>
+
+</EditForm>
 
 @code {
-    private List<AreaConocimiento> areas = new();
+    private AreaConocimiento area = new();
 
-    protected override async Task OnInitializedAsync()
+    private async Task Guardar()
     {
-        areas = await areaConocimientoService.GetAll();
-    }
-
-    private async Task Eliminar(int id)
-    {
-        await areaConocimientoService.Delete(id);
-        areas.RemoveAll(a => a.Id == id);
+        await areaConocimientoService.Create(area);
+        nav.NavigateTo("/areaconocimiento");
     }
 }

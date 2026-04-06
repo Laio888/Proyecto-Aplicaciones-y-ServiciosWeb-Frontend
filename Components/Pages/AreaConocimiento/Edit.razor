@@ -17,9 +17,9 @@ else
 {
     <EditForm Model="area" OnValidSubmit="Guardar">
 
-        <InputText @bind-Value="area.GranArea" />
-        <InputText @bind-Value="area.Area" />
-        <InputText @bind-Value="area.Disciplina" />
+        <InputText @bind-Value="area.GranArea" placeholder="Gran Área" />
+        <InputText @bind-Value="area.Area" placeholder="Área" />
+        <InputText @bind-Value="area.Disciplina" placeholder="Disciplina" />
 
         <button type="submit">Guardar</button>
 

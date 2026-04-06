@@ -1,0 +1,52 @@
+@page "/programape/create"
+@rendermode InteractiveServer
+
+@using Microsoft.AspNetCore.Components.Forms
+@using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
+
+@inject ProgramaPeService programaPeService
+@inject ProgramaService programaService
+@inject PracticaEstrategiaService practicaEstrategiaService
+@inject NavigationManager nav
+
+<h3>Asociar Programa con Práctica/Estrategia</h3>
+
+<EditForm Model="registro" OnValidSubmit="Guardar">
+
+    <InputSelect @bind-Value="registro.Programa">
+        <option value="">Seleccione Programa</option>
+        @foreach (var p in programas)
+        {
+            <option value="@p.Id">@p.Nombre</option>
+        }
+    </InputSelect>
+
+    <InputSelect @bind-Value="registro.PracticaEstrategia">
+        <option value="">Seleccione Práctica/Estrategia</option>
+        @foreach (var p in practicas)
+        {
+            <option value="@p.Id">@p.Nombre</option>
+        }
+    </InputSelect>
+
+    <button type="submit">Guardar</button>
+
+</EditForm>
+
+@code {
+    private ProgramaPe registro = new();
+    private List<Programa> programas = new();
+    private List<PracticaEstrategia> practicas = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        programas = await programaService.GetAll();
+        practicas = await practicaEstrategiaService.GetAll();
+    }
+
+    private async Task Guardar()
+    {
+        await programaPeService.Create(registro);
+        nav.NavigateTo("/programape");
+    }
+}

@@ -1,0 +1,211 @@
+/* _content/FrontendBlazor-Aplicaciones-y-Servicios-Web/Components/Layout/MainLayout.razor.rz.scp.css */
+.page[b-u6huc4zz3l] {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main[b-u6huc4zz3l] {
+    flex: 1;
+}
+
+/* Sidebar más elegante */
+.sidebar[b-u6huc4zz3l] {
+    background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+    color: white;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Top bar más limpia */
+.top-row[b-u6huc4zz3l] {
+    background-color: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+    justify-content: space-between;
+    height: 3.5rem;
+    display: flex;
+    align-items: center;
+    padding: 0 1.5rem;
+}
+
+/* Links */
+.top-row[b-u6huc4zz3l]  a,
+.top-row[b-u6huc4zz3l]  .btn-link {
+    white-space: nowrap;
+    margin-left: 1rem;
+    text-decoration: none;
+    color: #374151;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.top-row[b-u6huc4zz3l]  a:hover,
+.top-row[b-u6huc4zz3l]  .btn-link:hover {
+    color: #111827;
+    text-decoration: none;
+}
+
+/* Responsive */
+@media (max-width: 640.98px) {
+    .top-row[b-u6huc4zz3l] {
+        justify-content: space-between;
+    }
+
+    .top-row[b-u6huc4zz3l]  a,
+    .top-row[b-u6huc4zz3l]  .btn-link {
+        margin-left: 0;
+    }
+}
+
+@media (min-width: 641px) {
+    .page[b-u6huc4zz3l] {
+        flex-direction: row;
+    }
+
+    .sidebar[b-u6huc4zz3l] {
+        width: 260px;
+        height: 100vh;
+        position: sticky;
+        top: 0;
+    }
+
+    .top-row[b-u6huc4zz3l] {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+    .top-row[b-u6huc4zz3l], article[b-u6huc4zz3l] {
+        padding-left: 2rem !important;
+        padding-right: 2rem !important;
+    }
+}
+
+/* Contenido */
+article[b-u6huc4zz3l] {
+    padding-top: 1rem;
+}
+
+/* Error UI mejorado */
+#blazor-error-ui[b-u6huc4zz3l] {
+    background: #fee2e2;
+    color: #7f1d1d;
+    border-top: 1px solid #fecaca;
+    bottom: 0;
+    box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.2);
+    display: none;
+    left: 0;
+    padding: 0.75rem 1.25rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+    font-weight: 500;
+}
+
+#blazor-error-ui .dismiss[b-u6huc4zz3l] {
+    cursor: pointer;
+    position: absolute;
+    right: 1rem;
+    top: 0.5rem;
+}
+/* _content/FrontendBlazor-Aplicaciones-y-Servicios-Web/Components/Layout/NavMenu.razor.rz.scp.css */
+/* Botón hamburguesa más limpio */
+.navbar-toggler[b-woj4pfnyu8] {
+    appearance: none;
+    cursor: pointer;
+    width: 3rem;
+    height: 2.5rem;
+    position: absolute;
+    top: 0.5rem;
+    right: 1rem;
+    border: none;
+    border-radius: 6px;
+    background-color: rgba(255, 255, 255, 0.1);
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.navbar-toggler:hover[b-woj4pfnyu8] {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.navbar-toggler:checked[b-woj4pfnyu8] {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Top bar más consistente */
+.top-row[b-woj4pfnyu8] {
+    min-height: 3.5rem;
+    background-color: rgba(15, 23, 42, 0.9);
+    backdrop-filter: blur(6px);
+}
+
+/* Marca */
+.navbar-brand[b-woj4pfnyu8] {
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+/* Iconos */
+.bi[b-woj4pfnyu8] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.2rem;
+    height: 1.2rem;
+    margin-right: 0.6rem;
+}
+
+/* Items del menú */
+.nav-item[b-woj4pfnyu8] {
+    font-size: 0.95rem;
+    padding: 0.25rem 0;
+}
+
+/* Links */
+.nav-item[b-woj4pfnyu8]  .nav-link {
+    color: #cbd5f5;
+    border-radius: 8px;
+    height: 2.8rem;
+    display: flex;
+    align-items: center;
+    padding: 0 0.75rem;
+    transition: all 0.2s ease;
+}
+
+/* Hover */
+.nav-item[b-woj4pfnyu8]  .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+    color: white;
+}
+
+/* Activo (esto es CLAVE) */
+.nav-item[b-woj4pfnyu8]  a.active {
+    background: linear-gradient(90deg, #3b82f6, #6366f1);
+    color: white;
+    font-weight: 500;
+}
+
+/* Scroll */
+.nav-scrollable[b-woj4pfnyu8] {
+    display: none;
+}
+
+/* Toggle funcional */
+.navbar-toggler:checked ~ .nav-scrollable[b-woj4pfnyu8] {
+    display: block;
+}
+
+/* Desktop */
+@media (min-width: 641px) {
+    .navbar-toggler[b-woj4pfnyu8] {
+        display: none;
+    }
+
+    .nav-scrollable[b-woj4pfnyu8] {
+        display: block;
+        height: calc(100vh - 3.5rem);
+        overflow-y: auto;
+        padding-top: 0.5rem;
+    }
+}
