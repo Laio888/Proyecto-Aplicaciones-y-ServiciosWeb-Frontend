@@ -1,19 +1,19 @@
-@page "/programas"
+@page "/pasantias"
 @rendermode InteractiveServer
 
 @using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
+@inject PasantiaService pasantiaService
 @inject ProgramaService programaService
-@inject FacultadService facultadService
 
-<h3>Programas</h3>
+<h3>Pasantías</h3>
 
-<a href="/programas/create">Crear nuevo</a>
+<a href="/pasantias/create">Crear nueva</a>
 
-@if (programas == null || facultades == null)
+@if (pasantias == null || programas == null)
 {
     <p>Cargando...</p>
 }
-else if (!programas.Any())
+else if (!pasantias.Any())
 {
     <p>No hay registros.</p>
 }
@@ -24,28 +24,28 @@ else
             <tr>
                 <th>Id</th>
                 <th>Nombre</th>
-                <th>Tipo</th>
-                <th>Nivel</th>
-                <th>Ciudad</th>
-                <th>Facultad</th>
+                <th>País</th>
+                <th>Empresa</th>
+                <th>Programa</th>
                 <th>Acciones</th>
             </tr>
         </thead>
+
         <tbody>
-            @foreach (var p in programas)
+            @foreach (var p in pasantias)
             {
-                var fac = facultades.FirstOrDefault(f => f.Id == p.Facultad);
+                var prog = programas.FirstOrDefault(x => x.Id == p.Programa);
 
                 <tr>
                     <td>@p.Id</td>
                     <td>@p.Nombre</td>
-                    <td>@p.Tipo</td>
-                    <td>@p.Nivel</td>
-                    <td>@p.Ciudad</td>
-                    <td>@(fac?.Nombre ?? "No encontrada")</td>
+                    <td>@p.Pais</td>
+                    <td>@p.Empresa</td>
+                    <td>@(prog?.Nombre ?? "No encontrado")</td>
+
                     <td>
+                        <a href="/pasantias/edit/@p.Id">Editar</a>
                         <button @onclick="() => Eliminar(p.Id)">Eliminar</button>
-                        <a href="/programas/edit/@p.Id">Editar</a>
                     </td>
                 </tr>
             }
@@ -54,18 +54,18 @@ else
 }
 
 @code {
+    private List<Pasantia> pasantias = new();
     private List<Programa> programas = new();
-    private List<Facultad> facultades = new();
 
     protected override async Task OnInitializedAsync()
     {
+        pasantias = await pasantiaService.GetAll();
         programas = await programaService.GetAll();
-        facultades = await facultadService.GetAll();
     }
 
     private async Task Eliminar(int id)
     {
-        await programaService.Delete(id);
-        programas.RemoveAll(p => p.Id == id);
+        await pasantiaService.Delete(id);
+        pasantias.RemoveAll(x => x.Id == id);
     }
 }
