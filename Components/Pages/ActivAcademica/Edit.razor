@@ -1,0 +1,71 @@
+@page "/activAcademica/edit/{id:int}"
+@rendermode InteractiveServer
+
+@using Microsoft.AspNetCore.Components.Forms
+@using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
+
+@inject ActivAcademicaService activAcademicaService
+@inject ProgramaService programaService
+@inject NavigationManager nav
+
+<h3>Editar ActivAcademica</h3>
+
+@if (activAcademica == null)
+{
+    <p>Cargando...</p>
+}
+else
+{
+    <EditForm Model="activAcademica" OnValidSubmit="Guardar">
+
+        <InputText @bind-Value="activAcademica.Nombre" />
+
+        <InputNumber @bind-Value="activAcademica.NumCreditos" />
+
+        <InputText @bind-Value="activAcademica.Tipo" />
+
+        <InputText @bind-Value="activAcademica.AreaFormacion" />
+
+        <InputNumber @bind-Value="activAcademica.H_Acom" />
+
+        <InputNumber @bind-Value="activAcademica.H_Indep" />
+
+        <InputText @bind-Value="activAcademica.Idioma" />
+
+        <label>Espejo:</label>
+        <InputCheckbox @bind-Value="activAcademica.Espejo" />
+
+        <InputText @bind-Value="activAcademica.EntidadEspejo" />
+
+        <InputText @bind-Value="activAcademica.PaisEspejo" />
+
+        <InputSelect @bind-Value="activAcademica.Disenio">
+            @foreach (var u in programa)
+            {
+                <option value="@u.Id">@u.Nombre</option>
+            }
+        </InputSelect>
+
+        <button type="submit">Guardar</button>
+
+    </EditForm>
+}
+
+@code {
+    [Parameter] public int id { get; set; }
+
+    private ActivAcademica? activAcademica;
+    private List<Programa> programa = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        programa = await programaService.GetAll();
+        activAcademica = await activAcademicaService.GetById(id);
+    }
+
+    private async Task Guardar()
+    {
+        await activAcademicaService.Update(id, activAcademica!);
+        nav.NavigateTo("/activAcademica");
+    }
+}

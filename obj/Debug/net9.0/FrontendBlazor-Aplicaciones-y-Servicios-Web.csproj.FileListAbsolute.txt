@@ -239,3 +239,4 @@ C:\Users\juani\OneDrive\Documents\Universidad\ProyectoASW\Proyecto-Aplicaciones-
 C:\Users\juani\OneDrive\Documents\Universidad\ProyectoASW\Proyecto-Aplicaciones-y-ServiciosWeb-Frontend-main\obj\Debug\net9.0\FrontendBlazor-Aplicaciones-y-Servicios-Web.pdb
 C:\Users\juani\OneDrive\Documents\Universidad\ProyectoASW\Proyecto-Aplicaciones-y-ServiciosWeb-Frontend-main\obj\Debug\net9.0\FrontendBlazor-Aplicaciones-y-Servicios-Web.genruntimeconfig.cache
 C:\Users\juani\OneDrive\Documents\Universidad\ProyectoASW\Proyecto-Aplicaciones-y-ServiciosWeb-Frontend-main\obj\Debug\net9.0\ref\FrontendBlazor-Aplicaciones-y-Servicios-Web.dll
+C:\Users\juani\OneDrive\Documents\Universidad\ProyectoASW\Proyecto-Aplicaciones-y-ServiciosWeb-Frontend-main\obj\Debug\net9.0\FrontendBlazor-Aplicaciones-y-Servicios-Web.sourcelink.json

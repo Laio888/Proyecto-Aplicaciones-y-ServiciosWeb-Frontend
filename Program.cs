@@ -22,6 +22,8 @@ builder.Services.AddScoped<CarInnovacionService>();
 builder.Services.AddScoped<PracticaEstrategiaService>();
 builder.Services.AddScoped<FacultadService>();
 builder.Services.AddScoped<ProgramaService>();
+builder.Services.AddScoped<AcreditacionService>();
+builder.Services.AddScoped<ActivAcademicaService>();
 
 // 🔹 4. Crear app
 var app = builder.Build();

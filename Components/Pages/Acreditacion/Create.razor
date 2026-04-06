@@ -1,0 +1,46 @@
+@page "/acreditacion/create"
+@rendermode InteractiveServer
+
+@using Microsoft.AspNetCore.Components.Forms
+@using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
+
+@inject AcreditacionService acreditacionService
+@inject ProgramaService programaService
+@inject NavigationManager nav
+
+<h3>Crear Acreditacion</h3>
+
+<EditForm Model="acreditacion" OnValidSubmit="Guardar">
+
+        
+        <InputText @bind-Value="acreditacion.Tipo" />
+        <InputText @bind-Value="acreditacion.Calificacion" />
+        <InputText @bind-Value="acreditacion.FechaInicio" />
+        <InputText @bind-Value="acreditacion.FechaFin" />
+
+        <InputSelect @bind-Value="acreditacion.Programa">
+            @foreach (var u in programa)
+            {
+                <option value="@u.Id">@u.Nombre</option>
+            }
+        </InputSelect>
+
+        <button type="submit">Guardar</button>
+
+    </EditForm>
+
+@code {
+    private Acreditacion acreditacion = new();
+    private List<Programa> programa = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        programa = await programaService.GetAll();
+    }
+
+    private async Task Guardar()
+    {
+        await acreditacionService.Create(acreditacion);
+        nav.NavigateTo("/acreditacion");
+    }
+}

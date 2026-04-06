@@ -24,6 +24,30 @@ build_property.EnableCodeStyleSeverity =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBcHAucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/juani/OneDrive/Documents/Universidad/ProyectoASW/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend-main/Components/Pages/Acreditacion/Create.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBY3JlZGl0YWNpb25cQ3JlYXRlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/juani/OneDrive/Documents/Universidad/ProyectoASW/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend-main/Components/Pages/Acreditacion/Edit.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBY3JlZGl0YWNpb25cRWRpdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/juani/OneDrive/Documents/Universidad/ProyectoASW/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend-main/Components/Pages/Acreditacion/Index.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBY3JlZGl0YWNpb25cSW5kZXgucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/juani/OneDrive/Documents/Universidad/ProyectoASW/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend-main/Components/Pages/ActivAcademica/Create.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBY3RpdkFjYWRlbWljYVxDcmVhdGUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/juani/OneDrive/Documents/Universidad/ProyectoASW/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend-main/Components/Pages/ActivAcademica/Edit.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBY3RpdkFjYWRlbWljYVxFZGl0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/juani/OneDrive/Documents/Universidad/ProyectoASW/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend-main/Components/Pages/ActivAcademica/Index.Razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBY3RpdkFjYWRlbWljYVxJbmRleC5SYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/juani/OneDrive/Documents/Universidad/ProyectoASW/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend-main/Components/Pages/AspectoNormativo/Create.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBc3BlY3RvTm9ybWF0aXZvXENyZWF0ZS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
