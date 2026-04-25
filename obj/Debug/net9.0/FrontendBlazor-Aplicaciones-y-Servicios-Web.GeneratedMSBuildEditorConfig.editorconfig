@@ -9,157 +9,249 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = FrontendBlazor-Aplicaciones-y-Servicios-Web
 build_property.RootNamespace = FrontendBlazor-Aplicaciones-y-Servicios-Web
-build_property.ProjectDir = C:\Users\juani\OneDrive\Documents\Universidad\ProyectoASW\Proyecto-Aplicaciones-y-ServiciosWeb-Frontend-main\
+build_property.ProjectDir = C:\Users\julig\OneDrive\Desktop\Proyecto-Aplicaciones-y-ServiciosWeb-Frontend\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 9.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\juani\OneDrive\Documents\Universidad\ProyectoASW\Proyecto-Aplicaciones-y-ServiciosWeb-Frontend-main
+build_property.MSBuildProjectDirectory = C:\Users\julig\OneDrive\Desktop\Proyecto-Aplicaciones-y-ServiciosWeb-Frontend
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 9.0
 build_property.EnableCodeStyleSeverity = 
 
-[C:/Users/juani/OneDrive/Documents/Universidad/ProyectoASW/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend-main/Components/App.razor]
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/App.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBcHAucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/juani/OneDrive/Documents/Universidad/ProyectoASW/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend-main/Components/Pages/Acreditacion/Create.razor]
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/AaRc/Edit.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBYVJjXEVkaXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/AaRc/Index.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBYVJjXEluZGV4LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/Acreditacion/Create.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBY3JlZGl0YWNpb25cQ3JlYXRlLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/juani/OneDrive/Documents/Universidad/ProyectoASW/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend-main/Components/Pages/Acreditacion/Edit.razor]
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/Acreditacion/Edit.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBY3JlZGl0YWNpb25cRWRpdC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/juani/OneDrive/Documents/Universidad/ProyectoASW/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend-main/Components/Pages/Acreditacion/Index.razor]
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/Acreditacion/Index.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBY3JlZGl0YWNpb25cSW5kZXgucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/juani/OneDrive/Documents/Universidad/ProyectoASW/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend-main/Components/Pages/ActivAcademica/Create.razor]
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/ActivAcademica/Create.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBY3RpdkFjYWRlbWljYVxDcmVhdGUucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/juani/OneDrive/Documents/Universidad/ProyectoASW/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend-main/Components/Pages/ActivAcademica/Edit.razor]
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/ActivAcademica/Edit.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBY3RpdkFjYWRlbWljYVxFZGl0LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/juani/OneDrive/Documents/Universidad/ProyectoASW/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend-main/Components/Pages/ActivAcademica/Index.Razor]
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/ActivAcademica/Index.Razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBY3RpdkFjYWRlbWljYVxJbmRleC5SYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/juani/OneDrive/Documents/Universidad/ProyectoASW/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend-main/Components/Pages/AspectoNormativo/Create.razor]
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/AreaConocimiento/Create.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBcmVhQ29ub2NpbWllbnRvXENyZWF0ZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/AreaConocimiento/Edit.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBcmVhQ29ub2NpbWllbnRvXEVkaXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/AreaConocimiento/Index.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBcmVhQ29ub2NpbWllbnRvXEluZGV4LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/AspectoNormativo/Create.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBc3BlY3RvTm9ybWF0aXZvXENyZWF0ZS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/juani/OneDrive/Documents/Universidad/ProyectoASW/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend-main/Components/Pages/AspectoNormativo/Edit.razor]
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/AspectoNormativo/Edit.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBc3BlY3RvTm9ybWF0aXZvXEVkaXQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/juani/OneDrive/Documents/Universidad/ProyectoASW/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend-main/Components/Pages/AspectoNormativo/Index.razor]
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/AspectoNormativo/Index.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBc3BlY3RvTm9ybWF0aXZvXEluZGV4LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/juani/OneDrive/Documents/Universidad/ProyectoASW/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend-main/Components/Pages/CarInnovacion/Create.razor]
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/CarInnovacion/Create.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDYXJJbm5vdmFjaW9uXENyZWF0ZS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/juani/OneDrive/Documents/Universidad/ProyectoASW/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend-main/Components/Pages/CarInnovacion/Edit.razor]
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/CarInnovacion/Edit.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDYXJJbm5vdmFjaW9uXEVkaXQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/juani/OneDrive/Documents/Universidad/ProyectoASW/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend-main/Components/Pages/CarInnovacion/Index.razor]
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/CarInnovacion/Index.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDYXJJbm5vdmFjaW9uXEluZGV4LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/juani/OneDrive/Documents/Universidad/ProyectoASW/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend-main/Components/Pages/Counter.razor]
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/Counter.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDb3VudGVyLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/juani/OneDrive/Documents/Universidad/ProyectoASW/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend-main/Components/Pages/Enfoque/Create.razor]
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/EnfoqueRc/Create.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xFbmZvcXVlUmNcQ3JlYXRlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/EnfoqueRc/Edit.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xFbmZvcXVlUmNcRWRpdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/EnfoqueRc/Index.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xFbmZvcXVlUmNcSW5kZXgucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/Enfoque/Create.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xFbmZvcXVlXENyZWF0ZS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/juani/OneDrive/Documents/Universidad/ProyectoASW/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend-main/Components/Pages/Enfoque/Edit.Razor]
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/Enfoque/Edit.Razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xFbmZvcXVlXEVkaXQuUmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/juani/OneDrive/Documents/Universidad/ProyectoASW/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend-main/Components/Pages/Enfoque/Index.Razor]
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/Enfoque/Index.Razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xFbmZvcXVlXEluZGV4LlJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/juani/OneDrive/Documents/Universidad/ProyectoASW/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend-main/Components/Pages/Error.razor]
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/Error.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xFcnJvci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/juani/OneDrive/Documents/Universidad/ProyectoASW/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend-main/Components/Pages/Facultad/Create.razor]
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/Facultad/Create.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGYWN1bHRhZFxDcmVhdGUucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/juani/OneDrive/Documents/Universidad/ProyectoASW/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend-main/Components/Pages/Facultad/Edit.Razor]
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/Facultad/Edit.Razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGYWN1bHRhZFxFZGl0LlJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/juani/OneDrive/Documents/Universidad/ProyectoASW/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend-main/Components/Pages/Facultad/Index.Razor]
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/Facultad/Index.Razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGYWN1bHRhZFxJbmRleC5SYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/juani/OneDrive/Documents/Universidad/ProyectoASW/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend-main/Components/Pages/Home.razor]
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/Home.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xIb21lLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/juani/OneDrive/Documents/Universidad/ProyectoASW/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend-main/Components/Pages/PracticaEstrategia/Create.razor]
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/Pasantia/Create.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQYXNhbnRpYVxDcmVhdGUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/Pasantia/Edit.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQYXNhbnRpYVxFZGl0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/Pasantia/Index.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQYXNhbnRpYVxJbmRleC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/PracticaEstrategia/Create.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQcmFjdGljYUVzdHJhdGVnaWFcQ3JlYXRlLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/juani/OneDrive/Documents/Universidad/ProyectoASW/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend-main/Components/Pages/PracticaEstrategia/Edit.razor]
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/PracticaEstrategia/Edit.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQcmFjdGljYUVzdHJhdGVnaWFcRWRpdC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/juani/OneDrive/Documents/Universidad/ProyectoASW/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend-main/Components/Pages/PracticaEstrategia/Index.razor]
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/PracticaEstrategia/Index.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQcmFjdGljYUVzdHJhdGVnaWFcSW5kZXgucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/juani/OneDrive/Documents/Universidad/ProyectoASW/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend-main/Components/Pages/Programa/Create.razor]
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/Premio/Create.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQcmVtaW9cQ3JlYXRlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/Premio/Edit.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQcmVtaW9cRWRpdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/Premio/Index.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQcmVtaW9cSW5kZXgucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/ProgramaAc/Create.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQcm9ncmFtYUFjXENyZWF0ZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/ProgramaAc/Index.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQcm9ncmFtYUFjXEluZGV4LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/ProgramaCi/Create.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQcm9ncmFtYUNpXENyZWF0ZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/ProgramaCi/Index.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQcm9ncmFtYUNpXEluZGV4LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/Programa/Create.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQcm9ncmFtYVxDcmVhdGUucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/juani/OneDrive/Documents/Universidad/ProyectoASW/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend-main/Components/Pages/Programa/Edit.razor]
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/Programa/Edit.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQcm9ncmFtYVxFZGl0LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/juani/OneDrive/Documents/Universidad/ProyectoASW/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend-main/Components/Pages/Programa/Index.razor]
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/Programa/Index.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQcm9ncmFtYVxJbmRleC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/juani/OneDrive/Documents/Universidad/ProyectoASW/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend-main/Components/Pages/Universidad/Create.razor]
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/ProgramPe/Create.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQcm9ncmFtUGVcQ3JlYXRlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/ProgramPe/Index.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQcm9ncmFtUGVcSW5kZXgucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/RegistroCalificado/Create.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xSZWdpc3Ryb0NhbGlmaWNhZG9cQ3JlYXRlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/RegistroCalificado/Edit.Razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xSZWdpc3Ryb0NhbGlmaWNhZG9cRWRpdC5SYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/RegistroCalificado/Index.Razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xSZWdpc3Ryb0NhbGlmaWNhZG9cSW5kZXguUmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/Universidad/Create.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xVbml2ZXJzaWRhZFxDcmVhdGUucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/juani/OneDrive/Documents/Universidad/ProyectoASW/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend-main/Components/Pages/Universidad/Edit.razor]
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/Universidad/Edit.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xVbml2ZXJzaWRhZFxFZGl0LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/juani/OneDrive/Documents/Universidad/ProyectoASW/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend-main/Components/Pages/Universidad/Index.razor]
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/Universidad/Index.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xVbml2ZXJzaWRhZFxJbmRleC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/juani/OneDrive/Documents/Universidad/ProyectoASW/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend-main/Components/Pages/Weather.razor]
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Pages/Weather.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xXZWF0aGVyLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/juani/OneDrive/Documents/Universidad/ProyectoASW/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend-main/Components/Routes.razor]
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Routes.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xSb3V0ZXMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/juani/OneDrive/Documents/Universidad/ProyectoASW/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend-main/Components/_Imports.razor]
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/_Imports.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xfSW1wb3J0cy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/juani/OneDrive/Documents/Universidad/ProyectoASW/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend-main/Components/Layout/MainLayout.razor]
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Layout/MainLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcTWFpbkxheW91dC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-u6huc4zz3l
 
-[C:/Users/juani/OneDrive/Documents/Universidad/ProyectoASW/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend-main/Components/Layout/NavMenu.razor]
+[C:/Users/julig/OneDrive/Desktop/Proyecto-Aplicaciones-y-ServiciosWeb-Frontend/Components/Layout/NavMenu.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcTmF2TWVudS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-woj4pfnyu8
