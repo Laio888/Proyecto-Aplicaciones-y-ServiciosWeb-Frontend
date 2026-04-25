@@ -1,0 +1,65 @@
+@page "/programape"
+@rendermode InteractiveServer
+
+@using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
+@inject ProgramaPeService programaPeService
+@inject ProgramaService programaService
+@inject PracticaEstrategiaService practicaEstrategiaService
+
+<h3>Programa - Prácticas y Estrategias</h3>
+
+<a href="/programape/create">Crear nuevo</a>
+
+@if (registros == null || programas == null || practicas == null)
+{
+    <p>Cargando...</p>
+}
+else if (!registros.Any())
+{
+    <p>No hay registros.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Programa</th>
+                <th>Práctica/Estrategia</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var r in registros)
+            {
+                var prog = programas.FirstOrDefault(p => p.Id == r.Programa);
+                var prac = practicas.FirstOrDefault(p => p.Id == r.PracticaEstrategia);
+                <tr>
+                    <td>@(prog?.Nombre ?? "No encontrado")</td>
+                    <td>@(prac?.Nombre ?? "No encontrada")</td>
+                    <td>
+                        <button @onclick="() => Eliminar(r.Programa, r.PracticaEstrategia)">Eliminar</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<ProgramaPe> registros = new();
+    private List<Programa> programas = new();
+    private List<PracticaEstrategia> practicas = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        registros = await programaPeService.GetAll();
+        programas = await programaService.GetAll();
+        practicas = await practicaEstrategiaService.GetAll();
+    }
+
+    private async Task Eliminar(int programaId, int practicaEstrategiaId)
+    {
+        await programaPeService.Delete(programaId, practicaEstrategiaId);
+        registros.RemoveAll(r => r.Programa == programaId && r.PracticaEstrategia == practicaEstrategiaId);
+    }
+}

@@ -1,0 +1,62 @@
+@page "/areaconocimiento"
+@rendermode InteractiveServer
+
+@using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
+@inject AreaConocimientoService areaConocimientoService
+
+<h3>Áreas de Conocimiento</h3>
+
+<a href="/areaconocimiento/create">Crear nuevo</a>
+
+@if (areas == null)
+{
+    <p>Cargando...</p>
+}
+else if (!areas.Any())
+{
+    <p>No hay registros.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Gran Área</th>
+                <th>Área</th>
+                <th>Disciplina</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var a in areas)
+            {
+                <tr>
+                    <td>@a.Id</td>
+                    <td>@a.GranArea</td>
+                    <td>@a.Area</td>
+                    <td>@a.Disciplina</td>
+                    <td>
+                        <a href="/areaconocimiento/edit/@a.Id">Editar</a>
+                        <button @onclick="() => Eliminar(a.Id)">Eliminar</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<AreaConocimiento> areas = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        areas = await areaConocimientoService.GetAll();
+    }
+
+    private async Task Eliminar(int id)
+    {
+        await areaConocimientoService.Delete(id);
+        areas.RemoveAll(a => a.Id == id);
+    }
+}

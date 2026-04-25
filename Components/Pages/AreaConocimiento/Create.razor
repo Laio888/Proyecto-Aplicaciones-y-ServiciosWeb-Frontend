@@ -1,0 +1,30 @@
+@page "/areaconocimiento/create"
+@rendermode InteractiveServer
+
+@using Microsoft.AspNetCore.Components.Forms
+@using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
+
+@inject AreaConocimientoService areaConocimientoService
+@inject NavigationManager nav
+
+<h3>Crear Área de Conocimiento</h3>
+
+<EditForm Model="area" OnValidSubmit="Guardar">
+
+    <InputText @bind-Value="area.GranArea" placeholder="Gran Área" />
+    <InputText @bind-Value="area.Area" placeholder="Área" />
+    <InputText @bind-Value="area.Disciplina" placeholder="Disciplina" />
+
+    <button type="submit">Guardar</button>
+
+</EditForm>
+
+@code {
+    private AreaConocimiento area = new();
+
+    private async Task Guardar()
+    {
+        await areaConocimientoService.Create(area);
+        nav.NavigateTo("/areaconocimiento");
+    }
+}

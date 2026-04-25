@@ -1,0 +1,56 @@
+@page "/premios/edit/{id:int}"
+@rendermode InteractiveServer
+
+@using Microsoft.AspNetCore.Components.Forms
+@using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
+
+@inject PremioService premioService
+@inject ProgramaService programaService
+@inject NavigationManager nav
+
+<h3>Editar Premio</h3>
+
+@if (premio == null)
+{
+    <p>Cargando...</p>
+}
+else
+{
+    <EditForm Model="premio" OnValidSubmit="Guardar">
+
+        <InputText @bind-Value="premio.Nombre" />
+        <InputText @bind-Value="premio.Descripcion" />
+        <InputText @bind-Value="premio.Fecha" />
+        <InputText @bind-Value="premio.EntidadOtorgante" />
+        <InputText @bind-Value="premio.Pais" />
+
+        <InputSelect @bind-Value="premio.Programa">
+            @foreach (var p in programas)
+            {
+                <option value="@p.Id">@p.Nombre</option>
+            }
+        </InputSelect>
+
+        <button type="submit">Guardar</button>
+
+    </EditForm>
+}
+
+@code {
+    [Parameter] public int id { get; set; }
+
+    private Premio? premio;
+    private List<Programa> programas = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        programas = await programaService.GetAll();
+        premio = await premioService.GetById(id);
+    }
+
+    private async Task Guardar()
+    {
+        await premioService.Update(id, premio!);
+        nav.NavigateTo("/premios");
+    }
+}

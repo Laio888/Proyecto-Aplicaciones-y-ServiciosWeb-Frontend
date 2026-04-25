@@ -1,0 +1,44 @@
+@page "/areaconocimiento/edit/{id:int}"
+@rendermode InteractiveServer
+
+@using Microsoft.AspNetCore.Components.Forms
+@using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
+
+@inject AreaConocimientoService areaConocimientoService
+@inject NavigationManager nav
+
+<h3>Editar Área de Conocimiento</h3>
+
+@if (area == null)
+{
+    <p>Cargando...</p>
+}
+else
+{
+    <EditForm Model="area" OnValidSubmit="Guardar">
+
+        <InputText @bind-Value="area.GranArea" placeholder="Gran Área" />
+        <InputText @bind-Value="area.Area" placeholder="Área" />
+        <InputText @bind-Value="area.Disciplina" placeholder="Disciplina" />
+
+        <button type="submit">Guardar</button>
+
+    </EditForm>
+}
+
+@code {
+    [Parameter] public int id { get; set; }
+
+    private AreaConocimiento? area;
+
+    protected override async Task OnInitializedAsync()
+    {
+        area = await areaConocimientoService.GetById(id);
+    }
+
+    private async Task Guardar()
+    {
+        await areaConocimientoService.Update(id, area!);
+        nav.NavigateTo("/areaconocimiento");
+    }
+}

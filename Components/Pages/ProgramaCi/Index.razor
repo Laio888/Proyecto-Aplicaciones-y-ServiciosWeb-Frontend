@@ -1,0 +1,65 @@
+@page "/programaci"
+@rendermode InteractiveServer
+
+@using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
+@inject ProgramaCiService programaCiService
+@inject ProgramaService programaService
+@inject CarInnovacionService carInnovacionService
+
+<h3>Programa - Características de Innovación</h3>
+
+<a href="/programaci/create">Crear nuevo</a>
+
+@if (registros == null || programas == null || caracteristicas == null)
+{
+    <p>Cargando...</p>
+}
+else if (!registros.Any())
+{
+    <p>No hay registros.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Programa</th>
+                <th>Característica de Innovación</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var r in registros)
+            {
+                var prog = programas.FirstOrDefault(p => p.Id == r.Programa);
+                var car = caracteristicas.FirstOrDefault(c => c.Id == r.CarInnovacion);
+                <tr>
+                    <td>@(prog?.Nombre ?? "No encontrado")</td>
+                    <td>@(car?.Nombre ?? "No encontrado")</td>
+                    <td>
+                        <button @onclick="() => Eliminar(r.Programa, r.CarInnovacion)">Eliminar</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<ProgramaCi> registros = new();
+    private List<Programa> programas = new();
+    private List<CarInnovacion> caracteristicas = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        registros = await programaCiService.GetAll();
+        programas = await programaService.GetAll();
+        caracteristicas = await carInnovacionService.GetAll();
+    }
+
+    private async Task Eliminar(int programaId, int carInnovacionId)
+    {
+        await programaCiService.Delete(programaId, carInnovacionId);
+        registros.RemoveAll(r => r.Programa == programaId && r.CarInnovacion == carInnovacionId);
+    }
+}

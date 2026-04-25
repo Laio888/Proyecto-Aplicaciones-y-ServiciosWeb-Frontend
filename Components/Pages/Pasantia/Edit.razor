@@ -1,0 +1,55 @@
+@page "/pasantias/edit/{id:int}"
+@rendermode InteractiveServer
+
+@using Microsoft.AspNetCore.Components.Forms
+@using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
+
+@inject PasantiaService pasantiaService
+@inject ProgramaService programaService
+@inject NavigationManager nav
+
+<h3>Editar Pasantía</h3>
+
+@if (pasantia == null)
+{
+    <p>Cargando...</p>
+}
+else
+{
+    <EditForm Model="pasantia" OnValidSubmit="Guardar">
+
+        <InputText @bind-Value="pasantia.Nombre" />
+        <InputText @bind-Value="pasantia.Pais" />
+        <InputText @bind-Value="pasantia.Empresa" />
+        <InputText @bind-Value="pasantia.Descripcion" />
+
+        <InputSelect @bind-Value="pasantia.Programa">
+            @foreach (var p in programas)
+            {
+                <option value="@p.Id">@p.Nombre</option>
+            }
+        </InputSelect>
+
+        <button type="submit">Guardar</button>
+
+    </EditForm>
+}
+
+@code {
+    [Parameter] public int id { get; set; }
+
+    private Pasantia? pasantia;
+    private List<Programa> programas = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        programas = await programaService.GetAll();
+        pasantia = await pasantiaService.GetById(id);
+    }
+
+    private async Task Guardar()
+    {
+        await pasantiaService.Update(id, pasantia!);
+        nav.NavigateTo("/pasantias");
+    }
+}

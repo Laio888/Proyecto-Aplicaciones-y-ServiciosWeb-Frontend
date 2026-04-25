@@ -1,0 +1,46 @@
+@page "/pasantias/create"
+@rendermode InteractiveServer
+
+@using Microsoft.AspNetCore.Components.Forms
+@using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
+
+@inject PasantiaService pasantiaService
+@inject ProgramaService programaService
+@inject NavigationManager nav
+
+<h3>Crear Pasantía</h3>
+
+<EditForm Model="pasantia" OnValidSubmit="Guardar">
+
+    <InputText @bind-Value="pasantia.Nombre" placeholder="Nombre" />
+    <InputText @bind-Value="pasantia.Pais" placeholder="País" />
+    <InputText @bind-Value="pasantia.Empresa" placeholder="Empresa" />
+    <InputText @bind-Value="pasantia.Descripcion" placeholder="Descripción" />
+
+    <InputSelect @bind-Value="pasantia.Programa">
+        <option value="">Seleccione Programa</option>
+        @foreach (var p in programas)
+        {
+            <option value="@p.Id">@p.Nombre</option>
+        }
+    </InputSelect>
+
+    <button type="submit">Guardar</button>
+
+</EditForm>
+
+@code {
+    private Pasantia pasantia = new();
+    private List<Programa> programas = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        programas = await programaService.GetAll();
+    }
+
+    private async Task Guardar()
+    {
+        await pasantiaService.Create(pasantia);
+        nav.NavigateTo("/pasantias");
+    }
+}

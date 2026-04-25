@@ -24,6 +24,12 @@ builder.Services.AddScoped<CarInnovacionService>();
 builder.Services.AddScoped<PracticaEstrategiaService>();
 builder.Services.AddScoped<FacultadService>();
 builder.Services.AddScoped<ProgramaService>();
+builder.Services.AddScoped<PasantiaService>();
+builder.Services.AddScoped<PremioService>();
+builder.Services.AddScoped<ProgramaAcService>();
+builder.Services.AddScoped<ProgramaCiService>();
+builder.Services.AddScoped<AreaConocimientoService>();
+builder.Services.AddScoped<ProgramaPeService>();
 
 //EnfoqueRc
 builder.Services.AddScoped<EnfoqueRcService>();
