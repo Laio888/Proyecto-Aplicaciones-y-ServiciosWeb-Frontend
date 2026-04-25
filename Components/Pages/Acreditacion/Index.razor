@@ -1,0 +1,72 @@
+@page "/acreditacion"
+@rendermode InteractiveServer
+
+@using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
+@inject AcreditacionService acreditacionService
+@inject ProgramaService programaService
+
+<h3>Acreditaciones</h3>
+
+<a href="/acreditacion/create">Crear nueva</a>
+
+@if (acreditacion == null || programa == null)
+{
+    <p>Cargando...</p>
+}
+else if (!acreditacion.Any())
+{
+    <p>No hay registros.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Resolucion</th>
+                <th>Tipo</th>
+                <th>Calificacion</th>
+                <th>Fecha Inicio</th>
+                <th>Fecha Fin</th>
+                <th>Programa</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var f in acreditacion)
+            {
+                var program = programa.FirstOrDefault(u => u.Id == f.Programa);
+
+                <tr>
+                    <td>@f.Resolucion</td>
+                    <td>@f.Tipo</td>
+                    <td>@f.FechaInicio</td>
+                    <td>@f.FechaFin</td>
+                    <td>@f.FechaFin</td>
+                    <td>@(program?.Nombre ?? "No encontrada")</td>
+                    <td>
+                        <button @onclick="() => Eliminar(f.Resolucion)">Eliminar</button>
+                        <a href="/acreditacion/edit/@f.Resolucion">Editar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Acreditacion> acreditacion = new();
+    private List<Programa> programa = new();
+    
+
+    protected override async Task OnInitializedAsync()
+    {
+        acreditacion = await acreditacionService.GetAll();
+        programa = await programaService.GetAll();
+    }
+
+    private async Task Eliminar(int id)
+    {
+        await acreditacionService.Delete(id);
+        acreditacion.RemoveAll(f => f.Resolucion == id);
+    }
+}

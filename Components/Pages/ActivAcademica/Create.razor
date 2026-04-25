@@ -1,0 +1,62 @@
+@page "/activAcademica/create"
+@rendermode InteractiveServer
+
+@using Microsoft.AspNetCore.Components.Forms
+@using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
+
+@inject ActivAcademicaService activAcademicaService
+@inject ProgramaService programaService
+@inject NavigationManager nav
+
+<h3>Crear ActivAcademica</h3>
+
+<EditForm Model="activAcademica" OnValidSubmit="Guardar">
+
+    <InputText @bind-Value="activAcademica.Nombre" placeholder="Nombre" />
+
+    <InputNumber @bind-Value="activAcademica.NumCreditos" placeholder="Créditos" />
+
+    <InputText @bind-Value="activAcademica.Tipo" placeholder="Tipo" />
+
+    <InputText @bind-Value="activAcademica.AreaFormacion" placeholder="Área de formación" />
+
+    <InputNumber @bind-Value="activAcademica.H_Acom" placeholder="Horas acompañadas" />
+
+    <InputNumber @bind-Value="activAcademica.H_Indep" placeholder="Horas independientes" />
+
+    <InputText @bind-Value="activAcademica.Idioma" placeholder="Idioma" />
+
+    <label>Espejo:</label>
+    <InputCheckbox @bind-Value="activAcademica.Espejo" />
+
+    <InputText @bind-Value="activAcademica.EntidadEspejo" placeholder="Entidad espejo" />
+
+    <InputText @bind-Value="activAcademica.PaisEspejo" placeholder="País espejo" />
+
+    <InputSelect @bind-Value="activAcademica.Disenio">
+        <option value="">Seleccione un programa</option>
+        @foreach (var u in programa)
+        {
+            <option value="@u.Id">@u.Nombre</option>
+        }
+    </InputSelect>
+
+    <button type="submit">Guardar</button>
+
+</EditForm>
+
+@code {
+    private ActivAcademica activAcademica = new();
+    private List<Programa> programa = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        programa = await programaService.GetAll();
+    }
+
+    private async Task Guardar()
+    {
+        await activAcademicaService.Create(activAcademica);
+        nav.NavigateTo("/activAcademica");
+    }
+}

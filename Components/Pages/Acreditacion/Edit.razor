@@ -1,0 +1,56 @@
+@page "/acreditacion/edit/{id:int}"
+@rendermode InteractiveServer
+
+@using Microsoft.AspNetCore.Components.Forms
+@using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
+
+@inject AcreditacionService acreditacionService
+@inject ProgramaService programaService
+@inject NavigationManager nav
+
+<h3>Editar Acreditacion</h3>
+
+@if (acreditacion == null)
+{
+    <p>Cargando...</p>
+}
+else
+{
+    <EditForm Model="acreditacion" OnValidSubmit="Guardar">
+
+        
+        <InputText @bind-Value="acreditacion.Tipo" />
+        <InputText @bind-Value="acreditacion.Calificacion" />
+        <InputText @bind-Value="acreditacion.FechaInicio" />
+        <InputText @bind-Value="acreditacion.FechaFin" />
+
+        <InputSelect @bind-Value="acreditacion.Programa">
+            @foreach (var u in programa)
+            {
+                <option value="@u.Id">@u.Nombre</option>
+            }
+        </InputSelect>
+
+        <button type="submit">Guardar</button>
+
+    </EditForm>
+}
+
+@code {
+    [Parameter] public int id { get; set; }
+
+    private Acreditacion? acreditacion;
+    private List<Programa> programa = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        programa = await programaService.GetAll();
+        acreditacion = await acreditacionService.GetById(id);
+    }
+
+    private async Task Guardar()
+    {
+        await acreditacionService.Update(id, acreditacion!);
+        nav.NavigateTo("/acreditacion");
+    }
+}

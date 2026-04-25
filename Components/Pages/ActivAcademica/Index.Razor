@@ -1,0 +1,74 @@
+@page "/activAcademica"
+@rendermode InteractiveServer
+
+@using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
+@inject ActivAcademicaService activAcademicaService
+@inject ProgramaService programaService
+
+<h3>ActivAcademica</h3>
+
+<a href="/activAcademica/create">Crear nueva</a>
+
+@if (activAcademica == null || programa == null)
+{
+    <p>Cargando...</p>
+}
+else if (!activAcademica.Any())
+{
+    <p>No hay registros.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>Tipo</th>
+                <th>Fecha</th>
+                <th>Programa</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var f in activAcademica)
+            {
+                var uni = programa.FirstOrDefault(u => u.Id == f.Disenio);
+
+                <tr>
+                    <td>@f.Id</td>
+                    <td>@f.Nombre</td>
+                    <td>@f.NumCreditos</td>
+                    <td>@f.Tipo</td>
+                    <td>@f.AreaFormacion</td>
+                    <td>@f.H_Acom</td>
+                    <td>@f.H_Indep</td>
+                    <td>@f.Idioma</td>
+                    <td>@(f.Espejo ? "Sí" : "No")</td>
+                    <td>@(uni?.Nombre ?? "No encontrado")</td>
+                    <td>
+                        <button @onclick="() => Eliminar(f.Id)">Eliminar</button>
+                        <a href="/activAcademica/edit/@f.Id">Editar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<ActivAcademica> activAcademica = new();
+    private List<Programa> programa = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        activAcademica = await activAcademicaService.GetAll();
+        programa = await programaService.GetAll();
+    }
+
+    private async Task Eliminar(int id)
+    {
+        await activAcademicaService.Delete(id);
+        activAcademica.RemoveAll(f => f.Id == id);
+    }
+}
