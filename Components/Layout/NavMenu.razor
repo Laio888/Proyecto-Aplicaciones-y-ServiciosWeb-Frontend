@@ -1,95 +1,49 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand fw-bold" href="">
-            Innovación Curricular
-        </a>
-    </div>
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@using FrontendBlazor_Aplicaciones_y_Servicios_Web.Services.Auth
+@inject AuthService AuthService
+@inject AuthenticationStateProvider AuthStateProvider
+@inject NavigationManager Nav
+
+<div class="top-row navbar navbar-dark">
+    <a class="navbar-brand" href="">Sistema</a>
 </div>
 
-<input type="checkbox" title="Navigation menu" class="navbar-toggler" />
+<AuthorizeView>
+    <Authorized Context="auth">
 
-<div class="nav-scrollable"
-     onclick="document.querySelector('.navbar-toggler').click()">
-
-    <nav class="nav flex-column pt-3">
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="universidades">
-                <span class="bi bi-building"></span> Universidades
-            </NavLink>
+        <div class="px-3 text-white">
+            👤 @auth.User.Identity?.Name
         </div>
 
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="facultades">
-                <span class="bi bi-building-fill"></span> Facultades
-            </NavLink>
-        </div>
+        @if (auth.User.IsInRole("Admin"))
+        {
+            <NavLink href="usuarios">Usuarios</NavLink>
+            <NavLink href="roles">Roles</NavLink>
+        }
 
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="programas">
-                <span class="bi bi-journal-bookmark"></span> Programas
-            </NavLink>
-        </div>
+        <NavLink href="universidades">Universidades</NavLink>
+        <NavLink href="programas">Programas</NavLink>
 
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="enfoques">
-                <span class="bi bi-diagram-3"></span> Enfoques
-            </NavLink>
-        </div>
+        <button class="btn btn-danger mt-3"
+                @onclick="Logout">
+            Logout
+        </button>
 
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="aspectosnormativos">
-                <span class="bi bi-file-earmark-text"></span> Aspectos Normativos
-            </NavLink>
-        </div>
+    </Authorized>
 
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="carinnovaciones">
-                <span class="bi bi-lightbulb"></span> Car. Innovación
-            </NavLink>
-        </div>
+    <NotAuthorized>
+        <NavLink href="login">Login</NavLink>
+    </NotAuthorized>
+</AuthorizeView>
 
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="practicasestrategias">
-                <span class="bi bi-gear"></span> Prácticas/Estrategias
-            </NavLink>
-        </div>
+@code {
+    private async Task Logout()
+    {
+        await AuthService.LogoutAsync();
 
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="pasantias">
-                <span class="bi bi-briefcase"></span> Pasantías
-            </NavLink>
-        </div>
+        if (AuthStateProvider is CustomAuthStateProvider custom)
+            custom.NotifyAuthChanged();
 
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="premios">
-                <span class="bi bi-trophy"></span> Premios
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="areaconocimiento">
-                <span class="bi bi-book"></span> Áreas de Conocimiento
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="programaci">
-                <span class="bi bi-link-45deg"></span> Programa - Innovación
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="programaac">
-                <span class="bi bi-link-45deg"></span> Programa - Área Conocimiento
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="programape">
-                <span class="bi bi-link-45deg"></span> Programa - Prácticas
-            </NavLink>
-        </div>
-
-    </nav>
-</div>
+        Nav.NavigateTo("/login", forceLoad: true);
+    }
+}
