@@ -1,0 +1,69 @@
+@page "/docentes"
+@rendermode InteractiveServer
+
+@using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
+@inject DocenteService docenteService
+
+<h3>Docentes</h3>
+
+<a class="btn btn-primary mb-3" href="/docentes/create">Crear nuevo</a>
+
+@if (docentes == null)
+{
+    <p>Cargando...</p>
+}
+else if (!docentes.Any())
+{
+    <p>No hay registros.</p>
+}
+else
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Cédula</th>
+                <th>Nombres</th>
+                <th>Apellidos</th>
+                <th>Cargo</th>
+                <th>Correo</th>
+                <th>Teléfono</th>
+                <th>Perfil</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var d in docentes)
+            {
+                <tr>
+                    <td>@d.Cedula</td>
+                    <td>@d.Nombres</td>
+                    <td>@d.Apellidos</td>
+                    <td>@d.Cargo</td>
+                    <td>@d.Correo</td>
+                    <td>@d.Telefono</td>
+                    <td>@d.Perfil</td>
+                    <td>
+                        <button class="btn btn-danger btn-sm" @onclick="() => Eliminar(d.Cedula)">
+                            Eliminar
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Docente> docentes = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        docentes = await docenteService.GetAll();
+    }
+
+    private async Task Eliminar(int cedula)
+    {
+        await docenteService.Delete(cedula);
+        docentes.RemoveAll(d => d.Cedula == cedula);
+    }
+}

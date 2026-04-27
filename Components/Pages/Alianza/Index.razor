@@ -1,0 +1,78 @@
+@page "/alianzas"
+@rendermode InteractiveServer
+
+@using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
+@inject AlianzaService alianzaService
+@inject AliadoService aliadoService
+@inject ProgramaService programaService
+@inject DocenteService docenteService
+
+<h3>Alianzas</h3>
+
+<a class="btn btn-primary mb-3" href="/alianzas/create">Crear nuevo</a>
+
+@if (alianzas == null || aliados == null || programas == null || docentes == null)
+{
+    <p>Cargando...</p>
+}
+else if (!alianzas.Any())
+{
+    <p>No hay registros.</p>
+}
+else
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Aliado</th>
+                <th>Programa / Departamento</th>
+                <th>Docente</th>
+                <th>Fecha Inicio</th>
+                <th>Fecha Fin</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var a in alianzas)
+            {
+                var aliado = aliados.FirstOrDefault(x => x.Nit == a.Aliado);
+                var programa = programas.FirstOrDefault(x => x.Id == a.Departamento);
+                var docente = docentes.FirstOrDefault(x => x.Cedula == a.Docente);
+
+                <tr>
+                    <td>@(aliado?.RazonSocial ?? "No encontrado")</td>
+                    <td>@(programa?.Nombre ?? "No encontrado")</td>
+                    <td>@(docente?.NombreCompleto ?? "No encontrado")</td>
+                    <td>@a.FechaInicio.ToShortDateString()</td>
+                    <td>@(a.FechaFin?.ToShortDateString() ?? "-")</td>
+                    <td>
+                        <button class="btn btn-danger btn-sm" @onclick="() => Eliminar(a.Aliado, a.Departamento, a.Docente)">
+                            Eliminar
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Alianza> alianzas = new();
+    private List<Aliado> aliados = new();
+    private List<Programa> programas = new();
+    private List<Docente> docentes = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        alianzas = await alianzaService.GetAll();
+        aliados = await aliadoService.GetAll();
+        programas = await programaService.GetAll();
+        docentes = await docenteService.GetAll();
+    }
+
+    private async Task Eliminar(int aliado, int departamento, int docente)
+    {
+        await alianzaService.Delete(aliado, departamento, docente);
+        alianzas.RemoveAll(x => x.Aliado == aliado && x.Departamento == departamento && x.Docente == docente);
+    }
+}

@@ -1,0 +1,86 @@
+@page "/alianzas/create"
+@rendermode InteractiveServer
+
+@using Microsoft.AspNetCore.Components.Forms
+@using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
+
+@inject AlianzaService alianzaService
+@inject AliadoService aliadoService
+@inject ProgramaService programaService
+@inject DocenteService docenteService
+@inject NavigationManager nav
+
+<h3>Crear Alianza</h3>
+
+<EditForm Model="alianza" OnValidSubmit="Guardar">
+
+    <div class="mb-3">
+        <label>Aliado</label>
+        <select class="form-control" @bind="alianza.Aliado">
+            <option value="0">Seleccione un aliado</option>
+            @foreach (var aliado in aliados)
+            {
+                <option value="@aliado.Nit">@aliado.RazonSocial</option>
+            }
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label>Programa / Departamento</label>
+        <select class="form-control" @bind="alianza.Departamento">
+            <option value="0">Seleccione un programa</option>
+            @foreach (var programa in programas)
+            {
+                <option value="@programa.Id">@programa.Nombre</option>
+            }
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label>Docente</label>
+        <select class="form-control" @bind="alianza.Docente">
+            <option value="0">Seleccione un docente</option>
+            @foreach (var docente in docentes)
+            {
+                <option value="@docente.Cedula">@docente.NombreCompleto</option>
+            }
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label>Fecha Inicio</label>
+        <InputDate class="form-control" @bind-Value="alianza.FechaInicio" />
+    </div>
+
+    <div class="mb-3">
+        <label>Fecha Fin</label>
+        <InputDate class="form-control" @bind-Value="alianza.FechaFin" />
+    </div>
+
+    <button class="btn btn-success" type="submit">Guardar</button>
+    <a class="btn btn-secondary" href="/alianzas">Cancelar</a>
+</EditForm>
+
+@code {
+    private Alianza alianza = new()
+    {
+        FechaInicio = DateTime.Today
+    };
+
+    private List<Aliado> aliados = new();
+    private List<Programa> programas = new();
+    private List<Docente> docentes = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        aliados = await aliadoService.GetAll();
+        programas = await programaService.GetAll();
+        docentes = await docenteService.GetAll();
+    }
+
+    private async Task Guardar()
+    {
+        await alianzaService.Create(alianza);
+        nav.NavigateTo("/alianzas");
+    }
+}

@@ -1,0 +1,55 @@
+@page "/aliados/create"
+@rendermode InteractiveServer
+
+@using Microsoft.AspNetCore.Components.Forms
+@using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
+
+@inject AliadoService aliadoService
+@inject NavigationManager nav
+
+<h3>Crear Aliado</h3>
+
+<EditForm Model="aliado" OnValidSubmit="Guardar">
+    <div class="mb-3">
+        <label>NIT</label>
+        <InputNumber class="form-control" @bind-Value="aliado.Nit" />
+    </div>
+
+    <div class="mb-3">
+        <label>Razón Social</label>
+        <InputText class="form-control" @bind-Value="aliado.RazonSocial" />
+    </div>
+
+    <div class="mb-3">
+        <label>Nombre Contacto</label>
+        <InputText class="form-control" @bind-Value="aliado.NombreContacto" />
+    </div>
+
+    <div class="mb-3">
+        <label>Correo</label>
+        <InputText class="form-control" @bind-Value="aliado.Correo" />
+    </div>
+
+    <div class="mb-3">
+        <label>Teléfono</label>
+        <InputText class="form-control" @bind-Value="aliado.Telefono" />
+    </div>
+
+    <div class="mb-3">
+        <label>Ciudad</label>
+        <InputText class="form-control" @bind-Value="aliado.Ciudad" />
+    </div>
+
+    <button class="btn btn-success" type="submit">Guardar</button>
+    <a class="btn btn-secondary" href="/aliados">Cancelar</a>
+</EditForm>
+
+@code {
+    private Aliado aliado = new();
+
+    private async Task Guardar()
+    {
+        await aliadoService.Create(aliado);
+        nav.NavigateTo("/aliados");
+    }
+}

@@ -1,0 +1,76 @@
+@page "/docente-departamento"
+@rendermode InteractiveServer
+
+@using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
+@inject DocenteDepartamentoService docenteDepartamentoService
+@inject DocenteService docenteService
+@inject ProgramaService programaService
+
+<h3>Docente - Departamento / Programa</h3>
+
+<a class="btn btn-primary mb-3" href="/docente-departamento/create">Crear nuevo</a>
+
+@if (registros == null || docentes == null || programas == null)
+{
+    <p>Cargando...</p>
+}
+else if (!registros.Any())
+{
+    <p>No hay registros.</p>
+}
+else
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Docente</th>
+                <th>Programa / Departamento</th>
+                <th>Dedicación</th>
+                <th>Modalidad</th>
+                <th>Fecha Ingreso</th>
+                <th>Fecha Salida</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var r in registros)
+            {
+                var docente = docentes.FirstOrDefault(x => x.Cedula == r.Docente);
+                var programa = programas.FirstOrDefault(x => x.Id == r.Departamento);
+
+                <tr>
+                    <td>@(docente?.NombreCompleto ?? "No encontrado")</td>
+                    <td>@(programa?.Nombre ?? "No encontrado")</td>
+                    <td>@r.Dedicacion</td>
+                    <td>@r.Modalidad</td>
+                    <td>@(r.FechaIngreso?.ToShortDateString() ?? "-")</td>
+                    <td>@(r.FechaSalida?.ToShortDateString() ?? "-")</td>
+                    <td>
+                        <button class="btn btn-danger btn-sm" @onclick="() => Eliminar(r.Docente, r.Departamento)">
+                            Eliminar
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<DocenteDepartamento> registros = new();
+    private List<Docente> docentes = new();
+    private List<Programa> programas = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        registros = await docenteDepartamentoService.GetAll();
+        docentes = await docenteService.GetAll();
+        programas = await programaService.GetAll();
+    }
+
+    private async Task Eliminar(int docente, int departamento)
+    {
+        await docenteDepartamentoService.Delete(docente, departamento);
+        registros.RemoveAll(x => x.Docente == docente && x.Departamento == departamento);
+    }
+}

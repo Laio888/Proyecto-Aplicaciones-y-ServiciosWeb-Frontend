@@ -24,7 +24,16 @@
 
     private async Task Guardar()
     {
+        var areas = await areaConocimientoService.GetAll();
+
+        var nuevoId = areas.Any()
+            ? areas.Max(x => x.Id) + 1
+            : 1;
+
+        area.Id = nuevoId;
+
         await areaConocimientoService.Create(area);
+
         nav.NavigateTo("/areaconocimiento");
     }
 }

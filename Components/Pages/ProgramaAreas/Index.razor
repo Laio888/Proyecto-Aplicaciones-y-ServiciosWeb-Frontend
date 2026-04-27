@@ -1,0 +1,182 @@
+@page "/programa-areas"
+@rendermode InteractiveServer
+
+@using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
+@inject ProgramaService programaService
+@inject AreaConocimientoService areaConocimientoService
+@inject ProgramaAcService programaAcService
+@inject ProgramaAreaConocimientoService ProgramaAreaService
+
+<h3>Programa - Áreas de Conocimiento</h3>
+
+@if (!string.IsNullOrWhiteSpace(mensaje))
+{
+    <div class="alert alert-info">@mensaje</div>
+}
+
+<div class="mb-3">
+    <label class="form-label">Programa</label>
+    <select class="form-control" @onchange="OnProgramaChanged">
+    <option value="-1">Seleccione un programa</option>
+    @foreach (var programa in programas)
+    {
+        <option value="@programa.Id">@programa.Nombre</option>
+    }
+</select>
+</div>
+
+<div class="mb-3">
+    <label class="form-label">Área de conocimiento</label>
+    <select class="form-control" @bind="areaSeleccionada">
+        <option value="-1">Seleccione un área</option>
+        @foreach (var area in areasDisponibles)
+        {
+            <option value="@area.Id">@area.GranArea - @area.Area - @area.Disciplina</option>
+        }
+    </select>
+</div>
+
+<button class="btn btn-primary" @onclick="AsignarArea">
+    Asignar área
+</button>
+
+<hr />
+
+<h4>Áreas asociadas</h4>
+
+@if (programaSeleccionado == -1)
+{
+    <p>Seleccione un programa para ver sus áreas asociadas.</p>
+}
+else if (!areasAsociadas.Any())
+{
+    <p>Este programa no tiene áreas asociadas.</p>
+}
+else
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Gran Área</th>
+                <th>Área</th>
+                <th>Disciplina</th>
+                <th style="width: 120px;">Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var area in areasAsociadas)
+            {
+                <tr>
+                    <td>@area.GranArea</td>
+                    <td>@area.Area</td>
+                    <td>@area.Disciplina</td>
+                    <td>
+                        <button class="btn btn-danger btn-sm" @onclick="() => EliminarArea(area.Id)">
+                            Quitar
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Programa> programas = new();
+    private List<AreaConocimiento> areas = new();
+    private List<ProgramaAc> relaciones = new();
+
+    private List<AreaConocimiento> areasAsociadas = new();
+    private List<AreaConocimiento> areasDisponibles = new();
+
+    private int programaSeleccionado = -1;
+    private int areaSeleccionada = -1;
+    private string mensaje = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        programas = await programaService.GetAll();
+        areas = await areaConocimientoService.GetAll();
+        relaciones = await programaAcService.GetAll();
+
+        areasDisponibles = areas;
+    }
+    private async Task CargarAreasDelPrograma()
+    {
+        mensaje = "";
+        areaSeleccionada = -1;
+
+        if (programaSeleccionado == -1)
+        {
+            areasAsociadas = new();
+            areasDisponibles = areas;
+            return;
+        }
+
+        var idsAreasAsociadas = relaciones
+            .Where(r => r.Programa == programaSeleccionado)
+            .Select(r => r.AreaConocimiento)
+            .ToList();
+
+        areasAsociadas = areas
+            .Where(a => idsAreasAsociadas.Contains(a.Id))
+            .ToList();
+
+        areasDisponibles = areas
+            .Where(a => !idsAreasAsociadas.Contains(a.Id))
+            .ToList();
+
+        await Task.CompletedTask;
+    }
+    private async Task AsignarArea()
+    {
+        if (programaSeleccionado == -1 || areaSeleccionada == -1)
+        {
+            mensaje = "Debe seleccionar un programa y un área de conocimiento.";
+            return;
+        }
+
+        try
+        {
+            await ProgramaAreaService.AsignarAsync(programaSeleccionado, areaSeleccionada);
+
+            mensaje = $"Área {areaSeleccionada} asignada al programa {programaSeleccionado}.";
+
+            await RecargarRelaciones();
+            await CargarAreasDelPrograma();
+        }
+        catch (Exception ex)
+        {
+            mensaje = $"Error al guardar: {ex.Message}";
+        }
+    }
+
+    private async Task EliminarArea(int areaId)
+    {
+        await ProgramaAreaService.EliminarAsync(programaSeleccionado, areaId);
+
+        mensaje = "Área quitada correctamente.";
+
+        await RecargarRelaciones();
+        await CargarAreasDelPrograma();
+    }
+
+    private async Task RecargarRelaciones()
+    {
+        relaciones = await programaAcService.GetAll();
+    }
+   private async Task OnProgramaChanged(ChangeEventArgs e)
+{
+    if (e.Value != null && int.TryParse(e.Value.ToString(), out var valor))
+    {
+        programaSeleccionado = valor;
+    }
+    else
+    {
+        programaSeleccionado = -1;
+    }
+
+    await CargarAreasDelPrograma();
+}
+
+}
