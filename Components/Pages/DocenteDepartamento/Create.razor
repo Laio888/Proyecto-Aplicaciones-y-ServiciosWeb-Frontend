@@ -1,0 +1,82 @@
+@page "/docente-departamento/create"
+@rendermode InteractiveServer
+
+@using Microsoft.AspNetCore.Components.Forms
+@using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
+
+@inject DocenteDepartamentoService docenteDepartamentoService
+@inject DocenteService docenteService
+@inject ProgramaService programaService
+@inject NavigationManager nav
+
+<h3>Crear Docente - Departamento / Programa</h3>
+
+<EditForm Model="registro" OnValidSubmit="Guardar">
+
+    <div class="mb-3">
+        <label>Docente</label>
+        <select class="form-control" @bind="registro.Docente">
+            <option value="0">Seleccione un docente</option>
+            @foreach (var docente in docentes)
+            {
+                <option value="@docente.Cedula">@docente.NombreCompleto</option>
+            }
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label>Programa / Departamento</label>
+        <select class="form-control" @bind="registro.Departamento">
+            <option value="0">Seleccione un programa</option>
+            @foreach (var programa in programas)
+            {
+                <option value="@programa.Id">@programa.Nombre</option>
+            }
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label>Dedicación</label>
+        <InputText class="form-control" @bind-Value="registro.Dedicacion" />
+    </div>
+
+    <div class="mb-3">
+        <label>Modalidad</label>
+        <InputText class="form-control" @bind-Value="registro.Modalidad" />
+    </div>
+
+    <div class="mb-3">
+        <label>Fecha Ingreso</label>
+        <InputDate class="form-control" @bind-Value="registro.FechaIngreso" />
+    </div>
+
+    <div class="mb-3">
+        <label>Fecha Salida</label>
+        <InputDate class="form-control" @bind-Value="registro.FechaSalida" />
+    </div>
+
+    <button class="btn btn-success" type="submit">Guardar</button>
+    <a class="btn btn-secondary" href="/docente-departamento">Cancelar</a>
+</EditForm>
+
+@code {
+    private DocenteDepartamento registro = new()
+    {
+        FechaIngreso = DateTime.Today
+    };
+
+    private List<Docente> docentes = new();
+    private List<Programa> programas = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        docentes = await docenteService.GetAll();
+        programas = await programaService.GetAll();
+    }
+
+    private async Task Guardar()
+    {
+        await docenteDepartamentoService.Create(registro);
+        nav.NavigateTo("/docente-departamento");
+    }
+}

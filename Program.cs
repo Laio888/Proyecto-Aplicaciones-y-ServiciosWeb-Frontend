@@ -39,6 +39,16 @@ builder.Services.AddScoped<EnfoqueService>();
 builder.Services.AddScoped<RegistroCalificadoService>();
 //AaRc
 builder.Services.AddScoped<AaRcService>();
+builder.Services.AddScoped<ProgramaAreaConocimientoService>();
+
+builder.Services.AddScoped<AliadoService>();
+builder.Services.AddScoped<DocenteService>();
+
+builder.Services.AddScoped<AlianzaService>();
+builder.Services.AddScoped<DocenteDepartamentoService>();
+
+builder.Services.AddScoped<ActivAcademicaService>();
+builder.Services.AddScoped<AcreditacionService>();
 
 // 🔹 4. Crear app
 var app = builder.Build();

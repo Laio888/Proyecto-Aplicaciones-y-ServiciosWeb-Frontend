@@ -1,0 +1,67 @@
+@page "/aliados"
+@rendermode InteractiveServer
+
+@using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
+@inject AliadoService aliadoService
+
+<h3>Aliados</h3>
+
+<a class="btn btn-primary mb-3" href="/aliados/create">Crear nuevo</a>
+
+@if (aliados == null)
+{
+    <p>Cargando...</p>
+}
+else if (!aliados.Any())
+{
+    <p>No hay registros.</p>
+}
+else
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>NIT</th>
+                <th>Razón Social</th>
+                <th>Contacto</th>
+                <th>Correo</th>
+                <th>Teléfono</th>
+                <th>Ciudad</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var a in aliados)
+            {
+                <tr>
+                    <td>@a.Nit</td>
+                    <td>@a.RazonSocial</td>
+                    <td>@a.NombreContacto</td>
+                    <td>@a.Correo</td>
+                    <td>@a.Telefono</td>
+                    <td>@a.Ciudad</td>
+                    <td>
+                        <button class="btn btn-danger btn-sm" @onclick="() => Eliminar(a.Nit)">
+                            Eliminar
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Aliado> aliados = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        aliados = await aliadoService.GetAll();
+    }
+
+    private async Task Eliminar(int nit)
+    {
+        await aliadoService.Delete(nit);
+        aliados.RemoveAll(a => a.Nit == nit);
+    }
+}

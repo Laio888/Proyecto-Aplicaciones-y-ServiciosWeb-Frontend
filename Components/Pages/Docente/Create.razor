@@ -1,0 +1,108 @@
+@page "/docentes/create"
+@rendermode InteractiveServer
+
+@using Microsoft.AspNetCore.Components.Forms
+@using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
+
+@inject DocenteService docenteService
+@inject NavigationManager nav
+
+<h3>Crear Docente</h3>
+
+<EditForm Model="docente" OnValidSubmit="Guardar">
+    <div class="mb-3">
+        <label>Cédula</label>
+        <InputNumber class="form-control" @bind-Value="docente.Cedula" />
+    </div>
+
+    <div class="mb-3">
+        <label>Nombres</label>
+        <InputText class="form-control" @bind-Value="docente.Nombres" />
+    </div>
+
+    <div class="mb-3">
+        <label>Apellidos</label>
+        <InputText class="form-control" @bind-Value="docente.Apellidos" />
+    </div>
+
+    <div class="mb-3">
+        <label>Género</label>
+        <InputText class="form-control" @bind-Value="docente.Genero" />
+    </div>
+
+    <div class="mb-3">
+        <label>Cargo</label>
+        <InputText class="form-control" @bind-Value="docente.Cargo" />
+    </div>
+
+    <div class="mb-3">
+        <label>Fecha Nacimiento</label>
+        <InputDate class="form-control" @bind-Value="docente.FechaNacimiento" />
+    </div>
+
+    <div class="mb-3">
+        <label>Correo</label>
+        <InputText class="form-control" @bind-Value="docente.Correo" />
+    </div>
+
+    <div class="mb-3">
+        <label>Teléfono</label>
+        <InputText class="form-control" @bind-Value="docente.Telefono" />
+    </div>
+
+    <div class="mb-3">
+        <label>URL CvLAC</label>
+        <InputText class="form-control" @bind-Value="docente.UrlCvlac" />
+    </div>
+
+    <div class="mb-3">
+        <label>Fecha Actualización</label>
+        <InputDate class="form-control" @bind-Value="docente.FechaActualizacion" />
+    </div>
+
+    <div class="mb-3">
+        <label>Escalafón</label>
+        <InputText class="form-control" @bind-Value="docente.Escalafon" />
+    </div>
+
+    <div class="mb-3">
+        <label>Perfil</label>
+        <InputTextArea class="form-control" @bind-Value="docente.Perfil" />
+    </div>
+
+    <div class="mb-3">
+        <label>Categoría Minciencias</label>
+        <InputText class="form-control" @bind-Value="docente.CatMinciencia" />
+    </div>
+
+    <div class="mb-3">
+        <label>Convocatoria Minciencias</label>
+        <InputText class="form-control" @bind-Value="docente.ConvMinciencia" />
+    </div>
+
+    <div class="mb-3">
+        <label>Nacionalidad</label>
+        <InputText class="form-control" @bind-Value="docente.Nacionalidaad" />
+    </div>
+
+    <div class="mb-3">
+        <label>Línea Investigación Principal</label>
+        <InputNumber class="form-control" @bind-Value="docente.LineaInvestigacionPrincipal" />
+    </div>
+
+    <button class="btn btn-success" type="submit">Guardar</button>
+    <a class="btn btn-secondary" href="/docentes">Cancelar</a>
+</EditForm>
+
+@code {
+    private Docente docente = new()
+    {
+        FechaActualizacion = DateTime.Today
+    };
+
+    private async Task Guardar()
+    {
+        await docenteService.Create(docente);
+        nav.NavigateTo("/docentes");
+    }
+}
