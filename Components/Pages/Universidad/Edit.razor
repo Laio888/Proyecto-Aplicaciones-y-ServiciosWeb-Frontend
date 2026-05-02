@@ -1,5 +1,5 @@
 @page "/universidades/edit/{id:int}"
-@rendermode InteractiveServer
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
 
 @using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
 @using Microsoft.AspNetCore.Components.Forms

@@ -1,11 +1,22 @@
 @page "/universidades/create"
-@rendermode InteractiveServer
+
 
 @using Microsoft.AspNetCore.Components.Forms
 @using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
 
 @inject UniversidadService universidadService
 @inject NavigationManager nav
+@inject AuthFrontendService AuthService
+@inject NavigationManager Navigation
+
+@if (validando)
+{
+    <p>Validando permisos...</p>
+}
+else
+{
+    // aquí va tu formulario actual
+}
 
 <h3>Crear Universidad</h3>
 
@@ -19,10 +30,36 @@
 
 @code {
     private Universidad universidad = new();
+    private bool validando = true;
+private bool esAdmin;
+private string? error;
 
-    private async Task Guardar()
+protected override async Task OnAfterRenderAsync(bool firstRender)
+{
+    if (!firstRender)
+        return;
+
+    esAdmin = await AuthService.IsAdminAsync();
+
+    if (!esAdmin)
     {
-        await universidadService.Create(universidad);
-        nav.NavigateTo("/universidades");
+        Navigation.NavigateTo("/universidades");
+        return;
     }
+
+    validando = false;
+    StateHasChanged();
+}
+
+  private async Task Guardar()
+{
+    if (!await AuthService.IsAdminAsync())
+    {
+        Navigation.NavigateTo("/universidades");
+        return;
+    }
+
+    await universidadService.Create(universidad);
+    Navigation.NavigateTo("/universidades");
+}
 }

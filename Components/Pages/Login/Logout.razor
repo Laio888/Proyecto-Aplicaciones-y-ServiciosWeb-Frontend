@@ -1,0 +1,16 @@
+@page "/logout"
+
+
+@using FrontendBlazor_Aplicaciones_y_Servicios_Web.Services
+@inject AuthFrontendService AuthService
+@inject NavigationManager Navigation
+
+<p>Cerrando sesión...</p>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await AuthService.LogoutAsync();
+        Navigation.NavigateTo("/login", true);
+    }
+}

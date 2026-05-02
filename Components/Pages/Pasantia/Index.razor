@@ -1,13 +1,16 @@
 @page "/pasantias"
-@rendermode InteractiveServer
 
 @using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
 @inject PasantiaService pasantiaService
 @inject ProgramaService programaService
+@inject AuthFrontendService AuthService
 
 <h3>Pasantías</h3>
 
-<a href="/pasantias/create">Crear nueva</a>
+@if (esAdmin)
+{
+    <a href="/pasantias/create">Crear nueva</a>
+}
 
 @if (pasantias == null || programas == null)
 {
@@ -56,16 +59,25 @@ else
 @code {
     private List<Pasantia> pasantias = new();
     private List<Programa> programas = new();
+    private bool esAdmin;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        if (!firstRender)
+            return;
+
+        esAdmin = await AuthService.IsAdminAsync();
+
         pasantias = await pasantiaService.GetAll();
         programas = await programaService.GetAll();
+
+        StateHasChanged();
     }
 
     private async Task Eliminar(int id)
     {
         await pasantiaService.Delete(id);
         pasantias.RemoveAll(x => x.Id == id);
+        StateHasChanged();
     }
 }

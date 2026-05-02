@@ -1,14 +1,17 @@
 @page "/programape"
-@rendermode InteractiveServer
 
 @using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
 @inject ProgramaPeService programaPeService
 @inject ProgramaService programaService
 @inject PracticaEstrategiaService practicaEstrategiaService
+@inject AuthFrontendService AuthService
 
 <h3>Programa - Prácticas y Estrategias</h3>
 
-<a href="/programape/create">Crear nuevo</a>
+@if (esAdmin)
+{
+    <a href="/programape/create">Crear nuevo</a>
+}
 
 @if (registros == null || programas == null || practicas == null)
 {
@@ -33,6 +36,7 @@ else
             {
                 var prog = programas.FirstOrDefault(p => p.Id == r.Programa);
                 var prac = practicas.FirstOrDefault(p => p.Id == r.PracticaEstrategia);
+
                 <tr>
                     <td>@(prog?.Nombre ?? "No encontrado")</td>
                     <td>@(prac?.Nombre ?? "No encontrada")</td>
@@ -49,17 +53,27 @@ else
     private List<ProgramaPe> registros = new();
     private List<Programa> programas = new();
     private List<PracticaEstrategia> practicas = new();
+    private bool esAdmin;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        if (!firstRender)
+            return;
+
+        esAdmin = await AuthService.IsAdminAsync();
+
         registros = await programaPeService.GetAll();
         programas = await programaService.GetAll();
         practicas = await practicaEstrategiaService.GetAll();
+
+        StateHasChanged();
     }
 
     private async Task Eliminar(int programaId, int practicaEstrategiaId)
     {
         await programaPeService.Delete(programaId, practicaEstrategiaId);
         registros.RemoveAll(r => r.Programa == programaId && r.PracticaEstrategia == practicaEstrategiaId);
+
+        StateHasChanged();
     }
 }

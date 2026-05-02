@@ -1,12 +1,15 @@
 @page "/aliados"
-@rendermode InteractiveServer
 
 @using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
 @inject AliadoService aliadoService
+@inject AuthFrontendService AuthService
 
 <h3>Aliados</h3>
 
-<a class="btn btn-primary mb-3" href="/aliados/create">Crear nuevo</a>
+@if (esAdmin)
+{
+    <a class="btn btn-primary mb-3" href="/aliados/create">Crear nuevo</a>
+}
 
 @if (aliados == null)
 {
@@ -53,15 +56,24 @@ else
 
 @code {
     private List<Aliado> aliados = new();
+    private bool esAdmin;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        if (!firstRender)
+            return;
+
+        esAdmin = await AuthService.IsAdminAsync();
+
         aliados = await aliadoService.GetAll();
+
+        StateHasChanged();
     }
 
     private async Task Eliminar(int nit)
     {
         await aliadoService.Delete(nit);
         aliados.RemoveAll(a => a.Nit == nit);
+        StateHasChanged();
     }
 }

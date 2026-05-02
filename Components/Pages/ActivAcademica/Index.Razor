@@ -1,13 +1,16 @@
 @page "/activAcademica"
-@rendermode InteractiveServer
 
 @using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
 @inject ActivAcademicaService activAcademicaService
 @inject ProgramaService programaService
+@inject AuthFrontendService AuthService
 
 <h3>ActivAcademica</h3>
 
-<a href="/activAcademica/create">Crear nueva</a>
+@if (esAdmin)
+{
+    <a href="/activAcademica/create">Crear nueva</a>
+}
 
 @if (activAcademica == null || programa == null)
 {
@@ -21,20 +24,20 @@ else
 {
     <table class="table">
         <thead>
-    <tr>
-        <th>Id</th>
-        <th>Nombre</th>
-        <th>Créditos</th>
-        <th>Tipo</th>
-        <th>Área Formación</th>
-        <th>Horas Acomp.</th>
-        <th>Horas Indep.</th>
-        <th>Idioma</th>
-        <th>Espejo</th>
-        <th>Programa</th>
-        <th>Acciones</th>
-    </tr>
-</thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>Créditos</th>
+                <th>Tipo</th>
+                <th>Área Formación</th>
+                <th>Horas Acomp.</th>
+                <th>Horas Indep.</th>
+                <th>Idioma</th>
+                <th>Espejo</th>
+                <th>Programa</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
         <tbody>
             @foreach (var f in activAcademica)
             {
@@ -64,11 +67,19 @@ else
 @code {
     private List<ActivAcademica> activAcademica = new();
     private List<Programa> programa = new();
+    private bool esAdmin;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        if (!firstRender)
+            return;
+
+        esAdmin = await AuthService.IsAdminAsync();
+
         activAcademica = await activAcademicaService.GetAll();
         programa = await programaService.GetAll();
+
+        StateHasChanged();
     }
 
     private async Task Eliminar(int id)

@@ -1,14 +1,17 @@
 @page "/programaac"
-@rendermode InteractiveServer
 
 @using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
 @inject ProgramaAcService programaAcService
 @inject ProgramaService programaService
 @inject AreaConocimientoService areaConocimientoService
+@inject AuthFrontendService AuthService
 
 <h3>Programa - Áreas de Conocimiento</h3>
 
-<a href="/programaac/create">Crear nuevo</a>
+@if (esAdmin)
+{
+    <a href="/programaac/create">Crear nuevo</a>
+}
 
 @if (registros == null || programas == null || areas == null)
 {
@@ -49,17 +52,27 @@ else
     private List<ProgramaAc> registros = new();
     private List<Programa> programas = new();
     private List<AreaConocimiento> areas = new();
+    private bool esAdmin;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        if (!firstRender)
+            return;
+
+        esAdmin = await AuthService.IsAdminAsync();
+
         registros = await programaAcService.GetAll();
         programas = await programaService.GetAll();
         areas = await areaConocimientoService.GetAll();
+
+        StateHasChanged();
     }
 
     private async Task Eliminar(int programaId, int areaConocimientoId)
     {
         await programaAcService.Delete(programaId, areaConocimientoId);
         registros.RemoveAll(r => r.Programa == programaId && r.AreaConocimiento == areaConocimientoId);
+
+        StateHasChanged();
     }
 }

@@ -2,6 +2,9 @@ using System.Net;
 using System.Runtime.CompilerServices;
 using FrontendBlazor_Aplicaciones_y_Servicios_Web.Components;
 using FrontendBlazor_Aplicaciones_y_Servicios_Web.Services;
+using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
+using FrontendBlazor_Aplicaciones_y_Servicios_Web.Auth;
+using Microsoft.AspNetCore.Components.Authorization;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +14,13 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 // 🔹 2. HttpClient
+//builder.Services.AddTransient<AuthMessageHandler>();
+
+builder.Services.AddHttpClient("AuthAPI", client =>
+{
+    client.BaseAddress = new Uri("http://localhost:5000/api/");
+});
+
 builder.Services.AddHttpClient("API", client =>
 {
     client.BaseAddress = new Uri("http://localhost:5000/api/");
@@ -49,6 +59,16 @@ builder.Services.AddScoped<DocenteDepartamentoService>();
 
 builder.Services.AddScoped<ActivAcademicaService>();
 builder.Services.AddScoped<AcreditacionService>();
+
+builder.Services.AddScoped<AuthFrontendService>();
+builder.Services.AddScoped<ProtectedSessionStorage>();
+
+builder.Services.AddAuthorizationCore();
+
+builder.Services.AddScoped<CustomAuthenticationStateProvider>();
+
+builder.Services.AddScoped<AuthenticationStateProvider>(provider =>
+    provider.GetRequiredService<CustomAuthenticationStateProvider>());
 
 // 🔹 4. Crear app
 var app = builder.Build();

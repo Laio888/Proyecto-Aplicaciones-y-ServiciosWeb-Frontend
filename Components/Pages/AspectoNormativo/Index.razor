@@ -1,12 +1,15 @@
 @page "/aspectosnormativos"
-@rendermode InteractiveServer
 
 @using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
 @inject AspectoNormativoService aspectoService
+@inject AuthFrontendService AuthService
 
 <h3>Aspectos Normativos</h3>
 
-<a href="/aspectosnormativos/create">Crear nuevo</a>
+@if (esAdmin)
+{
+    <a href="/aspectosnormativos/create">Crear nuevo</a>
+}
 
 @if (aspectos == null)
 {
@@ -48,16 +51,25 @@ else
 
 @code {
     private List<AspectoNormativo> aspectos = new();
+    private bool esAdmin;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        if (!firstRender)
+            return;
+
+        esAdmin = await AuthService.IsAdminAsync();
+
         aspectos = await aspectoService.GetAll();
+
+        StateHasChanged();
     }
 
     private async Task Eliminar(int id)
     {
         await aspectoService.Delete(id);
         aspectos.RemoveAll(a => a.Id == id);
+
         StateHasChanged();
     }
 }

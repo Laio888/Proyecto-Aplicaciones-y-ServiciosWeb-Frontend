@@ -1,14 +1,17 @@
 @page "/docente-departamento"
-@rendermode InteractiveServer
 
 @using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
 @inject DocenteDepartamentoService docenteDepartamentoService
 @inject DocenteService docenteService
 @inject ProgramaService programaService
+@inject AuthFrontendService AuthService
 
 <h3>Docente - Departamento / Programa</h3>
 
-<a class="btn btn-primary mb-3" href="/docente-departamento/create">Crear nuevo</a>
+@if (esAdmin)
+{
+    <a class="btn btn-primary mb-3" href="/docente-departamento/create">Crear nuevo</a>
+}
 
 @if (registros == null || docentes == null || programas == null)
 {
@@ -60,17 +63,27 @@ else
     private List<DocenteDepartamento> registros = new();
     private List<Docente> docentes = new();
     private List<Programa> programas = new();
+    private bool esAdmin;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        if (!firstRender)
+            return;
+
+        esAdmin = await AuthService.IsAdminAsync();
+
         registros = await docenteDepartamentoService.GetAll();
         docentes = await docenteService.GetAll();
         programas = await programaService.GetAll();
+
+        StateHasChanged();
     }
 
     private async Task Eliminar(int docente, int departamento)
     {
         await docenteDepartamentoService.Delete(docente, departamento);
         registros.RemoveAll(x => x.Docente == docente && x.Departamento == departamento);
+
+        StateHasChanged();
     }
 }

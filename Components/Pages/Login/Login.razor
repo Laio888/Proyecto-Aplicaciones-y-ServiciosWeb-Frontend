@@ -1,0 +1,54 @@
+@page "/login"
+@layout AuthLayout
+
+@inject AuthFrontendService AuthService
+@inject NavigationManager Navigation
+
+<div class="auth-card">
+    <h3>Iniciar sesión</h3>
+    <p class="auth-subtitle">Ingresa con tu correo y contraseña</p>
+
+    @if (!string.IsNullOrWhiteSpace(error))
+    {
+        <div class="auth-error">@error</div>
+    }
+
+    <div class="auth-form-group">
+        <label>Email</label>
+        <input @bind="email" type="email" placeholder="correo@ejemplo.com" />
+    </div>
+
+    <div class="auth-form-group">
+        <label>Contraseña</label>
+        <input @bind="password" type="password" placeholder="********" />
+    </div>
+
+    <button class="auth-button" @onclick="IniciarSesion">Ingresar</button>
+
+    <div class="auth-footer">
+        ¿No tienes cuenta?
+        <a href="/register">Regístrate</a>
+    </div>
+</div>
+
+@code {
+    private string email = "";
+    private string password = "";
+    private string? error;
+
+    private async Task IniciarSesion()
+    {
+        error = null;
+
+        var ok = await AuthService.LoginAsync(email, password);
+
+        if (ok)
+        {
+            Navigation.NavigateTo("/universidades");
+        }
+        else
+        {
+            error = "Credenciales incorrectas.";
+        }
+    }
+}

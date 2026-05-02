@@ -1,0 +1,69 @@
+@page "/register"
+@layout AuthLayout
+
+@inject AuthFrontendService AuthService
+@inject NavigationManager Navigation
+
+<div class="auth-card">
+    <h3>Registro</h3>
+    <p class="auth-subtitle">Crea tu cuenta para ingresar al sistema</p>
+
+    @if (!string.IsNullOrWhiteSpace(error))
+    {
+        <div class="auth-error">@error</div>
+    }
+
+    @if (!string.IsNullOrWhiteSpace(success))
+    {
+        <div class="alert alert-success">@success</div>
+    }
+
+    <div class="auth-form-group">
+        <label>Nombre</label>
+        <input @bind="nombre" placeholder="Tu nombre" />
+    </div>
+
+    <div class="auth-form-group">
+        <label>Email</label>
+        <input @bind="email" type="email" placeholder="correo@ejemplo.com" />
+    </div>
+
+    <div class="auth-form-group">
+        <label>Contraseña</label>
+        <input @bind="password" type="password" placeholder="********" />
+    </div>
+
+    <button class="auth-button" @onclick="Registrar">Registrarme</button>
+
+    <div class="auth-footer">
+        ¿Ya tienes cuenta?
+        <a href="/login">Inicia sesión</a>
+    </div>
+</div>
+
+@code {
+    private string nombre = "";
+    private string email = "";
+    private string password = "";
+    private string? error;
+    private string? success;
+
+    private async Task Registrar()
+    {
+        error = null;
+        success = null;
+
+        var ok = await AuthService.RegisterAsync(nombre, email, password);
+
+        if (ok)
+        {
+            success = "Usuario registrado correctamente.";
+            await Task.Delay(1000);
+            Navigation.NavigateTo("/login");
+        }
+        else
+        {
+            error = "No se pudo registrar el usuario.";
+        }
+    }
+}

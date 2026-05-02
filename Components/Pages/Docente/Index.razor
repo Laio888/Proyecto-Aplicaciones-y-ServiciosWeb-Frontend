@@ -1,12 +1,15 @@
 @page "/docentes"
-@rendermode InteractiveServer
 
 @using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
 @inject DocenteService docenteService
+@inject AuthFrontendService AuthService
 
 <h3>Docentes</h3>
 
-<a class="btn btn-primary mb-3" href="/docentes/create">Crear nuevo</a>
+@if (esAdmin)
+{
+    <a class="btn btn-primary mb-3" href="/docentes/create">Crear nuevo</a>
+}
 
 @if (docentes == null)
 {
@@ -55,15 +58,25 @@ else
 
 @code {
     private List<Docente> docentes = new();
+    private bool esAdmin;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        if (!firstRender)
+            return;
+
+        esAdmin = await AuthService.IsAdminAsync();
+
         docentes = await docenteService.GetAll();
+
+        StateHasChanged();
     }
 
     private async Task Eliminar(int cedula)
     {
         await docenteService.Delete(cedula);
         docentes.RemoveAll(d => d.Cedula == cedula);
+
+        StateHasChanged();
     }
 }

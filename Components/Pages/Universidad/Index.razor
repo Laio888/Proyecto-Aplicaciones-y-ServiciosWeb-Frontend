@@ -1,14 +1,23 @@
 @page "/universidades"
-@rendermode InteractiveServer
 
 @using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
 @inject UniversidadService universidadService
+@inject AuthFrontendService AuthService
 
 <h3>Universidades</h3>
 
-<a href="/universidades/create">Crear nueva</a>
+@if (esAdmin)
+{
+    <a href="/universidades/create">Crear nueva</a>
+}
 
-@if (universidades == null)
+@if (!string.IsNullOrWhiteSpace(error))
+{
+    <div class="alert alert-danger">
+        @error
+    </div>
+}
+else if (universidades == null)
 {
     <p>Cargando...</p>
 }
@@ -37,8 +46,15 @@ else
                     <td>@u.Tipo</td>
                     <td>@u.Ciudad</td>
                     <td>
-                        <button @onclick="() => Eliminar(u.Id)">Eliminar</button>
-                        <a href="/universidades/edit/@u.Id">Editar</a>
+                        @if (esAdmin)
+                        {
+                            <button @onclick="() => Eliminar(u.Id)">Eliminar</button>
+                            <a href="/universidades/edit/@u.Id">Editar</a>
+                        }
+                        else
+                        {
+                            <span>Solo lectura</span>
+                        }
                     </td>
                 </tr>
             }
@@ -47,20 +63,43 @@ else
 }
 
 @code {
-    private List<Universidad> universidades = new();
+    private List<Universidad>? universidades;
+    private string? error;
+    private bool esAdmin;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        universidades = await universidadService.GetAll();
-    }
+        if (!firstRender)
+            return;
 
-    private async Task Eliminar(int id)
-    {
-        await universidadService.Delete(id);
-
-        // 🔥 actualizar UI sin recargar API (mejor)
-        universidades.RemoveAll(u => u.Id == id);
+        try
+        {
+            esAdmin = await AuthService.IsAdminAsync();
+            universidades = await universidadService.GetAll();
+        }
+        catch (Exception ex)
+        {
+            error = ex.Message;
+            universidades = new List<Universidad>();
+        }
 
         StateHasChanged();
+    }
+    private async Task Eliminar(int id)
+    {
+        try
+        {
+            error = null;
+
+            await universidadService.Delete(id);
+
+            universidades?.RemoveAll(u => u.Id == id);
+
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            error = ex.Message;
+        }
     }
 }

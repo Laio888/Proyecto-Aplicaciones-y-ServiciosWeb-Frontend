@@ -1,12 +1,15 @@
 @page "/enfoques"
-@rendermode InteractiveServer
 
 @using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
 @inject EnfoqueService enfoqueService
+@inject AuthFrontendService AuthService
 
 <h3>Enfoques</h3>
 
-<a href="/enfoques/create">Crear nuevo</a>
+@if (esAdmin)
+{
+    <a href="/enfoques/create">Crear nuevo</a>
+}
 
 @if (enfoques == null)
 {
@@ -46,17 +49,24 @@ else
 
 @code {
     private List<Enfoque> enfoques = new();
+    private bool esAdmin;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        if (!firstRender)
+            return;
+
+        esAdmin = await AuthService.IsAdminAsync();
+
         enfoques = await enfoqueService.GetAll();
+
+        StateHasChanged();
     }
 
     private async Task Eliminar(int id)
     {
         await enfoqueService.Delete(id);
 
-        // igual que tu patrón
         enfoques.RemoveAll(e => e.Id == id);
 
         StateHasChanged();

@@ -1,13 +1,16 @@
 @page "/facultades"
-@rendermode InteractiveServer
 
 @using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
 @inject FacultadService facultadService
 @inject UniversidadService universidadService
+@inject AuthFrontendService AuthService
 
 <h3>Facultades</h3>
 
-<a href="/facultades/create">Crear nueva</a>
+@if (esAdmin)
+{
+    <a href="/facultades/create">Crear nueva</a>
+}
 
 @if (facultades == null || universidades == null)
 {
@@ -54,16 +57,25 @@ else
 @code {
     private List<Facultad> facultades = new();
     private List<Universidad> universidades = new();
+    private bool esAdmin;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        if (!firstRender)
+            return;
+
+        esAdmin = await AuthService.IsAdminAsync();
+
         facultades = await facultadService.GetAll();
         universidades = await universidadService.GetAll();
+
+        StateHasChanged();
     }
 
     private async Task Eliminar(int id)
     {
         await facultadService.Delete(id);
         facultades.RemoveAll(f => f.Id == id);
+        StateHasChanged();
     }
 }

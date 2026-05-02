@@ -1,15 +1,22 @@
 @page "/acreditacion"
-@rendermode InteractiveServer
 
 @using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
 @inject AcreditacionService acreditacionService
 @inject ProgramaService programaService
+@inject AuthFrontendService AuthService
 
 <h3>Acreditaciones</h3>
 
-<a href="/acreditacion/create">Crear nueva</a>
+@if (esAdmin)
+{
+    <a href="/acreditacion/create">Crear nueva</a>
+}
 
-@if (acreditacion == null || programa == null)
+@if (!string.IsNullOrWhiteSpace(error))
+{
+    <div class="alert alert-danger">@error</div>
+}
+else if (acreditacion == null || programa == null)
 {
     <p>Cargando...</p>
 }
@@ -39,8 +46,8 @@ else
                 <tr>
                     <td>@f.Resolucion</td>
                     <td>@f.Tipo</td>
+                    <td>@f.Calificacion</td>
                     <td>@f.FechaInicio</td>
-                    <td>@f.FechaFin</td>
                     <td>@f.FechaFin</td>
                     <td>@(program?.Nombre ?? "No encontrada")</td>
                     <td>
@@ -54,19 +61,36 @@ else
 }
 
 @code {
-    private List<Acreditacion> acreditacion = new();
-    private List<Programa> programa = new();
-    
+    private List<Acreditacion>? acreditacion;
+    private List<Programa>? programa;
+    private bool esAdmin;
+    private string? error;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        acreditacion = await acreditacionService.GetAll();
-        programa = await programaService.GetAll();
+        if (!firstRender)
+            return;
+
+        try
+        {
+            esAdmin = await AuthService.IsAdminAsync();
+
+            acreditacion = await acreditacionService.GetAll();
+            programa = await programaService.GetAll();
+        }
+        catch (Exception ex)
+        {
+            error = ex.Message;
+            acreditacion = new List<Acreditacion>();
+            programa = new List<Programa>();
+        }
+
+        StateHasChanged();
     }
 
     private async Task Eliminar(int id)
     {
         await acreditacionService.Delete(id);
-        acreditacion.RemoveAll(f => f.Resolucion == id);
+        acreditacion?.RemoveAll(f => f.Resolucion == id);
     }
 }

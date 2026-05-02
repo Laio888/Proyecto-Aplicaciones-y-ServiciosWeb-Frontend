@@ -1,13 +1,16 @@
 @page "/premios"
-@rendermode InteractiveServer
 
 @using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
 @inject PremioService premioService
 @inject ProgramaService programaService
+@inject AuthFrontendService AuthService
 
 <h3>Premios</h3>
 
-<a href="/premios/create">Crear nuevo</a>
+@if (esAdmin)
+{
+    <a href="/premios/create">Crear nuevo</a>
+}
 
 @if (premios == null || programas == null)
 {
@@ -57,16 +60,26 @@ else
 @code {
     private List<Premio> premios = new();
     private List<Programa> programas = new();
+    private bool esAdmin;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        if (!firstRender)
+            return;
+
+        esAdmin = await AuthService.IsAdminAsync();
+
         premios = await premioService.GetAll();
         programas = await programaService.GetAll();
+
+        StateHasChanged();
     }
 
     private async Task Eliminar(int id)
     {
         await premioService.Delete(id);
         premios.RemoveAll(p => p.Id == id);
+
+        StateHasChanged();
     }
 }

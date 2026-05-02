@@ -1,12 +1,15 @@
 @page "/areaconocimiento"
-@rendermode InteractiveServer
 
 @using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
 @inject AreaConocimientoService areaConocimientoService
+@inject AuthFrontendService AuthService
 
 <h3>Áreas de Conocimiento</h3>
 
-<a href="/areaconocimiento/create">Crear nuevo</a>
+@if (esAdmin)
+{
+    <a href="/areaconocimiento/create">Crear nuevo</a>
+}
 
 @if (areas == null)
 {
@@ -48,15 +51,25 @@ else
 
 @code {
     private List<AreaConocimiento> areas = new();
+    private bool esAdmin;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        if (!firstRender)
+            return;
+
+        esAdmin = await AuthService.IsAdminAsync();
+
         areas = await areaConocimientoService.GetAll();
+
+        StateHasChanged();
     }
 
     private async Task Eliminar(int id)
     {
         await areaConocimientoService.Delete(id);
         areas.RemoveAll(a => a.Id == id);
+
+        StateHasChanged();
     }
 }
