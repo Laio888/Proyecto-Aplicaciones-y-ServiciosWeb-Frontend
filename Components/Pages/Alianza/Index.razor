@@ -1,55 +1,59 @@
 @page "/alianzas"
+@rendermode InteractiveServer
 
 @using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
 @inject AlianzaService alianzaService
 @inject AliadoService aliadoService
-@inject ProgramaService programaService
 @inject DocenteService docenteService
-@inject AuthFrontendService AuthService
+@inject ProgramaService programaService
 
 <h3>Alianzas</h3>
 
-@if (esAdmin)
-{
-    <a class="btn btn-primary mb-3" href="/alianzas/create">Crear nuevo</a>
-}
+<p class="text-muted">
+    Consulta y eliminación de alianzas entre docentes, programas y aliados.
+</p>
 
-@if (alianzas == null || aliados == null || programas == null || docentes == null)
+<div class="d-flex justify-content-end mb-3">
+    <a class="btn btn-primary" href="/alianzas/create">
+        Nueva Alianza
+    </a>
+</div>
+
+@if (alianzas == null || aliados == null || docentes == null || programas == null)
 {
     <p>Cargando...</p>
 }
 else if (!alianzas.Any())
 {
-    <p>No hay registros.</p>
+    <div class="alert alert-info">
+        No hay alianzas registradas.
+    </div>
 }
 else
 {
-    <table class="table table-bordered">
-        <thead>
+    <table class="table table-bordered align-middle">
+        <thead class="table-dark">
             <tr>
                 <th>Aliado</th>
-                <th>Programa / Departamento</th>
                 <th>Docente</th>
-                <th>Fecha Inicio</th>
-                <th>Fecha Fin</th>
-                <th>Acciones</th>
+                <th>Programa</th>
+                <th style="width: 120px;">Acciones</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var a in alianzas)
             {
                 var aliado = aliados.FirstOrDefault(x => x.Nit == a.Aliado);
-                var programa = programas.FirstOrDefault(x => x.Id == a.Departamento);
                 var docente = docentes.FirstOrDefault(x => x.Cedula == a.Docente);
+                var programa = programas.FirstOrDefault(x => x.Id == a.Departamento);
 
                 <tr>
                     <td>@(aliado?.RazonSocial ?? "No encontrado")</td>
+                    <td>@($"{docente?.Nombres} {docente?.Apellidos}")</td>
                     <td>@(programa?.Nombre ?? "No encontrado")</td>
-                    <td>@(docente?.NombreCompleto ?? "No encontrado")</td>
-                    <td>@a.FechaInicio.ToShortDateString()</td>
-                    <td>@(a.FechaFin?.ToShortDateString() ?? "-")</td>
                     <td>
-                        <button class="btn btn-danger btn-sm" @onclick="() => Eliminar(a.Aliado, a.Departamento, a.Docente)">
+                        <button class="btn btn-danger btn-sm"
+                                @onclick="() => Eliminar(a.Aliado, a.Docente, a.Departamento)">
                             Eliminar
                         </button>
                     </td>
@@ -62,30 +66,24 @@ else
 @code {
     private List<Alianza> alianzas = new();
     private List<Aliado> aliados = new();
-    private List<Programa> programas = new();
     private List<Docente> docentes = new();
-    private bool esAdmin;
+    private List<Programa> programas = new();
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnInitializedAsync()
     {
-        if (!firstRender)
-            return;
-
-        esAdmin = await AuthService.IsAdminAsync();
-
         alianzas = await alianzaService.GetAll();
         aliados = await aliadoService.GetAll();
-        programas = await programaService.GetAll();
         docentes = await docenteService.GetAll();
-
-        StateHasChanged();
+        programas = await programaService.GetAll();
     }
 
-    private async Task Eliminar(int aliado, int departamento, int docente)
+    private async Task Eliminar(int aliadoId, int docenteId, int programaId)
     {
-        await alianzaService.Delete(aliado, departamento, docente);
-        alianzas.RemoveAll(x => x.Aliado == aliado && x.Departamento == departamento && x.Docente == docente);
+        await alianzaService.Delete(aliadoId, docenteId, programaId);
 
-        StateHasChanged();
+        alianzas.RemoveAll(a =>
+            a.Aliado == aliadoId &&
+            a.Docente == docenteId &&
+            a.Departamento == programaId);
     }
 }

@@ -1,58 +1,66 @@
 @page "/acreditacion"
+@rendermode InteractiveServer
 
 @using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
 @inject AcreditacionService acreditacionService
 @inject ProgramaService programaService
-@inject AuthFrontendService AuthService
 
-<h3>Acreditaciones</h3>
+<h3>Acreditación</h3>
 
-@if (esAdmin)
-{
-    <a href="/acreditacion/create">Crear nueva</a>
-}
+<p class="text-muted">
+    Consulta, edición y eliminación de acreditaciones asociadas a programas académicos.
+</p>
 
-@if (!string.IsNullOrWhiteSpace(error))
-{
-    <div class="alert alert-danger">@error</div>
-}
-else if (acreditacion == null || programa == null)
+<div class="d-flex justify-content-end mb-3">
+    <a class="btn btn-primary" href="/acreditacion/create">
+        Nueva Acreditación
+    </a>
+</div>
+
+@if (acreditaciones == null || programas == null)
 {
     <p>Cargando...</p>
 }
-else if (!acreditacion.Any())
+else if (!acreditaciones.Any())
 {
-    <p>No hay registros.</p>
+    <div class="alert alert-info">
+        No hay acreditaciones registradas.
+    </div>
 }
 else
 {
-    <table class="table">
-        <thead>
+    <table class="table table-bordered align-middle">
+        <thead class="table-dark">
             <tr>
-                <th>Resolucion</th>
+                <th>Resolución</th>
                 <th>Tipo</th>
-                <th>Calificacion</th>
+                <th>Calificación</th>
                 <th>Fecha Inicio</th>
                 <th>Fecha Fin</th>
                 <th>Programa</th>
-                <th>Acciones</th>
+                <th style="width: 170px;">Acciones</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var f in acreditacion)
+            @foreach (var a in acreditaciones)
             {
-                var program = programa.FirstOrDefault(u => u.Id == f.Programa);
+                var programa = programas.FirstOrDefault(p => p.Id == a.Programa);
 
                 <tr>
-                    <td>@f.Resolucion</td>
-                    <td>@f.Tipo</td>
-                    <td>@f.Calificacion</td>
-                    <td>@f.FechaInicio</td>
-                    <td>@f.FechaFin</td>
-                    <td>@(program?.Nombre ?? "No encontrada")</td>
+                    <td>@a.Resolucion</td>
+                    <td>@a.Tipo</td>
+                    <td>@a.Calificacion</td>
+                    <td>@a.FechaInicio</td>
+                    <td>@a.FechaFin</td>
+                    <td>@(programa?.Nombre ?? "No encontrado")</td>
                     <td>
-                        <button @onclick="() => Eliminar(f.Resolucion)">Eliminar</button>
-                        <a href="/acreditacion/edit/@f.Resolucion">Editar</a>
+                        <a class="btn btn-warning btn-sm me-1" href="/acreditacion/edit/@a.Resolucion">
+                            Editar
+                        </a>
+
+                        <button class="btn btn-danger btn-sm" @onclick="() => Eliminar(a.Resolucion)">
+                            Eliminar
+                        </button>
                     </td>
                 </tr>
             }
@@ -61,36 +69,18 @@ else
 }
 
 @code {
-    private List<Acreditacion>? acreditacion;
-    private List<Programa>? programa;
-    private bool esAdmin;
-    private string? error;
+    private List<Acreditacion> acreditaciones = new();
+    private List<Programa> programas = new();
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnInitializedAsync()
     {
-        if (!firstRender)
-            return;
-
-        try
-        {
-            esAdmin = await AuthService.IsAdminAsync();
-
-            acreditacion = await acreditacionService.GetAll();
-            programa = await programaService.GetAll();
-        }
-        catch (Exception ex)
-        {
-            error = ex.Message;
-            acreditacion = new List<Acreditacion>();
-            programa = new List<Programa>();
-        }
-
-        StateHasChanged();
+        acreditaciones = await acreditacionService.GetAll();
+        programas = await programaService.GetAll();
     }
 
-    private async Task Eliminar(int id)
+    private async Task Eliminar(int resolucion)
     {
-        await acreditacionService.Delete(id);
-        acreditacion?.RemoveAll(f => f.Resolucion == id);
+        await acreditacionService.Delete(resolucion);
+        acreditaciones.RemoveAll(a => a.Resolucion == resolucion);
     }
 }

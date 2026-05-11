@@ -1,40 +1,41 @@
 @page "/universidades"
+@rendermode InteractiveServer
 
 @using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
 @inject UniversidadService universidadService
-@inject AuthFrontendService AuthService
 
 <h3>Universidades</h3>
 
-@if (esAdmin)
-{
-    <a href="/universidades/create">Crear nueva</a>
-}
+<p class="text-muted">
+    Consulta, edición y eliminación de sedes y seccionales universitarias.
+</p>
 
-@if (!string.IsNullOrWhiteSpace(error))
-{
-    <div class="alert alert-danger">
-        @error
-    </div>
-}
-else if (universidades == null)
+<div class="d-flex justify-content-end mb-3">
+    <a class="btn btn-primary" href="/universidades/create">
+        Nueva Universidad
+    </a>
+</div>
+
+@if (universidades == null)
 {
     <p>Cargando...</p>
 }
 else if (!universidades.Any())
 {
-    <p>No hay registros.</p>
+    <div class="alert alert-info">
+        No hay universidades registradas.
+    </div>
 }
 else
 {
-    <table class="table">
-        <thead>
+    <table class="table table-bordered align-middle">
+        <thead class="table-dark">
             <tr>
                 <th>Id</th>
                 <th>Nombre</th>
                 <th>Tipo</th>
                 <th>Ciudad</th>
-                <th>Acciones</th>
+                <th style="width: 170px;">Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -46,15 +47,13 @@ else
                     <td>@u.Tipo</td>
                     <td>@u.Ciudad</td>
                     <td>
-                        @if (esAdmin)
-                        {
-                            <button @onclick="() => Eliminar(u.Id)">Eliminar</button>
-                            <a href="/universidades/edit/@u.Id">Editar</a>
-                        }
-                        else
-                        {
-                            <span>Solo lectura</span>
-                        }
+                        <a class="btn btn-warning btn-sm me-1" href="/universidades/edit/@u.Id">
+                            Editar
+                        </a>
+
+                        <button class="btn btn-danger btn-sm" @onclick="() => Eliminar(u.Id)">
+                            Eliminar
+                        </button>
                     </td>
                 </tr>
             }
@@ -63,43 +62,16 @@ else
 }
 
 @code {
-    private List<Universidad>? universidades;
-    private string? error;
-    private bool esAdmin;
+    private List<Universidad> universidades = new();
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnInitializedAsync()
     {
-        if (!firstRender)
-            return;
-
-        try
-        {
-            esAdmin = await AuthService.IsAdminAsync();
-            universidades = await universidadService.GetAll();
-        }
-        catch (Exception ex)
-        {
-            error = ex.Message;
-            universidades = new List<Universidad>();
-        }
-
-        StateHasChanged();
+        universidades = await universidadService.GetAll();
     }
+
     private async Task Eliminar(int id)
     {
-        try
-        {
-            error = null;
-
-            await universidadService.Delete(id);
-
-            universidades?.RemoveAll(u => u.Id == id);
-
-            StateHasChanged();
-        }
-        catch (Exception ex)
-        {
-            error = ex.Message;
-        }
+        await universidadService.Delete(id);
+        universidades.RemoveAll(u => u.Id == id);
     }
 }

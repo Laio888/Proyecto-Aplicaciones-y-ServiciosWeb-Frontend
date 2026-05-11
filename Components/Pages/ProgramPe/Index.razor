@@ -1,17 +1,22 @@
 @page "/programape"
+@rendermode InteractiveServer
 
 @using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
 @inject ProgramaPeService programaPeService
 @inject ProgramaService programaService
 @inject PracticaEstrategiaService practicaEstrategiaService
-@inject AuthFrontendService AuthService
 
-<h3>Programa - Prácticas y Estrategias</h3>
+<h3>Programa - Prácticas</h3>
 
-@if (esAdmin)
-{
-    <a href="/programape/create">Crear nuevo</a>
-}
+<p class="text-muted">
+    Consulta y eliminación de prácticas y estrategias asociadas a programas.
+</p>
+
+<div class="d-flex justify-content-end mb-3">
+    <a class="btn btn-primary" href="/programape/create">
+        Nueva Asociación
+    </a>
+</div>
 
 @if (registros == null || programas == null || practicas == null)
 {
@@ -19,29 +24,34 @@
 }
 else if (!registros.Any())
 {
-    <p>No hay registros.</p>
+    <div class="alert alert-info">
+        No hay asociaciones registradas.
+    </div>
 }
 else
 {
-    <table class="table">
-        <thead>
+    <table class="table table-bordered align-middle">
+        <thead class="table-dark">
             <tr>
                 <th>Programa</th>
-                <th>Práctica/Estrategia</th>
-                <th>Acciones</th>
+                <th>Práctica / Estrategia</th>
+                <th style="width: 120px;">Acciones</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var r in registros)
             {
-                var prog = programas.FirstOrDefault(p => p.Id == r.Programa);
-                var prac = practicas.FirstOrDefault(p => p.Id == r.PracticaEstrategia);
+                var programa = programas.FirstOrDefault(p => p.Id == r.Programa);
+                var practica = practicas.FirstOrDefault(p => p.Id == r.PracticaEstrategia);
 
                 <tr>
-                    <td>@(prog?.Nombre ?? "No encontrado")</td>
-                    <td>@(prac?.Nombre ?? "No encontrada")</td>
+                    <td>@(programa?.Nombre ?? "No encontrado")</td>
+                    <td>@(practica?.Nombre ?? "No encontrada")</td>
                     <td>
-                        <button @onclick="() => Eliminar(r.Programa, r.PracticaEstrategia)">Eliminar</button>
+                        <button class="btn btn-danger btn-sm"
+                                @onclick="() => Eliminar(r.Programa, r.PracticaEstrategia)">
+                            Eliminar
+                        </button>
                     </td>
                 </tr>
             }
@@ -53,27 +63,17 @@ else
     private List<ProgramaPe> registros = new();
     private List<Programa> programas = new();
     private List<PracticaEstrategia> practicas = new();
-    private bool esAdmin;
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnInitializedAsync()
     {
-        if (!firstRender)
-            return;
-
-        esAdmin = await AuthService.IsAdminAsync();
-
         registros = await programaPeService.GetAll();
         programas = await programaService.GetAll();
         practicas = await practicaEstrategiaService.GetAll();
-
-        StateHasChanged();
     }
 
-    private async Task Eliminar(int programaId, int practicaEstrategiaId)
+    private async Task Eliminar(int programaId, int practicaId)
     {
-        await programaPeService.Delete(programaId, practicaEstrategiaId);
-        registros.RemoveAll(r => r.Programa == programaId && r.PracticaEstrategia == practicaEstrategiaId);
-
-        StateHasChanged();
+        await programaPeService.Delete(programaId, practicaId);
+        registros.RemoveAll(r => r.Programa == programaId && r.PracticaEstrategia == practicaId);
     }
 }

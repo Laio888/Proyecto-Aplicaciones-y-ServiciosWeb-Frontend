@@ -1,0 +1,378 @@
+@page "/reportes"
+@rendermode InteractiveServer
+
+@using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos.Reportes
+@inject ReporteService reporteService
+
+<h3 class="mb-2">Reportes y Consultas Multitabla</h3>
+
+<p class="text-muted mb-4">
+    Consultas integradas del módulo de Innovación Curricular con información de programas, universidades, áreas,
+    registros, docentes y aliados.
+</p>
+
+@if (cargando)
+{
+    <p>Cargando reportes...</p>
+}
+else
+{
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+            <h5 class="card-title">1. Programas por Universidad</h5>
+            <p class="text-muted small">
+                Relación de universidades, facultades y programas académicos.
+            </p>
+
+            <table class="table table-sm table-bordered align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Universidad</th>
+                        <th>Facultad</th>
+                        <th>Programa</th>
+                        <th>Nivel</th>
+                        <th>Ciudad</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in programasUniversidad)
+                    {
+                        <tr>
+                            <td>@item.Universidad</td>
+                            <td>@item.Facultad</td>
+                            <td>@item.Programa</td>
+                            <td>@item.Nivel</td>
+                            <td>@item.Ciudad</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+            <h5 class="card-title">2. Programas con Áreas de Conocimiento</h5>
+            <p class="text-muted small">
+                Programas académicos relacionados con sus áreas y disciplinas de conocimiento.
+            </p>
+
+            <table class="table table-sm table-bordered align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Programa</th>
+                        <th>Facultad</th>
+                        <th>Universidad</th>
+                        <th>Área</th>
+                        <th>Disciplina</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in programasAreas)
+                    {
+                        <tr>
+                            <td>@item.Programa</td>
+                            <td>@item.Facultad</td>
+                            <td>@item.Universidad</td>
+                            <td>@item.Area</td>
+                            <td>@item.Disciplina</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+            <h5 class="card-title">3. Programas con Características de Innovación</h5>
+            <p class="text-muted small">
+                Programas académicos relacionados con características de innovación curricular.
+            </p>
+
+            <table class="table table-sm table-bordered align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Universidad</th>
+                        <th>Facultad</th>
+                        <th>Programa</th>
+                        <th>Característica</th>
+                        <th>Tipo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in programasInnovacion)
+                    {
+                        <tr>
+                            <td>@item.Universidad</td>
+                            <td>@item.Facultad</td>
+                            <td>@item.Programa</td>
+                            <td>@item.Caracteristica</td>
+                            <td>@item.TipoInnovacion</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+            <h5 class="card-title">4. Programas con Prácticas / Estrategias</h5>
+            <p class="text-muted small">
+                Programas asociados a prácticas y estrategias pedagógicas.
+            </p>
+
+            <table class="table table-sm table-bordered align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Universidad</th>
+                        <th>Facultad</th>
+                        <th>Programa</th>
+                        <th>Práctica</th>
+                        <th>Tipo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in programasPracticas)
+                    {
+                        <tr>
+                            <td>@item.Universidad</td>
+                            <td>@item.Facultad</td>
+                            <td>@item.Programa</td>
+                            <td>@item.Practica</td>
+                            <td>@item.TipoPractica</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+            <h5 class="card-title">5. Programas con Aspectos Normativos</h5>
+            <p class="text-muted small">
+                Programas académicos vinculados a normativas, fuentes y lineamientos.
+            </p>
+
+            <table class="table table-sm table-bordered align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Universidad</th>
+                        <th>Facultad</th>
+                        <th>Programa</th>
+                        <th>Tipo Normativa</th>
+                        <th>Fuente</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in programasNormativa)
+                    {
+                        <tr>
+                            <td>@item.Universidad</td>
+                            <td>@item.Facultad</td>
+                            <td>@item.Programa</td>
+                            <td>@item.TipoNormativa</td>
+                            <td>@item.Fuente</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+            <h5 class="card-title">6. Registros Calificados</h5>
+            <p class="text-muted small">
+                Registros calificados asociados a programas académicos.
+            </p>
+
+            <table class="table table-sm table-bordered align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Universidad</th>
+                        <th>Facultad</th>
+                        <th>Programa</th>
+                        <th>Código Registro</th>
+                        <th>Metodología</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in registrosCalificados)
+                    {
+                        <tr>
+                            <td>@item.Universidad</td>
+                            <td>@item.Facultad</td>
+                            <td>@item.Programa</td>
+                            <td>@item.CodigoRegistro</td>
+                            <td>@item.Metodologia</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+            <h5 class="card-title">7. Actividades Académicas con Registro Calificado</h5>
+            <p class="text-muted small">
+                Actividades académicas relacionadas con registros calificados.
+            </p>
+
+            <table class="table table-sm table-bordered align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Universidad</th>
+                        <th>Programa</th>
+                        <th>Actividad</th>
+                        <th>Código Registro</th>
+                        <th>Componente</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in actividadesRegistro)
+                    {
+                        <tr>
+                            <td>@item.Universidad</td>
+                            <td>@item.Programa</td>
+                            <td>@item.Actividad</td>
+                            <td>@item.CodigoRegistro</td>
+                            <td>@item.Componente</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+            <h5 class="card-title">8. Enfoques asociados a Registro Calificado</h5>
+            <p class="text-muted small">
+                Enfoques pedagógicos relacionados con registros calificados.
+            </p>
+
+            <table class="table table-sm table-bordered align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Universidad</th>
+                        <th>Programa</th>
+                        <th>Código Registro</th>
+                        <th>Enfoque</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in enfoquesRegistro)
+                    {
+                        <tr>
+                            <td>@item.Universidad</td>
+                            <td>@item.Programa</td>
+                            <td>@item.CodigoRegistro</td>
+                            <td>@item.Enfoque</td>
+                            <td>@item.Descripcion</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+            <h5 class="card-title">9. Alianzas por Programa</h5>
+            <p class="text-muted small">
+                Alianzas institucionales relacionadas con programas, docentes y entidades externas.
+            </p>
+
+            <table class="table table-sm table-bordered align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Universidad</th>
+                        <th>Programa</th>
+                        <th>Aliado</th>
+                        <th>Docente</th>
+                        <th>Ciudad</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in alianzasPrograma)
+                    {
+                        <tr>
+                            <td>@item.Universidad</td>
+                            <td>@item.Programa</td>
+                            <td>@item.Aliado</td>
+                            <td>@item.Docente</td>
+                            <td>@item.Ciudad</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+            <h5 class="card-title">10. Resumen Dashboard</h5>
+            <p class="text-muted small">
+                Indicadores generales del módulo de Innovación Curricular.
+            </p>
+
+            <table class="table table-sm table-bordered align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Universidades</th>
+                        <th>Facultades</th>
+                        <th>Programas</th>
+                        <th>Áreas</th>
+                        <th>Docentes</th>
+                        <th>Aliados</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@dashboard.TotalUniversidades</td>
+                        <td>@dashboard.TotalFacultades</td>
+                        <td>@dashboard.TotalProgramas</td>
+                        <td>@dashboard.TotalAreas</td>
+                        <td>@dashboard.TotalDocentes</td>
+                        <td>@dashboard.TotalAliados</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+@code {
+    private bool cargando = true;
+
+    private List<ProgramaUniversidadReporte> programasUniversidad = new();
+    private List<ProgramaAreaReporte> programasAreas = new();
+    private List<ProgramaInnovacionReporte> programasInnovacion = new();
+    private List<ProgramaPracticaReporte> programasPracticas = new();
+    private List<ProgramaNormativaReporte> programasNormativa = new();
+    private List<RegistroCalificadoReporte> registrosCalificados = new();
+    private List<ActividadRegistroReporte> actividadesRegistro = new();
+    private List<EnfoqueRegistroReporte> enfoquesRegistro = new();
+    private List<AlianzaProgramaReporte> alianzasPrograma = new();
+    private DashboardResumen dashboard = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        programasUniversidad = await reporteService.ProgramasPorUniversidad();
+        programasAreas = await reporteService.ProgramasConAreas();
+        programasInnovacion = await reporteService.ProgramasConInnovacion();
+        programasPracticas = await reporteService.ProgramasConPracticas();
+        programasNormativa = await reporteService.ProgramasConNormativa();
+        registrosCalificados = await reporteService.RegistrosCalificados();
+        actividadesRegistro = await reporteService.ActividadesConRegistro();
+        enfoquesRegistro = await reporteService.EnfoquesConRegistro();
+        alianzasPrograma = await reporteService.AlianzasPorPrograma();
+        dashboard = await reporteService.Dashboard();
+
+        cargando = false;
+    }
+}

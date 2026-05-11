@@ -1,17 +1,22 @@
 @page "/docente-departamento"
+@rendermode InteractiveServer
 
 @using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
 @inject DocenteDepartamentoService docenteDepartamentoService
 @inject DocenteService docenteService
 @inject ProgramaService programaService
-@inject AuthFrontendService AuthService
 
-<h3>Docente - Departamento / Programa</h3>
+<h3>Docente - Programa</h3>
 
-@if (esAdmin)
-{
-    <a class="btn btn-primary mb-3" href="/docente-departamento/create">Crear nuevo</a>
-}
+<p class="text-muted">
+    Consulta y eliminación de asociaciones entre docentes y programas académicos.
+</p>
+
+<div class="d-flex justify-content-end mb-3">
+    <a class="btn btn-primary" href="/docente-departamento/create">
+        Nueva Asociación
+    </a>
+</div>
 
 @if (registros == null || docentes == null || programas == null)
 {
@@ -19,37 +24,32 @@
 }
 else if (!registros.Any())
 {
-    <p>No hay registros.</p>
+    <div class="alert alert-info">
+        No hay asociaciones registradas.
+    </div>
 }
 else
 {
-    <table class="table table-bordered">
-        <thead>
+    <table class="table table-bordered align-middle">
+        <thead class="table-dark">
             <tr>
                 <th>Docente</th>
-                <th>Programa / Departamento</th>
-                <th>Dedicación</th>
-                <th>Modalidad</th>
-                <th>Fecha Ingreso</th>
-                <th>Fecha Salida</th>
-                <th>Acciones</th>
+                <th>Programa</th>
+                <th style="width: 120px;">Acciones</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var r in registros)
             {
-                var docente = docentes.FirstOrDefault(x => x.Cedula == r.Docente);
-                var programa = programas.FirstOrDefault(x => x.Id == r.Departamento);
+                var docente = docentes.FirstOrDefault(d => d.Cedula == r.Docente);
+                var programa = programas.FirstOrDefault(p => p.Id == r.Departamento);
 
                 <tr>
-                    <td>@(docente?.NombreCompleto ?? "No encontrado")</td>
+                    <td>@($"{docente?.Nombres} {docente?.Apellidos}")</td>
                     <td>@(programa?.Nombre ?? "No encontrado")</td>
-                    <td>@r.Dedicacion</td>
-                    <td>@r.Modalidad</td>
-                    <td>@(r.FechaIngreso?.ToShortDateString() ?? "-")</td>
-                    <td>@(r.FechaSalida?.ToShortDateString() ?? "-")</td>
                     <td>
-                        <button class="btn btn-danger btn-sm" @onclick="() => Eliminar(r.Docente, r.Departamento)">
+                        <button class="btn btn-danger btn-sm"
+                                @onclick="() => Eliminar(r.Docente, r.Departamento)">
                             Eliminar
                         </button>
                     </td>
@@ -63,27 +63,20 @@ else
     private List<DocenteDepartamento> registros = new();
     private List<Docente> docentes = new();
     private List<Programa> programas = new();
-    private bool esAdmin;
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnInitializedAsync()
     {
-        if (!firstRender)
-            return;
-
-        esAdmin = await AuthService.IsAdminAsync();
-
         registros = await docenteDepartamentoService.GetAll();
         docentes = await docenteService.GetAll();
         programas = await programaService.GetAll();
-
-        StateHasChanged();
     }
 
-    private async Task Eliminar(int docente, int departamento)
+    private async Task Eliminar(int docenteId, int programaId)
     {
-        await docenteDepartamentoService.Delete(docente, departamento);
-        registros.RemoveAll(x => x.Docente == docente && x.Departamento == departamento);
+        await docenteDepartamentoService.Delete(docenteId, programaId);
 
-        StateHasChanged();
+        registros.RemoveAll(r =>
+            r.Docente == docenteId &&
+            r.Departamento == programaId);
     }
 }

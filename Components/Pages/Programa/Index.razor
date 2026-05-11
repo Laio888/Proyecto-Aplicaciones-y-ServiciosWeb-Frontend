@@ -1,16 +1,21 @@
 @page "/programas"
+@rendermode InteractiveServer
 
 @using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
 @inject ProgramaService programaService
 @inject FacultadService facultadService
-@inject AuthFrontendService AuthService
 
 <h3>Programas</h3>
 
-@if (esAdmin)
-{
-    <a href="/programas/create">Crear nuevo</a>
-}
+<p class="text-muted">
+    Consulta, edición y eliminación de programas académicos.
+</p>
+
+<div class="d-flex justify-content-end mb-3">
+    <a class="btn btn-primary" href="/programas/create">
+        Nuevo Programa
+    </a>
+</div>
 
 @if (programas == null || facultades == null)
 {
@@ -18,12 +23,14 @@
 }
 else if (!programas.Any())
 {
-    <p>No hay registros.</p>
+    <div class="alert alert-info">
+        No hay programas registrados.
+    </div>
 }
 else
 {
-    <table class="table">
-        <thead>
+    <table class="table table-bordered align-middle">
+        <thead class="table-dark">
             <tr>
                 <th>Id</th>
                 <th>Nombre</th>
@@ -31,7 +38,7 @@ else
                 <th>Nivel</th>
                 <th>Ciudad</th>
                 <th>Facultad</th>
-                <th>Acciones</th>
+                <th style="width: 170px;">Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -47,8 +54,13 @@ else
                     <td>@p.Ciudad</td>
                     <td>@(fac?.Nombre ?? "No encontrada")</td>
                     <td>
-                        <button @onclick="() => Eliminar(p.Id)">Eliminar</button>
-                        <a href="/programas/edit/@p.Id">Editar</a>
+                        <a class="btn btn-warning btn-sm me-1" href="/programas/edit/@p.Id">
+                            Editar
+                        </a>
+
+                        <button class="btn btn-danger btn-sm" @onclick="() => Eliminar(p.Id)">
+                            Eliminar
+                        </button>
                     </td>
                 </tr>
             }
@@ -59,26 +71,16 @@ else
 @code {
     private List<Programa> programas = new();
     private List<Facultad> facultades = new();
-    private bool esAdmin;
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnInitializedAsync()
     {
-        if (!firstRender)
-            return;
-
-        esAdmin = await AuthService.IsAdminAsync();
-
         programas = await programaService.GetAll();
         facultades = await facultadService.GetAll();
-
-        StateHasChanged();
     }
 
     private async Task Eliminar(int id)
     {
         await programaService.Delete(id);
         programas.RemoveAll(p => p.Id == id);
-
-        StateHasChanged();
     }
 }

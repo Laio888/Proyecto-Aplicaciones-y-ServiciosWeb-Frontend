@@ -1,38 +1,43 @@
 @page "/carinnovaciones"
+@rendermode InteractiveServer
 
 @using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
-@inject CarInnovacionService carService
-@inject AuthFrontendService AuthService
+@inject CarInnovacionService carInnovacionService
 
 <h3>Características de Innovación</h3>
 
-@if (esAdmin)
-{
-    <a href="/carinnovaciones/create">Crear nueva</a>
-}
+<p class="text-muted">
+    Consulta, edición y eliminación de características de innovación curricular.
+</p>
 
-@if (lista == null)
+<div class="d-flex justify-content-end mb-3">
+    <a class="btn btn-primary" href="/carinnovaciones/create">
+        Nueva Característica
+    </a>
+</div>
+
+@if (caracteristicas == null)
 {
     <p>Cargando...</p>
 }
-else if (!lista.Any())
+else if (!caracteristicas.Any())
 {
-    <p>No hay registros.</p>
+    <div class="alert alert-info">No hay características registradas.</div>
 }
 else
 {
-    <table class="table">
-        <thead>
+    <table class="table table-bordered align-middle">
+        <thead class="table-dark">
             <tr>
                 <th>Id</th>
                 <th>Nombre</th>
                 <th>Descripción</th>
                 <th>Tipo</th>
-                <th>Acciones</th>
+                <th style="width: 170px;">Acciones</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var c in lista)
+            @foreach (var c in caracteristicas)
             {
                 <tr>
                     <td>@c.Id</td>
@@ -40,8 +45,8 @@ else
                     <td>@c.Descripcion</td>
                     <td>@c.Tipo</td>
                     <td>
-                        <button @onclick="() => Eliminar(c.Id)">Eliminar</button>
-                        <a href="/carinnovaciones/edit/@c.Id">Editar</a>
+                        <a class="btn btn-warning btn-sm me-1" href="/carinnovaciones/edit/@c.Id">Editar</a>
+                        <button class="btn btn-danger btn-sm" @onclick="() => Eliminar(c.Id)">Eliminar</button>
                     </td>
                 </tr>
             }
@@ -50,24 +55,16 @@ else
 }
 
 @code {
-    private List<CarInnovacion> lista = new();
-    private bool esAdmin;
+    private List<CarInnovacion> caracteristicas = new();
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnInitializedAsync()
     {
-        if (!firstRender)
-            return;
-
-        esAdmin = await AuthService.IsAdminAsync();
-        lista = await carService.GetAll();
-
-        StateHasChanged();
+        caracteristicas = await carInnovacionService.GetAll();
     }
 
     private async Task Eliminar(int id)
     {
-        await carService.Delete(id);
-        lista.RemoveAll(x => x.Id == id);
-        StateHasChanged();
+        await carInnovacionService.Delete(id);
+        caracteristicas.RemoveAll(c => c.Id == id);
     }
 }

@@ -1,15 +1,20 @@
 @page "/areaconocimiento"
+@rendermode InteractiveServer
 
 @using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
 @inject AreaConocimientoService areaConocimientoService
-@inject AuthFrontendService AuthService
 
 <h3>Áreas de Conocimiento</h3>
 
-@if (esAdmin)
-{
-    <a href="/areaconocimiento/create">Crear nuevo</a>
-}
+<p class="text-muted">
+    Consulta, edición y eliminación de áreas de conocimiento.
+</p>
+
+<div class="d-flex justify-content-end mb-3">
+    <a class="btn btn-primary" href="/areaconocimiento/create">
+        Nueva Área
+    </a>
+</div>
 
 @if (areas == null)
 {
@@ -17,18 +22,18 @@
 }
 else if (!areas.Any())
 {
-    <p>No hay registros.</p>
+    <div class="alert alert-info">No hay áreas registradas.</div>
 }
 else
 {
-    <table class="table">
-        <thead>
+    <table class="table table-bordered align-middle">
+        <thead class="table-dark">
             <tr>
                 <th>Id</th>
                 <th>Gran Área</th>
                 <th>Área</th>
                 <th>Disciplina</th>
-                <th>Acciones</th>
+                <th style="width: 170px;">Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -40,8 +45,8 @@ else
                     <td>@a.Area</td>
                     <td>@a.Disciplina</td>
                     <td>
-                        <a href="/areaconocimiento/edit/@a.Id">Editar</a>
-                        <button @onclick="() => Eliminar(a.Id)">Eliminar</button>
+                        <a class="btn btn-warning btn-sm me-1" href="/areaconocimiento/edit/@a.Id">Editar</a>
+                        <button class="btn btn-danger btn-sm" @onclick="() => Eliminar(a.Id)">Eliminar</button>
                     </td>
                 </tr>
             }
@@ -51,25 +56,15 @@ else
 
 @code {
     private List<AreaConocimiento> areas = new();
-    private bool esAdmin;
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnInitializedAsync()
     {
-        if (!firstRender)
-            return;
-
-        esAdmin = await AuthService.IsAdminAsync();
-
         areas = await areaConocimientoService.GetAll();
-
-        StateHasChanged();
     }
 
     private async Task Eliminar(int id)
     {
         await areaConocimientoService.Delete(id);
         areas.RemoveAll(a => a.Id == id);
-
-        StateHasChanged();
     }
 }

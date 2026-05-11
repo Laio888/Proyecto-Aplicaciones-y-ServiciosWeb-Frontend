@@ -1,5 +1,5 @@
 @page "/programa-areas"
-
+@rendermode InteractiveServer
 
 @using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
 @inject ProgramaService programaService
@@ -9,53 +9,95 @@
 
 <h3>Programa - Áreas de Conocimiento</h3>
 
+<p class="text-muted">
+    Gestión maestro-detalle de áreas de conocimiento asociadas a programas académicos.
+</p>
+
 @if (!string.IsNullOrWhiteSpace(mensaje))
 {
-    <div class="alert alert-info">@mensaje</div>
+    <div class="alert alert-info">
+        @mensaje
+    </div>
 }
 
-<div class="mb-3">
-    <label class="form-label">Programa</label>
-    <select class="form-control" @onchange="OnProgramaChanged">
-    <option value="-1">Seleccione un programa</option>
-    @foreach (var programa in programas)
-    {
-        <option value="@programa.Id">@programa.Nombre</option>
-    }
-</select>
+<div class="card shadow-sm border-0 mb-4">
+    <div class="card-body">
+
+        <div class="row">
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label fw-semibold">
+                    Programa
+                </label>
+
+                <select class="form-control"
+                        @bind="programaSeleccionado"
+                        @bind:after="CargarAreasDelPrograma">
+
+                    <option value="-1">
+                        Seleccione un programa
+                    </option>
+
+                    @foreach (var programa in programas)
+                    {
+                        <option value="@programa.Id">
+                            @programa.Nombre
+                        </option>
+                    }
+                </select>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label class="form-label fw-semibold">
+                    Área de conocimiento
+                </label>
+
+                <select class="form-control"
+                        @bind="areaSeleccionada">
+
+                    <option value="-1">
+                        Seleccione un área
+                    </option>
+
+                    @foreach (var area in areasDisponibles)
+                    {
+                        <option value="@area.Id">
+                            @area.GranArea - @area.Area - @area.Disciplina
+                        </option>
+                    }
+                </select>
+            </div>
+
+        </div>
+
+        <div class="d-flex justify-content-end">
+            <button class="btn btn-primary"
+                    @onclick="AsignarArea">
+                Asignar Área
+            </button>
+        </div>
+
+    </div>
 </div>
 
-<div class="mb-3">
-    <label class="form-label">Área de conocimiento</label>
-    <select class="form-control" @bind="areaSeleccionada">
-        <option value="-1">Seleccione un área</option>
-        @foreach (var area in areasDisponibles)
-        {
-            <option value="@area.Id">@area.GranArea - @area.Area - @area.Disciplina</option>
-        }
-    </select>
-</div>
-
-<button class="btn btn-primary" @onclick="AsignarArea">
-    Asignar área
-</button>
-
-<hr />
-
-<h4>Áreas asociadas</h4>
+<h4 class="mb-3">Áreas Asociadas</h4>
 
 @if (programaSeleccionado == -1)
 {
-    <p>Seleccione un programa para ver sus áreas asociadas.</p>
+    <div class="alert alert-secondary">
+        Seleccione un programa para visualizar sus áreas asociadas.
+    </div>
 }
 else if (!areasAsociadas.Any())
 {
-    <p>Este programa no tiene áreas asociadas.</p>
+    <div class="alert alert-warning">
+        Este programa no tiene áreas asociadas.
+    </div>
 }
 else
 {
-    <table class="table table-bordered">
-        <thead>
+    <table class="table table-bordered align-middle">
+        <thead class="table-dark">
             <tr>
                 <th>Gran Área</th>
                 <th>Área</th>
@@ -63,6 +105,7 @@ else
                 <th style="width: 120px;">Acción</th>
             </tr>
         </thead>
+
         <tbody>
             @foreach (var area in areasAsociadas)
             {
@@ -71,7 +114,8 @@ else
                     <td>@area.Area</td>
                     <td>@area.Disciplina</td>
                     <td>
-                        <button class="btn btn-danger btn-sm" @onclick="() => EliminarArea(area.Id)">
+                        <button class="btn btn-danger btn-sm"
+                                @onclick="() => EliminarArea(area.Id)">
                             Quitar
                         </button>
                     </td>
@@ -91,6 +135,7 @@ else
 
     private int programaSeleccionado = -1;
     private int areaSeleccionada = -1;
+
     private string mensaje = "";
 
     protected override async Task OnInitializedAsync()
@@ -101,6 +146,7 @@ else
 
         areasDisponibles = areas;
     }
+
     private async Task CargarAreasDelPrograma()
     {
         mensaje = "";
@@ -128,34 +174,39 @@ else
 
         await Task.CompletedTask;
     }
+
     private async Task AsignarArea()
     {
         if (programaSeleccionado == -1 || areaSeleccionada == -1)
         {
-            mensaje = "Debe seleccionar un programa y un área de conocimiento.";
+            mensaje = "Debe seleccionar un programa y un área.";
             return;
         }
 
         try
         {
-            await ProgramaAreaService.AsignarAsync(programaSeleccionado, areaSeleccionada);
+            await ProgramaAreaService.AsignarAsync(
+                programaSeleccionado,
+                areaSeleccionada);
 
-            mensaje = $"Área {areaSeleccionada} asignada al programa {programaSeleccionado}.";
+            mensaje = "Área asignada correctamente.";
 
             await RecargarRelaciones();
             await CargarAreasDelPrograma();
         }
         catch (Exception ex)
         {
-            mensaje = $"Error al guardar: {ex.Message}";
+            mensaje = $"Error: {ex.Message}";
         }
     }
 
     private async Task EliminarArea(int areaId)
     {
-        await ProgramaAreaService.EliminarAsync(programaSeleccionado, areaId);
+        await ProgramaAreaService.EliminarAsync(
+            programaSeleccionado,
+            areaId);
 
-        mensaje = "Área quitada correctamente.";
+        mensaje = "Área eliminada correctamente.";
 
         await RecargarRelaciones();
         await CargarAreasDelPrograma();
@@ -165,18 +216,4 @@ else
     {
         relaciones = await programaAcService.GetAll();
     }
-   private async Task OnProgramaChanged(ChangeEventArgs e)
-{
-    if (e.Value != null && int.TryParse(e.Value.ToString(), out var valor))
-    {
-        programaSeleccionado = valor;
-    }
-    else
-    {
-        programaSeleccionado = -1;
-    }
-
-    await CargarAreasDelPrograma();
-}
-
 }

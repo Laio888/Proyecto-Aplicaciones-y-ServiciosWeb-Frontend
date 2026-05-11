@@ -1,15 +1,20 @@
 @page "/docentes"
+@rendermode InteractiveServer
 
 @using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
 @inject DocenteService docenteService
-@inject AuthFrontendService AuthService
 
 <h3>Docentes</h3>
 
-@if (esAdmin)
-{
-    <a class="btn btn-primary mb-3" href="/docentes/create">Crear nuevo</a>
-}
+<p class="text-muted">
+    Consulta, edición y eliminación de docentes vinculados al módulo.
+</p>
+
+<div class="d-flex justify-content-end mb-3">
+    <a class="btn btn-primary" href="/docentes/create">
+        Nuevo Docente
+    </a>
+</div>
 
 @if (docentes == null)
 {
@@ -17,21 +22,23 @@
 }
 else if (!docentes.Any())
 {
-    <p>No hay registros.</p>
+    <div class="alert alert-info">
+        No hay docentes registrados.
+    </div>
 }
 else
 {
-    <table class="table table-bordered">
-        <thead>
+    <table class="table table-bordered align-middle">
+        <thead class="table-dark">
             <tr>
                 <th>Cédula</th>
                 <th>Nombres</th>
                 <th>Apellidos</th>
+                <th>Género</th>
                 <th>Cargo</th>
                 <th>Correo</th>
                 <th>Teléfono</th>
-                <th>Perfil</th>
-                <th>Acciones</th>
+                <th style="width: 170px;">Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -41,11 +48,15 @@ else
                     <td>@d.Cedula</td>
                     <td>@d.Nombres</td>
                     <td>@d.Apellidos</td>
+                    <td>@d.Genero</td>
                     <td>@d.Cargo</td>
                     <td>@d.Correo</td>
                     <td>@d.Telefono</td>
-                    <td>@d.Perfil</td>
                     <td>
+                        <a class="btn btn-warning btn-sm me-1" href="/docentes/edit/@d.Cedula">
+                            Editar
+                        </a>
+
                         <button class="btn btn-danger btn-sm" @onclick="() => Eliminar(d.Cedula)">
                             Eliminar
                         </button>
@@ -58,25 +69,15 @@ else
 
 @code {
     private List<Docente> docentes = new();
-    private bool esAdmin;
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnInitializedAsync()
     {
-        if (!firstRender)
-            return;
-
-        esAdmin = await AuthService.IsAdminAsync();
-
         docentes = await docenteService.GetAll();
-
-        StateHasChanged();
     }
 
     private async Task Eliminar(int cedula)
     {
         await docenteService.Delete(cedula);
         docentes.RemoveAll(d => d.Cedula == cedula);
-
-        StateHasChanged();
     }
 }

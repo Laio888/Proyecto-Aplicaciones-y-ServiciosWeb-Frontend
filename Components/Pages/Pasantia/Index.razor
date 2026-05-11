@@ -1,54 +1,61 @@
 @page "/pasantias"
+@rendermode InteractiveServer
 
 @using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
 @inject PasantiaService pasantiaService
-@inject ProgramaService programaService
-@inject AuthFrontendService AuthService
 
 <h3>Pasantías</h3>
 
-@if (esAdmin)
-{
-    <a href="/pasantias/create">Crear nueva</a>
-}
+<p class="text-muted">
+    Consulta, edición y eliminación de pasantías internacionales y nacionales.
+</p>
 
-@if (pasantias == null || programas == null)
+<div class="d-flex justify-content-end mb-3">
+    <a class="btn btn-primary" href="/pasantias/create">
+        Nueva Pasantía
+    </a>
+</div>
+
+@if (pasantias == null)
 {
     <p>Cargando...</p>
 }
 else if (!pasantias.Any())
 {
-    <p>No hay registros.</p>
+    <div class="alert alert-info">
+        No hay pasantías registradas.
+    </div>
 }
 else
 {
-    <table class="table">
-        <thead>
+    <table class="table table-bordered align-middle">
+        <thead class="table-dark">
             <tr>
                 <th>Id</th>
                 <th>Nombre</th>
                 <th>País</th>
                 <th>Empresa</th>
-                <th>Programa</th>
-                <th>Acciones</th>
+                <th>Descripción</th>
+                <th style="width: 170px;">Acciones</th>
             </tr>
         </thead>
-
         <tbody>
             @foreach (var p in pasantias)
             {
-                var prog = programas.FirstOrDefault(x => x.Id == p.Programa);
-
                 <tr>
                     <td>@p.Id</td>
                     <td>@p.Nombre</td>
                     <td>@p.Pais</td>
                     <td>@p.Empresa</td>
-                    <td>@(prog?.Nombre ?? "No encontrado")</td>
-
+                    <td>@p.Descripcion</td>
                     <td>
-                        <a href="/pasantias/edit/@p.Id">Editar</a>
-                        <button @onclick="() => Eliminar(p.Id)">Eliminar</button>
+                        <a class="btn btn-warning btn-sm me-1" href="/pasantias/edit/@p.Id">
+                            Editar
+                        </a>
+
+                        <button class="btn btn-danger btn-sm" @onclick="() => Eliminar(p.Id)">
+                            Eliminar
+                        </button>
                     </td>
                 </tr>
             }
@@ -58,26 +65,15 @@ else
 
 @code {
     private List<Pasantia> pasantias = new();
-    private List<Programa> programas = new();
-    private bool esAdmin;
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnInitializedAsync()
     {
-        if (!firstRender)
-            return;
-
-        esAdmin = await AuthService.IsAdminAsync();
-
         pasantias = await pasantiaService.GetAll();
-        programas = await programaService.GetAll();
-
-        StateHasChanged();
     }
 
     private async Task Eliminar(int id)
     {
         await pasantiaService.Delete(id);
-        pasantias.RemoveAll(x => x.Id == id);
-        StateHasChanged();
+        pasantias.RemoveAll(p => p.Id == id);
     }
 }

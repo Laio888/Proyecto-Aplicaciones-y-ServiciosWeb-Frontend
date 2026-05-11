@@ -1,29 +1,36 @@
 @page "/activAcademica"
+@rendermode InteractiveServer
 
 @using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
 @inject ActivAcademicaService activAcademicaService
 @inject ProgramaService programaService
-@inject AuthFrontendService AuthService
 
-<h3>ActivAcademica</h3>
+<h3>Actividad Académica</h3>
 
-@if (esAdmin)
-{
-    <a href="/activAcademica/create">Crear nueva</a>
-}
+<p class="text-muted">
+    Consulta, edición y eliminación de actividades académicas asociadas a programas.
+</p>
 
-@if (activAcademica == null || programa == null)
+<div class="d-flex justify-content-end mb-3">
+    <a class="btn btn-primary" href="/activAcademica/create">
+        Nueva Actividad Académica
+    </a>
+</div>
+
+@if (activAcademica == null || programas == null)
 {
     <p>Cargando...</p>
 }
 else if (!activAcademica.Any())
 {
-    <p>No hay registros.</p>
+    <div class="alert alert-info">
+        No hay actividades académicas registradas.
+    </div>
 }
 else
 {
-    <table class="table">
-        <thead>
+    <table class="table table-bordered align-middle">
+        <thead class="table-dark">
             <tr>
                 <th>Id</th>
                 <th>Nombre</th>
@@ -35,13 +42,13 @@ else
                 <th>Idioma</th>
                 <th>Espejo</th>
                 <th>Programa</th>
-                <th>Acciones</th>
+                <th style="width: 170px;">Acciones</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var f in activAcademica)
             {
-                var uni = programa.FirstOrDefault(u => u.Id == f.Disenio);
+                var programa = programas.FirstOrDefault(p => p.Id == f.Disenio);
 
                 <tr>
                     <td>@f.Id</td>
@@ -53,10 +60,15 @@ else
                     <td>@f.H_Indep</td>
                     <td>@f.Idioma</td>
                     <td>@(f.Espejo ? "Sí" : "No")</td>
-                    <td>@(uni?.Nombre ?? "No encontrado")</td>
+                    <td>@(programa?.Nombre ?? "No encontrado")</td>
                     <td>
-                        <button @onclick="() => Eliminar(f.Id)">Eliminar</button>
-                        <a href="/activAcademica/edit/@f.Id">Editar</a>
+                        <a class="btn btn-warning btn-sm me-1" href="/activAcademica/edit/@f.Id">
+                            Editar
+                        </a>
+
+                        <button class="btn btn-danger btn-sm" @onclick="() => Eliminar(f.Id)">
+                            Eliminar
+                        </button>
                     </td>
                 </tr>
             }
@@ -66,20 +78,12 @@ else
 
 @code {
     private List<ActivAcademica> activAcademica = new();
-    private List<Programa> programa = new();
-    private bool esAdmin;
+    private List<Programa> programas = new();
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnInitializedAsync()
     {
-        if (!firstRender)
-            return;
-
-        esAdmin = await AuthService.IsAdminAsync();
-
         activAcademica = await activAcademicaService.GetAll();
-        programa = await programaService.GetAll();
-
-        StateHasChanged();
+        programas = await programaService.GetAll();
     }
 
     private async Task Eliminar(int id)

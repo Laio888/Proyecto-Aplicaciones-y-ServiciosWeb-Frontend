@@ -1,15 +1,20 @@
 @page "/enfoques"
+@rendermode InteractiveServer
 
 @using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
 @inject EnfoqueService enfoqueService
-@inject AuthFrontendService AuthService
 
 <h3>Enfoques</h3>
 
-@if (esAdmin)
-{
-    <a href="/enfoques/create">Crear nuevo</a>
-}
+<p class="text-muted">
+    Consulta, edición y eliminación de enfoques pedagógicos y curriculares.
+</p>
+
+<div class="d-flex justify-content-end mb-3">
+    <a class="btn btn-primary" href="/enfoques/create">
+        Nuevo Enfoque
+    </a>
+</div>
 
 @if (enfoques == null)
 {
@@ -17,17 +22,17 @@
 }
 else if (!enfoques.Any())
 {
-    <p>No hay registros.</p>
+    <div class="alert alert-info">No hay enfoques registrados.</div>
 }
 else
 {
-    <table class="table">
-        <thead>
+    <table class="table table-bordered align-middle">
+        <thead class="table-dark">
             <tr>
                 <th>Id</th>
                 <th>Nombre</th>
                 <th>Descripción</th>
-                <th>Acciones</th>
+                <th style="width: 170px;">Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -38,8 +43,8 @@ else
                     <td>@e.Nombre</td>
                     <td>@e.Descripcion</td>
                     <td>
-                        <button @onclick="() => Eliminar(e.Id)">Eliminar</button>
-                        <a href="/enfoques/edit/@e.Id">Editar</a>
+                        <a class="btn btn-warning btn-sm me-1" href="/enfoques/edit/@e.Id">Editar</a>
+                        <button class="btn btn-danger btn-sm" @onclick="() => Eliminar(e.Id)">Eliminar</button>
                     </td>
                 </tr>
             }
@@ -49,26 +54,15 @@ else
 
 @code {
     private List<Enfoque> enfoques = new();
-    private bool esAdmin;
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnInitializedAsync()
     {
-        if (!firstRender)
-            return;
-
-        esAdmin = await AuthService.IsAdminAsync();
-
         enfoques = await enfoqueService.GetAll();
-
-        StateHasChanged();
     }
 
     private async Task Eliminar(int id)
     {
         await enfoqueService.Delete(id);
-
         enfoques.RemoveAll(e => e.Id == id);
-
-        StateHasChanged();
     }
 }

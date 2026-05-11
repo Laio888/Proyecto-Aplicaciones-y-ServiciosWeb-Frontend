@@ -1,16 +1,21 @@
 @page "/facultades"
+@rendermode InteractiveServer
 
 @using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
 @inject FacultadService facultadService
 @inject UniversidadService universidadService
-@inject AuthFrontendService AuthService
 
 <h3>Facultades</h3>
 
-@if (esAdmin)
-{
-    <a href="/facultades/create">Crear nueva</a>
-}
+<p class="text-muted">
+    Consulta, edición y eliminación de facultades académicas.
+</p>
+
+<div class="d-flex justify-content-end mb-3">
+    <a class="btn btn-primary" href="/facultades/create">
+        Nueva Facultad
+    </a>
+</div>
 
 @if (facultades == null || universidades == null)
 {
@@ -18,19 +23,21 @@
 }
 else if (!facultades.Any())
 {
-    <p>No hay registros.</p>
+    <div class="alert alert-info">
+        No hay facultades registradas.
+    </div>
 }
 else
 {
-    <table class="table">
-        <thead>
+    <table class="table table-bordered align-middle">
+        <thead class="table-dark">
             <tr>
                 <th>Id</th>
                 <th>Nombre</th>
                 <th>Tipo</th>
-                <th>Fecha</th>
+                <th>Fecha Fundación</th>
                 <th>Universidad</th>
-                <th>Acciones</th>
+                <th style="width: 170px;">Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -45,8 +52,13 @@ else
                     <td>@f.FechaFun.ToShortDateString()</td>
                     <td>@(uni?.Nombre ?? "No encontrada")</td>
                     <td>
-                        <button @onclick="() => Eliminar(f.Id)">Eliminar</button>
-                        <a href="/facultades/edit/@f.Id">Editar</a>
+                        <a class="btn btn-warning btn-sm me-1" href="/facultades/edit/@f.Id">
+                            Editar
+                        </a>
+
+                        <button class="btn btn-danger btn-sm" @onclick="() => Eliminar(f.Id)">
+                            Eliminar
+                        </button>
                     </td>
                 </tr>
             }
@@ -57,25 +69,16 @@ else
 @code {
     private List<Facultad> facultades = new();
     private List<Universidad> universidades = new();
-    private bool esAdmin;
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnInitializedAsync()
     {
-        if (!firstRender)
-            return;
-
-        esAdmin = await AuthService.IsAdminAsync();
-
         facultades = await facultadService.GetAll();
         universidades = await universidadService.GetAll();
-
-        StateHasChanged();
     }
 
     private async Task Eliminar(int id)
     {
         await facultadService.Delete(id);
         facultades.RemoveAll(f => f.Id == id);
-        StateHasChanged();
     }
 }

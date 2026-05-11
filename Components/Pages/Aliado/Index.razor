@@ -1,15 +1,20 @@
 @page "/aliados"
+@rendermode InteractiveServer
 
 @using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
 @inject AliadoService aliadoService
-@inject AuthFrontendService AuthService
 
 <h3>Aliados</h3>
 
-@if (esAdmin)
-{
-    <a class="btn btn-primary mb-3" href="/aliados/create">Crear nuevo</a>
-}
+<p class="text-muted">
+    Consulta, edición y eliminación de entidades aliadas vinculadas al módulo.
+</p>
+
+<div class="d-flex justify-content-end mb-3">
+    <a class="btn btn-primary" href="/aliados/create">
+        Nuevo Aliado
+    </a>
+</div>
 
 @if (aliados == null)
 {
@@ -17,12 +22,14 @@
 }
 else if (!aliados.Any())
 {
-    <p>No hay registros.</p>
+    <div class="alert alert-info">
+        No hay aliados registrados.
+    </div>
 }
 else
 {
-    <table class="table table-bordered">
-        <thead>
+    <table class="table table-bordered align-middle">
+        <thead class="table-dark">
             <tr>
                 <th>NIT</th>
                 <th>Razón Social</th>
@@ -30,7 +37,7 @@ else
                 <th>Correo</th>
                 <th>Teléfono</th>
                 <th>Ciudad</th>
-                <th>Acciones</th>
+                <th style="width: 170px;">Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -44,6 +51,10 @@ else
                     <td>@a.Telefono</td>
                     <td>@a.Ciudad</td>
                     <td>
+                        <a class="btn btn-warning btn-sm me-1" href="/aliados/edit/@a.Nit">
+                            Editar
+                        </a>
+
                         <button class="btn btn-danger btn-sm" @onclick="() => Eliminar(a.Nit)">
                             Eliminar
                         </button>
@@ -56,24 +67,15 @@ else
 
 @code {
     private List<Aliado> aliados = new();
-    private bool esAdmin;
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnInitializedAsync()
     {
-        if (!firstRender)
-            return;
-
-        esAdmin = await AuthService.IsAdminAsync();
-
         aliados = await aliadoService.GetAll();
-
-        StateHasChanged();
     }
 
     private async Task Eliminar(int nit)
     {
         await aliadoService.Delete(nit);
         aliados.RemoveAll(a => a.Nit == nit);
-        StateHasChanged();
     }
 }

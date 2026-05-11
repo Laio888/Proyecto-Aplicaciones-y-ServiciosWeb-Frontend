@@ -1,55 +1,61 @@
 @page "/premios"
+@rendermode InteractiveServer
 
 @using FrontendBlazor_Aplicaciones_y_Servicios_Web.Modelos
 @inject PremioService premioService
-@inject ProgramaService programaService
-@inject AuthFrontendService AuthService
 
 <h3>Premios</h3>
 
-@if (esAdmin)
-{
-    <a href="/premios/create">Crear nuevo</a>
-}
+<p class="text-muted">
+    Consulta, edición y eliminación de premios y reconocimientos académicos.
+</p>
 
-@if (premios == null || programas == null)
+<div class="d-flex justify-content-end mb-3">
+    <a class="btn btn-primary" href="/premios/create">
+        Nuevo Premio
+    </a>
+</div>
+
+@if (premios == null)
 {
     <p>Cargando...</p>
 }
 else if (!premios.Any())
 {
-    <p>No hay registros.</p>
+    <div class="alert alert-info">
+        No hay premios registrados.
+    </div>
 }
 else
 {
-    <table class="table">
-        <thead>
+    <table class="table table-bordered align-middle">
+        <thead class="table-dark">
             <tr>
                 <th>Id</th>
                 <th>Nombre</th>
-                <th>Descripción</th>
+                <th>Entidad</th>
                 <th>Fecha</th>
-                <th>Entidad Otorgante</th>
-                <th>País</th>
-                <th>Programa</th>
-                <th>Acciones</th>
+                <th>Descripción</th>
+                <th style="width: 170px;">Acciones</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var p in premios)
             {
-                var prog = programas.FirstOrDefault(x => x.Id == p.Programa);
                 <tr>
                     <td>@p.Id</td>
                     <td>@p.Nombre</td>
-                    <td>@p.Descripcion</td>
-                    <td>@p.Fecha</td>
                     <td>@p.EntidadOtorgante</td>
-                    <td>@p.Pais</td>
-                    <td>@(prog?.Nombre ?? "No encontrado")</td>
+                    <td>@p.Fecha</td>
+                    <td>@p.Descripcion</td>
                     <td>
-                        <a href="/premios/edit/@p.Id">Editar</a>
-                        <button @onclick="() => Eliminar(p.Id)">Eliminar</button>
+                        <a class="btn btn-warning btn-sm me-1" href="/premios/edit/@p.Id">
+                            Editar
+                        </a>
+
+                        <button class="btn btn-danger btn-sm" @onclick="() => Eliminar(p.Id)">
+                            Eliminar
+                        </button>
                     </td>
                 </tr>
             }
@@ -59,27 +65,15 @@ else
 
 @code {
     private List<Premio> premios = new();
-    private List<Programa> programas = new();
-    private bool esAdmin;
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnInitializedAsync()
     {
-        if (!firstRender)
-            return;
-
-        esAdmin = await AuthService.IsAdminAsync();
-
         premios = await premioService.GetAll();
-        programas = await programaService.GetAll();
-
-        StateHasChanged();
     }
 
     private async Task Eliminar(int id)
     {
         await premioService.Delete(id);
         premios.RemoveAll(p => p.Id == id);
-
-        StateHasChanged();
     }
 }
